@@ -38,3 +38,8 @@ export interface IUserModel extends Document {
 		}
 	];
 }
+
+export interface IError {
+	param: string;
+	message: string;
+}
