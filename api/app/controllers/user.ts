@@ -2,6 +2,9 @@ import { Request, Response } from 'express';
 import User from '../models/User';
 import { hashPassword, validateUsername } from '../utils/user';
 import { BAD_REQ, SERVER_ERR } from '../constants';
+import signToken from '../utils/token';
+import sendVerificationEmail from '../utils/mailer';
+import { IUserModel } from '../interfaces/user';
 
 const register = async (req: Request, res: Response) => {
 	try {
@@ -9,7 +12,6 @@ const register = async (req: Request, res: Response) => {
 			firstName,
 			lastName,
 			email,
-			username,
 			password,
 			bYear,
 			bMonth,
@@ -31,7 +33,7 @@ const register = async (req: Request, res: Response) => {
 
 		let newUsername = await validateUsername(tempUsername);
 
-		const user = await new User({
+		const user: IUserModel = await new User({
 			firstName,
 			lastName,
 			email,
@@ -43,7 +45,25 @@ const register = async (req: Request, res: Response) => {
 			gender,
 		}).save();
 
-		return res.json(user);
+		const emailVerificationToken = signToken({ id: user._id }, '30m');
+
+		const url = `${process.env.BASE_URL}/activate/${emailVerificationToken}`;
+
+		sendVerificationEmail(user.email, user.firstName, url);
+
+		const token = signToken({ id: user._id }, '7d');
+
+		return res.send({
+			id: user._id,
+			firstName: user.firstName,
+			lastName: user.lastName,
+			username: user.username,
+			picture: user.picture,
+			verified: user.verified,
+			token,
+			message:
+				'Registeration Success | Please activate your email to start.',
+		});
 	} catch (error: any) {
 		return res.status(SERVER_ERR).json({
 			message: error.message,
