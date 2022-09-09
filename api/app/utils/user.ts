@@ -18,7 +18,7 @@ const hashPassword = async (password: string) => {
 };
 
 // add a random number at the end of a combined username if it already exists!
-// karimmuh1, karimmuh5, etc
+// karimmuh1, karimmuh5, karimmuh192, etc
 const validateUsername = async (username: string) => {
 	let a = false;
 

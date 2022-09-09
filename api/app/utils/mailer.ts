@@ -1,15 +1,15 @@
-import nodemailer, { Transport, TransportOptions } from 'nodemailer';
+import nodemailer from 'nodemailer';
 import { google } from 'googleapis';
 
 const { OAuth2 } = google.auth;
-const oauthLink = 'https://developers.google.com/oauthplayground';
+// const oauthLink = 'https://developers.google.com/oauthplayground';
 const { EMAIL, MAILING_ID, MAILING_SECRET, MAILING_REFRESH_TOKEN } =
 	process.env;
 
 const auth = new OAuth2(
 	MAILING_ID,
 	MAILING_SECRET,
-	MAILING_REFRESH_TOKEN,
+	MAILING_REFRESH_TOKEN
 	// oauthLink
 );
 

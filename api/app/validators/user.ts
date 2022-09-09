@@ -36,7 +36,7 @@ export const validateRegister = (
 	if (!isLength(password, 6, 40)) {
 		errors.push({
 			param: 'password',
-			message: 'Password must be at least 6 characters long.',
+			message: 'Password must be between 6 and 40 characters long.',
 		});
 	}
 

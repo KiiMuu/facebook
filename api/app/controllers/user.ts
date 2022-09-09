@@ -1,10 +1,11 @@
 import { Request, Response } from 'express';
 import User from '../models/User';
 import { hashPassword, validateUsername } from '../utils/user';
-import { BAD_REQ, SERVER_ERR } from '../constants';
-import signToken from '../utils/token';
+import { BAD_REQ, OK, SERVER_ERR } from '../constants';
+import { signToken, verifyToken } from '../utils/token';
 import sendVerificationEmail from '../utils/mailer';
 import { IUserModel } from '../interfaces/user';
+import { JwtPayload } from 'jsonwebtoken';
 
 const register = async (req: Request, res: Response) => {
 	try {
@@ -71,4 +72,34 @@ const register = async (req: Request, res: Response) => {
 	}
 };
 
-export { register };
+const verifyAccount = async (req: Request, res: Response) => {
+	try {
+		const { token } = req.body;
+
+		const user: JwtPayload = verifyToken(token);
+
+		const isAlreadyExists = await User.findById(user.id);
+
+		if (isAlreadyExists?.verified) {
+			return res
+				.status(BAD_REQ)
+				.json({ message: 'This email is already actiavted.' });
+		} else {
+			await User.findByIdAndUpdate(
+				user.id,
+				{ verified: true },
+				{ new: true }
+			);
+
+			return res
+				.status(OK)
+				.json({ message: 'Account has been activated successfully.' });
+		}
+	} catch (error: any) {
+		return res.status(SERVER_ERR).json({
+			message: error.message,
+		});
+	}
+};
+
+export { register, verifyAccount };
