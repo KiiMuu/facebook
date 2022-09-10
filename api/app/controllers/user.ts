@@ -1,6 +1,10 @@
 import { Request, Response } from 'express';
 import User from '../models/User';
-import { hashPassword, validateUsername } from '../utils/user';
+import {
+	comparePasswords,
+	hashPassword,
+	validateUsername,
+} from '../utils/user';
 import { BAD_REQ, OK, SERVER_ERR } from '../constants';
 import { signToken, verifyToken } from '../utils/token';
 import sendVerificationEmail from '../utils/mailer';
@@ -102,4 +106,46 @@ const verifyAccount = async (req: Request, res: Response) => {
 	}
 };
 
-export { register, verifyAccount };
+const login = async (req: Request, res: Response) => {
+	try {
+		const { email, password } = req.body;
+
+		const user = await User.findOne({ email }).exec();
+
+		if (!user) {
+			return res.status(BAD_REQ).json({
+				message:
+					'The email you entered is not connected to an account.',
+			});
+		}
+
+		const isCorrectPassword = await comparePasswords(
+			password,
+			user.password
+		);
+
+		if (!isCorrectPassword) {
+			return res.status(BAD_REQ).json({
+				message: 'Invalid credentials. Please try again.',
+			});
+		}
+
+		const token = signToken({ id: user._id }, '7d');
+
+		return res.send({
+			id: user._id,
+			firstName: user.firstName,
+			lastName: user.lastName,
+			username: user.username,
+			picture: user.picture,
+			verified: user.verified,
+			token,
+		});
+	} catch (error: any) {
+		return res.status(SERVER_ERR).json({
+			message: error.message,
+		});
+	}
+};
+
+export { register, verifyAccount, login };

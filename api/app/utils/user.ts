@@ -17,6 +17,10 @@ const hashPassword = async (password: string) => {
 	return bcrypt.hash(password, 12);
 };
 
+const comparePasswords = async (password: string, userPassword: string) => {
+	return bcrypt.compare(password, userPassword);
+};
+
 // add a random number at the end of a combined username if it already exists!
 // karimmuh1, karimmuh5, karimmuh192, etc
 const validateUsername = async (username: string) => {
@@ -38,4 +42,4 @@ const validateUsername = async (username: string) => {
 	return username;
 };
 
-export { isEmail, isLength, hashPassword, validateUsername };
+export { isEmail, isLength, hashPassword, comparePasswords, validateUsername };

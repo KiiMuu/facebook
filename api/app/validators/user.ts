@@ -46,3 +46,33 @@ export const validateRegister = (
 
 	next();
 };
+
+export const validateLogin = (
+	req: Request,
+	res: Response,
+	next: NextFunction
+) => {
+	const { email, password } = req.body;
+
+	let errors: IError[] = [];
+
+	if (!isEmail(email)) {
+		errors.push({
+			param: 'email',
+			message: 'Invalid email format. Please check it out.',
+		});
+	}
+
+	if (!isLength(password, 6, 40)) {
+		errors.push({
+			param: 'password',
+			message: 'Password must be between 6 and 40 characters long.',
+		});
+	}
+
+	if (errors.length) {
+		return res.status(BAD_REQ).json(errors);
+	}
+
+	next();
+};
