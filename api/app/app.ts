@@ -15,8 +15,8 @@ const app: Express = express();
 connectToDB;
 
 // use middlewares!
-app.use(express.json());
 app.use(cors());
+app.use(express.json());
 app.use(morgan('dev'));
 app.use(helmet());
 app.use(compression());

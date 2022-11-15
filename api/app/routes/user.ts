@@ -4,8 +4,8 @@ import { validateLogin, validateRegister } from '../validators/user';
 
 const router: Router = Router();
 
-router.post('/register', validateRegister, register);
-router.post('/verify', verifyAccount);
-router.post('/login', validateLogin, login);
+router.post('/user/register', validateRegister, register);
+router.post('/user/verify', verifyAccount);
+router.post('/user/login', validateLogin, login);
 
 export default router;

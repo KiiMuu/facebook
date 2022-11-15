@@ -27,9 +27,12 @@ const register = async (req: Request, res: Response) => {
 		const isAlreadyExists = await User.findOne({ email }).exec();
 
 		if (isAlreadyExists) {
-			return res.status(BAD_REQ).json({
-				message: 'This email already exists. Try another one.',
-			});
+			return res.status(BAD_REQ).json([
+				{
+					param: 'email',
+					message: 'This email already exists. Try another one.',
+				},
+			]);
 		}
 
 		const hashedPassword = await hashPassword(password);
@@ -85,9 +88,12 @@ const verifyAccount = async (req: Request, res: Response) => {
 		const isAlreadyExists = await User.findById(user.id);
 
 		if (isAlreadyExists?.verified) {
-			return res
-				.status(BAD_REQ)
-				.json({ message: 'This email is already actiavted.' });
+			return res.status(BAD_REQ).json([
+				{
+					param: 'email',
+					message: 'This email is already actiavted.',
+				},
+			]);
 		} else {
 			await User.findByIdAndUpdate(
 				user.id,
@@ -95,9 +101,12 @@ const verifyAccount = async (req: Request, res: Response) => {
 				{ new: true }
 			);
 
-			return res
-				.status(OK)
-				.json({ message: 'Account has been activated successfully.' });
+			return res.status(OK).json([
+				{
+					param: 'email',
+					message: 'Account has been activated successfully.',
+				},
+			]);
 		}
 	} catch (error: any) {
 		return res.status(SERVER_ERR).json({
@@ -113,10 +122,13 @@ const login = async (req: Request, res: Response) => {
 		const user = await User.findOne({ email }).exec();
 
 		if (!user) {
-			return res.status(BAD_REQ).json({
-				message:
-					'The email you entered is not connected to an account.',
-			});
+			return res.status(BAD_REQ).json([
+				{
+					param: 'email',
+					message:
+						'The email you entered is not connected to an account.',
+				},
+			]);
 		}
 
 		const isCorrectPassword = await comparePasswords(
@@ -125,9 +137,12 @@ const login = async (req: Request, res: Response) => {
 		);
 
 		if (!isCorrectPassword) {
-			return res.status(BAD_REQ).json({
-				message: 'Invalid credentials. Please try again.',
-			});
+			return res.status(BAD_REQ).json([
+				{
+					param: 'email',
+					message: 'Invalid credentials. Please try again.',
+				},
+			]);
 		}
 
 		const token = signToken({ id: user._id }, '7d');

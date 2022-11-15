@@ -8,7 +8,7 @@ const isEmail = (email: string) => {
 };
 
 const isLength = (text: string, max: number, min: number) => {
-	if (text.length > min || text.length < max) return false;
+	if (text?.length > min || text?.length < max) return false;
 
 	return true;
 };
