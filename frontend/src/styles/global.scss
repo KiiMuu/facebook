@@ -53,4 +53,37 @@ body {
 	color: #b94a40;
 }
 
+.active {
+	border-bottom: 3px solid var(--blue-color);
+	border-radius: 0 !important;
+	height: 50px !important;
+	transform: translateX(0) !important;
+	svg {
+		transform: translateY(1px) translateX(-1px);
+	}
+}
+
+.scrollbar::-webkit-scrollbar {
+	width: 8px;
+}
+.scrollbar::-webkit-scrollbar-thumb {
+	background: #aeaeafa1;
+	border-radius: 5px;
+}
+
+.small_circle {
+	position: relative;
+	height: 36px;
+	width: 36px;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-right: 11px;
+	background: var(--bg-third);
+	cursor: pointer;
+}
+
 @import './buttons.scss';
+@import './hovers.scss';
+@import './icons.scss';
