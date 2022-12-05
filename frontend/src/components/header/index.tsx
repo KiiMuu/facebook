@@ -47,6 +47,7 @@ const Header: React.FC = () => {
 		profile_link,
 		circle_icon,
 		right_notitfication,
+		active_header,
 	} = classes;
 
 	return (
@@ -95,7 +96,12 @@ const Header: React.FC = () => {
 					<img src={user?.picture} alt={user?.username} />
 					<span>{user?.firstName}</span>
 				</Link>
-				<div className={`${circle_icon} hover1`} ref={allMenu}>
+				<div
+					className={`${circle_icon} ${
+						showAllMenu && active_header
+					} hover1`}
+					ref={allMenu}
+				>
 					<div
 						onClick={() => setShowAllMenu(prev => !prev)}
 						style={{ display: 'flex' }}
@@ -111,7 +117,12 @@ const Header: React.FC = () => {
 					<Notifications />
 					<div className={right_notitfication}>9+</div>
 				</div>
-				<div className={`${circle_icon} hover1`} ref={userMenu}>
+				<div
+					className={`${circle_icon} ${
+						showUserMenu && active_header
+					} hover1`}
+					ref={userMenu}
+				>
 					<div
 						onClick={() => setShowUserMenu(prev => !prev)}
 						style={{ display: 'flex' }}
