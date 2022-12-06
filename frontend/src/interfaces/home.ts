@@ -9,3 +9,9 @@ export interface ShortcutProps {
 	img: string;
 	name: string;
 }
+
+export interface StoryProps {
+	profile_picture: string;
+	profile_name: string;
+	image: string;
+}
