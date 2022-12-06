@@ -60,7 +60,7 @@ const RegisterForm: React.FC<Props> = ({ setRegisterFormVisible }) => {
 		} = formikRef.current?.values;
 
 		try {
-			await dispatch(
+			let res = await dispatch(
 				register({
 					firstName,
 					lastName,
@@ -71,7 +71,11 @@ const RegisterForm: React.FC<Props> = ({ setRegisterFormVisible }) => {
 					bDay,
 					gender,
 				})
-			);
+			).unwrap();
+
+			Cookies.set('fb_user', JSON.stringify(res), {
+				expires: 7,
+			});
 		} catch (error) {
 			console.log({ error });
 		}
@@ -110,10 +114,6 @@ const RegisterForm: React.FC<Props> = ({ setRegisterFormVisible }) => {
 	useEffect(() => {
 		if (status === 'succeeded') {
 			let timer = setTimeout(() => {
-				Cookies.set('fb_user', JSON.stringify(user), {
-					sameSite: 'none',
-				});
-
 				navigate('/');
 			}, 2000);
 

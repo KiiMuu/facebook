@@ -1,10 +1,15 @@
 import Header from 'src/components/header';
+import LeftHome from 'src/components/home/left';
+import { useAppSelector } from 'src/state/hooks';
 
-const Home = () => {
+const Home: React.FC = () => {
+	const { user } = useAppSelector(state => state.user);
+
 	return (
-		<div>
+		<>
 			<Header />
-		</div>
+			<LeftHome user={user} />
+		</>
 	);
 };
 

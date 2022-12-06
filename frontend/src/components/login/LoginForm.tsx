@@ -25,12 +25,14 @@ const LoginForm: React.FC<Props> = ({ setRegisterFormVisible }) => {
 		let { email, password } = formikRef.current?.values;
 
 		try {
-			await dispatch(
+			const res = await dispatch(
 				login({
 					email,
 					password,
 				})
-			);
+			).unwrap();
+
+			Cookies.set('fb_user', JSON.stringify(res), { expires: 7 });
 		} catch (error) {
 			console.log({ error });
 		}
@@ -42,10 +44,6 @@ const LoginForm: React.FC<Props> = ({ setRegisterFormVisible }) => {
 
 	useEffect(() => {
 		if (status === 'succeeded') {
-			Cookies.set('fb_user', JSON.stringify(user), {
-				sameSite: 'none',
-			});
-
 			navigate('/');
 		}
 	}, [status, navigate, user]);
