@@ -145,7 +145,7 @@ const login = async (req: Request, res: Response) => {
 			]);
 		}
 
-		const token = signToken({ id: user._id }, '7d');
+		const token: string = signToken({ id: user._id }, '7d');
 
 		return res.send({
 			id: user._id,
