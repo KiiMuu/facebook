@@ -1,9 +1,33 @@
+import { useMediaQuery } from 'react-responsive';
 import { ArrowRight, Plus } from 'src/svg';
 import { homeStories } from 'src/data/home';
 import classes from '../home.module.scss';
 import Story from './Story';
 
 const Stories: React.FC = () => {
+	const query1175px = useMediaQuery({
+		query: '(max-width: 1175px)',
+	});
+	const query1030px = useMediaQuery({
+		query: '(max-width: 1030px)',
+	});
+	const query960px = useMediaQuery({
+		query: '(max-width: 960px)',
+	});
+	const query885px = useMediaQuery({
+		query: '(max-width: 885px)',
+	});
+
+	const max = query885px
+		? 5
+		: query960px
+		? 4
+		: query1030px
+		? 5
+		: query1175px
+		? 4
+		: homeStories.length;
+
 	const {
 		stories,
 		create_story_card,
@@ -21,7 +45,7 @@ const Stories: React.FC = () => {
 				</div>
 				<div className={story_create_text}>Create Story</div>
 			</div>
-			{homeStories.map((story, i) => (
+			{homeStories.slice(0, max).map((story, i) => (
 				<Story key={i} storyItem={story} />
 			))}
 			<div className={white_circle}>

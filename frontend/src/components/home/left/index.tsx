@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useMediaQuery } from 'react-responsive';
 import LeftLink from './LeftLink';
 import { left } from 'src/data/home';
 import classes from '../home.module.scss';
@@ -8,6 +9,10 @@ import Shortcut from './Shortcut';
 
 const LeftHome: React.FC<{ user: UserInfo | null }> = ({ user }) => {
 	const [visible, setVisible] = useState(false);
+
+	const query1175px = useMediaQuery({
+		query: '(max-width: 1175px)',
+	});
 
 	const {
 		left_home,
@@ -68,7 +73,7 @@ const LeftHome: React.FC<{ user: UserInfo | null }> = ({ user }) => {
 					</div>
 				</div>
 			)}
-			<div className='splitter'></div>
+			{!query1175px && <div className='splitter'></div>}
 			<div className={shortcut}>
 				<div className={heading}>Your shortcuts</div>
 				<div className={edit_shortcut}>Edit</div>
