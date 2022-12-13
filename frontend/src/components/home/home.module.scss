@@ -411,3 +411,29 @@
 		}
 	}
 }
+
+// ActivateForm.tsx
+.popup {
+	background: var(--bg-primary);
+	box-shadow: 0 1px 2px var(--shadow-1);
+	width: 55vw;
+	height: 200px;
+	position: fixed;
+	top: 40%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	z-index: 99;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	border-radius: 4px;
+	padding: 0 10px;
+	line-height: 1.7;
+	.popup_header {
+		font-weight: 600;
+	}
+	.popup_message {
+		margin-top: 10px;
+	}
+}

@@ -8,3 +8,11 @@ export interface RegisterInput {
 	bDay: number;
 	gender: string;
 }
+
+export interface SliceState {
+	status: 'idle' | 'loading' | 'succeeded' | 'failed';
+	errors: any;
+	successMsg?: string;
+	errorMsg?: string;
+	user: UserInfo | null;
+}

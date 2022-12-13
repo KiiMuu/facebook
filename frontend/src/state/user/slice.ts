@@ -1,17 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 import Cookies from 'js-cookie';
-import { register, login } from './api';
+import { SliceState } from 'src/interfaces/user';
+import { register, login, verifyAccount, resendVerificationCode } from './api';
 
 let currentUser = Cookies.get('fb_user')
 	? JSON.parse(Cookies.get('fb_user') as string)
 	: null;
-
-interface SliceState {
-	status: 'idle' | 'loading' | 'succeeded' | 'failed';
-	errors: any;
-	successMsg?: string;
-	user: UserInfo | null;
-}
 
 export const userSlice = createSlice({
 	name: 'user',
@@ -19,6 +13,7 @@ export const userSlice = createSlice({
 		status: 'idle',
 		errors: [],
 		successMsg: '',
+		errorMsg: '',
 		user: currentUser,
 	} as SliceState,
 	reducers: {},
@@ -48,6 +43,31 @@ export const userSlice = createSlice({
 			.addCase(login.rejected, (state, action) => {
 				state.status = 'failed';
 				state.errors = action.payload;
+			})
+			.addCase(verifyAccount.pending, (state, action) => {
+				state.status = 'loading';
+			})
+			.addCase(verifyAccount.fulfilled, (state, action) => {
+				state.status = 'succeeded';
+				state.errors = [];
+				state.user!.verified = true;
+				state.successMsg = action.payload.message;
+			})
+			.addCase(verifyAccount.rejected, (state, action: any) => {
+				state.status = 'failed';
+				state.errorMsg = action.payload.message;
+			})
+			.addCase(resendVerificationCode.pending, (state, action) => {
+				state.status = 'loading';
+			})
+			.addCase(resendVerificationCode.fulfilled, (state, action) => {
+				state.status = 'succeeded';
+				state.errors = [];
+				state.successMsg = action.payload.message;
+			})
+			.addCase(resendVerificationCode.rejected, (state, action: any) => {
+				state.status = 'failed';
+				state.errorMsg = action.payload.message;
 			});
 	},
 });

@@ -8,6 +8,7 @@ declare global {
 		username: string;
 		picture: string;
 		verified: boolean;
+		token: string;
 	}
 	interface Error {
 		param: string;

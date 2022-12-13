@@ -32,7 +32,10 @@ const LoginForm: React.FC<Props> = ({ setRegisterFormVisible }) => {
 				})
 			).unwrap();
 
-			Cookies.set('fb_user', JSON.stringify(res), { expires: 7 });
+			Cookies.set('fb_user', JSON.stringify(res), {
+				expires: 7,
+				sameSite: 'none',
+			});
 		} catch (error) {
 			console.log({ error });
 		}

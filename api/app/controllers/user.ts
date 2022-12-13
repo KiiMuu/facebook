@@ -81,19 +81,24 @@ const register = async (req: Request, res: Response) => {
 
 const verifyAccount = async (req: Request, res: Response) => {
 	try {
+		const validUser = req.user.id;
 		const { token } = req.body;
 
 		const user: JwtPayload = verifyToken(token);
 
 		const isAlreadyExists = await User.findById(user.id);
 
+		if (validUser !== user.id) {
+			return res.status(BAD_REQ).json({
+				message:
+					"You don't have the authorization to complete this operation.",
+			});
+		}
+
 		if (isAlreadyExists?.verified) {
-			return res.status(BAD_REQ).json([
-				{
-					param: 'email',
-					message: 'This email is already actiavted.',
-				},
-			]);
+			return res.status(BAD_REQ).json({
+				message: 'This email is already actiavted.',
+			});
 		} else {
 			await User.findByIdAndUpdate(
 				user.id,
@@ -101,12 +106,9 @@ const verifyAccount = async (req: Request, res: Response) => {
 				{ new: true }
 			);
 
-			return res.status(OK).json([
-				{
-					param: 'email',
-					message: 'Account has been activated successfully.',
-				},
-			]);
+			return res.status(OK).json({
+				message: 'Account has been activated successfully.',
+			});
 		}
 	} catch (error: any) {
 		return res.status(SERVER_ERR).json({
@@ -163,4 +165,31 @@ const login = async (req: Request, res: Response) => {
 	}
 };
 
-export { register, verifyAccount, login };
+const resendVerificationCode = async (req: Request, res: Response) => {
+	try {
+		const id = req.user.id;
+		const user = await User.findById(id).exec();
+
+		if (user?.verified) {
+			return res.status(BAD_REQ).json({
+				message: 'This account is already actiavted.',
+			});
+		}
+
+		const emailVerificationToken = signToken({ id: user!._id }, '30m');
+
+		const url = `${process.env.BASE_URL}/activate/${emailVerificationToken}`;
+
+		sendVerificationEmail(user!.email, user!.firstName, url);
+
+		return res.status(OK).json({
+			message: 'Email verification link has been sent to you.',
+		});
+	} catch (error: any) {
+		return res.status(SERVER_ERR).json({
+			message: error.message,
+		});
+	}
+};
+
+export { register, verifyAccount, login, resendVerificationCode };

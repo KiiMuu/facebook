@@ -1,6 +1,7 @@
 import Header from 'src/components/header';
 import LeftHome from 'src/components/home/left';
 import RightHome from 'src/components/home/right';
+import ResendVerificationCode from 'src/components/home/sendVerifyCode';
 import Stories from 'src/components/home/stories';
 import CreatePost from 'src/components/post/create';
 import { useAppSelector } from 'src/state/hooks';
@@ -17,6 +18,7 @@ const Home: React.FC = () => {
 			<LeftHome user={user} />
 			<div className={home_middle}>
 				<Stories />
+				{!user?.verified && <ResendVerificationCode />}
 				<CreatePost user={user} />
 			</div>
 			<RightHome user={user} />

@@ -15,3 +15,9 @@ export interface StoryProps {
 	profile_name: string;
 	image: string;
 }
+
+export interface ActivateAccountProps {
+	status: 'idle' | 'loading' | 'succeeded' | 'failed';
+	errorMsg?: string;
+	successMsg?: string;
+}
