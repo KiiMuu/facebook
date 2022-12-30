@@ -1,7 +1,16 @@
 import { createSlice } from '@reduxjs/toolkit';
 import Cookies from 'js-cookie';
 import { SliceState } from 'src/interfaces/user';
-import { register, login, verifyAccount, resendVerificationCode } from './api';
+import {
+	register,
+	login,
+	verifyAccount,
+	resendVerificationCode,
+	findUser,
+	sendResetPasswordEmail,
+	validateResetCode,
+	changePassword,
+} from './api';
 
 let currentUser = Cookies.get('fb_user')
 	? JSON.parse(Cookies.get('fb_user') as string)
@@ -14,9 +23,15 @@ export const userSlice = createSlice({
 		errors: [],
 		successMsg: '',
 		errorMsg: '',
+		foundUser: null,
 		user: currentUser,
 	} as SliceState,
-	reducers: {},
+	reducers: {
+		logoutUser: state => {
+			state.user = null;
+			Cookies.remove('fb_user');
+		},
+	},
 	extraReducers(builder) {
 		builder
 			.addCase(register.pending, (state, action) => {
@@ -68,9 +83,54 @@ export const userSlice = createSlice({
 			.addCase(resendVerificationCode.rejected, (state, action: any) => {
 				state.status = 'failed';
 				state.errorMsg = action.payload.message;
+			})
+			.addCase(findUser.pending, (state, action) => {
+				state.status = 'loading';
+			})
+			.addCase(findUser.fulfilled, (state, action) => {
+				state.status = 'succeeded';
+				state.errors = [];
+				state.foundUser = action.payload;
+			})
+			.addCase(findUser.rejected, (state, action: any) => {
+				state.status = 'failed';
+				state.errorMsg = action.payload.message;
+			})
+			.addCase(sendResetPasswordEmail.pending, (state, action) => {
+				state.status = 'loading';
+			})
+			.addCase(sendResetPasswordEmail.fulfilled, (state, action) => {
+				state.status = 'succeeded';
+				state.successMsg = action.payload;
+			})
+			.addCase(sendResetPasswordEmail.rejected, (state, action: any) => {
+				state.status = 'failed';
+				state.errorMsg = action.payload.message;
+			})
+			.addCase(validateResetCode.pending, (state, action) => {
+				state.status = 'loading';
+			})
+			.addCase(validateResetCode.fulfilled, (state, action) => {
+				state.status = 'succeeded';
+				state.successMsg = action.payload;
+			})
+			.addCase(validateResetCode.rejected, (state, action: any) => {
+				state.status = 'failed';
+				state.errorMsg = action.payload.message;
+			})
+			.addCase(changePassword.pending, (state, action) => {
+				state.status = 'loading';
+			})
+			.addCase(changePassword.fulfilled, (state, action) => {
+				state.status = 'succeeded';
+				state.successMsg = action.payload;
+			})
+			.addCase(changePassword.rejected, (state, action: any) => {
+				state.status = 'failed';
+				state.errorMsg = action.payload.message;
 			});
 	},
 });
 
-// export const { onLogout } = userSlice.actions;
+export const { logoutUser } = userSlice.actions;
 export default userSlice.reducer;

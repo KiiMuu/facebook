@@ -7,9 +7,14 @@ import {
 } from '../utils/user';
 import { BAD_REQ, OK, SERVER_ERR } from '../constants';
 import { signToken, verifyToken } from '../utils/token';
-import sendVerificationEmail from '../utils/mailer';
+import {
+	resetPassowrdCodeVerificationEmail,
+	sendVerificationEmail,
+} from '../utils/mailer';
 import { IUserModel } from '../interfaces/user';
 import { JwtPayload } from 'jsonwebtoken';
+import Code from '../models/Code';
+import generateCode from '../utils/generateCode';
 
 const register = async (req: Request, res: Response) => {
 	try {
@@ -192,4 +197,99 @@ const resendVerificationCode = async (req: Request, res: Response) => {
 	}
 };
 
-export { register, verifyAccount, login, resendVerificationCode };
+const findUser = async (req: Request, res: Response) => {
+	try {
+		const { email } = req.body;
+		const user = await User.findOne({ email }).select('-password').exec();
+
+		if (!user) {
+			return res.status(BAD_REQ).json({
+				message: 'This account is not exist.',
+			});
+		}
+
+		return res.status(OK).json({
+			email: user.email,
+			picture: user.picture,
+		});
+	} catch (error: any) {
+		return res.status(SERVER_ERR).json({
+			message: error.message,
+		});
+	}
+};
+
+const sendResetPasswordCode = async (req: Request, res: Response) => {
+	try {
+		const { email } = req.body;
+		const user = await User.findOne({ email }).select('-password').exec();
+		await Code.findOneAndRemove({ user: user?._id }).exec();
+		const code = generateCode(5);
+
+		await Code.create({
+			code,
+			user: user?._id,
+		});
+
+		resetPassowrdCodeVerificationEmail(user?.email, user?.firstName, code);
+
+		return res.status(OK).json({
+			message: `Reset password email has been sent to ${user?.email}.`,
+		});
+	} catch (error: any) {
+		return res.status(SERVER_ERR).json({
+			message: error.message,
+		});
+	}
+};
+
+const validateResetCode = async (req: Request, res: Response) => {
+	try {
+		const { email, code } = req.body;
+		const user = await User.findOne({ email }).select('-password').exec();
+		const userCode = await Code.findOne({ user: user?._id }).exec();
+
+		if (userCode?.code !== code) {
+			return res.status(BAD_REQ).json({
+				message: 'Invalid code.',
+			});
+		}
+
+		return res.status(OK).json({ message: 'Ok' });
+	} catch (error: any) {
+		return res.status(SERVER_ERR).json({
+			message: error.message,
+		});
+	}
+};
+
+const changePassword = async (req: Request, res: Response) => {
+	try {
+		const { email, password } = req.body;
+
+		const hashedPassword = await hashPassword(password);
+
+		await User.findOneAndUpdate(
+			{ email },
+			{ password: hashedPassword },
+			{ new: true }
+		).exec();
+
+		return res.status(OK).json({ message: 'Password has been changed' });
+	} catch (error: any) {
+		return res.status(SERVER_ERR).json({
+			message: error.message,
+		});
+	}
+};
+
+export {
+	register,
+	verifyAccount,
+	login,
+	resendVerificationCode,
+	findUser,
+	sendResetPasswordCode,
+	validateResetCode,
+	changePassword,
+};

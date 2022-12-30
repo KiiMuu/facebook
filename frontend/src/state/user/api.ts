@@ -123,3 +123,86 @@ export const resendVerificationCode = createAsyncThunk(
 		}
 	}
 );
+
+export const findUser = createAsyncThunk(
+	'user/find_user',
+	async (userData: { email: string }, { rejectWithValue }) => {
+		const { email } = userData;
+
+		try {
+			const { data } = await axios.post(
+				`${process.env.REACT_APP_API}/user/find_user`,
+				{ email }
+			);
+
+			return data;
+		} catch (error: any) {
+			return rejectWithValue(
+				error.response ? error.response.data : error
+			);
+		}
+	}
+);
+
+export const sendResetPasswordEmail = createAsyncThunk(
+	'user/sendResetPassword',
+	async (userData: { email: string }, { rejectWithValue }) => {
+		const { email } = userData;
+
+		try {
+			const { data } = await axios.post(
+				`${process.env.REACT_APP_API}/user/send_reset_password`,
+				{ email }
+			);
+
+			return data;
+		} catch (error: any) {
+			return rejectWithValue(
+				error.response ? error.response.data : error
+			);
+		}
+	}
+);
+
+export const validateResetCode = createAsyncThunk(
+	'user/validateResetCode',
+	async (userData: { email: string; code: number }, { rejectWithValue }) => {
+		const { email, code } = userData;
+
+		try {
+			const { data } = await axios.post(
+				`${process.env.REACT_APP_API}/user/validate_reset_code`,
+				{ email, code }
+			);
+
+			return data;
+		} catch (error: any) {
+			return rejectWithValue(
+				error.response ? error.response.data : error
+			);
+		}
+	}
+);
+
+export const changePassword = createAsyncThunk(
+	'user/changePassword',
+	async (
+		userData: { email: string; password: string },
+		{ rejectWithValue }
+	) => {
+		const { email, password } = userData;
+
+		try {
+			const { data } = await axios.post(
+				`${process.env.REACT_APP_API}/user/change_password`,
+				{ email, password }
+			);
+
+			return data;
+		} catch (error: any) {
+			return rejectWithValue(
+				error.response ? error.response.data : error
+			);
+		}
+	}
+);

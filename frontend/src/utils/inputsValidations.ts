@@ -30,3 +30,27 @@ export const loginValidation = Yup.object().shape({
 		.required('Password is required.')
 		.min(6, 'Too short password. should be 6 chars minimum.'),
 });
+
+export const validateEmail = Yup.object().shape({
+	email: Yup.string()
+		.required('Email address is required.')
+		.email('Invalid email format.')
+		.max(50, "Email address can't be more than 50 characters."),
+});
+
+export const codeValidation = Yup.object().shape({
+	code: Yup.string()
+		.required('Code is required.')
+		.min(5, 'Code must be 5 characters long.')
+		.max(5, 'Code must be 5 characters long.'),
+});
+
+export const validatePasswords = Yup.object().shape({
+	password: Yup.string()
+		.required('Password is required.')
+		.min(6, 'Too short password. should be 6 chars minimum.'),
+
+	confirm_password: Yup.string()
+		.required('Confirm password is required.')
+		.oneOf([Yup.ref('password')], 'Passwords must be match.'),
+});

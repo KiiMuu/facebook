@@ -1,0 +1,123 @@
+.reset {
+	background: var(--bg-secondary);
+	height: 100vh;
+	color: var(--color-primary);
+	.reset_header {
+		background: var(--bg-primary);
+		box-shadow: 1px 8px 15px -7px var(--shadow-1);
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding: 0 1rem;
+		margin-bottom: 50px;
+		img {
+			width: 160px;
+		}
+		.right_reset {
+			text-decoration: none;
+			color: inherit;
+		}
+	}
+	.reset_wrap {
+		height: 67vh;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		padding: 0 10px;
+		.reset_form {
+			position: relative;
+			background: var(--bg-primary);
+			box-shadow: 0 1px 2px var(--shadow-1);
+			border-radius: 6px;
+			width: 550px;
+			height: 310px;
+			.reset_form_header {
+				padding: 15px;
+				font-size: 24px;
+				font-weight: 600;
+				border-bottom: 1px solid var(--bg-third);
+			}
+			.reset_text {
+				padding: 15px;
+				font-size: 15px;
+				color: var(--color-secondary);
+			}
+			form {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				border-bottom: 1px solid var(--bg-third);
+				.error_msg {
+					padding-bottom: 1rem;
+				}
+			}
+		}
+	}
+	.reset_form_btns {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		margin-top: 5px;
+		padding: 10px;
+		position: absolute;
+		right: 10px;
+		bottom: 0;
+		a,
+		button {
+			text-decoration: none;
+			width: 90px;
+		}
+	}
+	.reset_grid {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		font-size: 15px;
+		color: var(--color-secondary);
+		.reset_left {
+			padding: 15px;
+			input {
+				width: 20px;
+				height: 20px;
+			}
+		}
+		.reset_right {
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			img {
+				width: 70px;
+				height: 70px;
+				border-radius: 50%;
+				object-fit: cover;
+			}
+		}
+		label {
+			display: flex;
+			align-items: center;
+			gap: 10px;
+			cursor: pointer;
+			padding: 5px;
+			.label_col {
+				display: flex;
+				flex-direction: column;
+			}
+		}
+	}
+}
+
+@media (max-width: 650px) {
+	.reset {
+		.reset_wrap {
+			.reset_form {
+				width: 100%;
+			}
+		}
+		.reset_grid {
+			grid-template-columns: 1fr;
+		}
+	}
+	.dynamic_height {
+		height: 380px !important;
+	}
+}

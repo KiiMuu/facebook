@@ -4,6 +4,7 @@ import Home from './pages/home';
 import Activate from './pages/home/activate';
 import Login from './pages/login';
 import Profile from './pages/profile';
+import Reset from './pages/reset';
 // -> guards
 import LoggedInRoute from './routes/LoggedInRoute';
 import NotLoggedInRoute from './routes/NotLoggedInRoute';
@@ -13,6 +14,7 @@ function App() {
 		<Routes>
 			<Route element={<NotLoggedInRoute />}>
 				<Route path='/login' element={<Login />} />
+				<Route path='/reset' element={<Reset />} />
 			</Route>
 			<Route element={<LoggedInRoute />}>
 				<Route path='/' element={<Home />} />

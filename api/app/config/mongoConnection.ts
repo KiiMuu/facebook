@@ -8,6 +8,8 @@ class Database {
 
 	async connect(): Promise<void> {
 		try {
+			mongoose.set('strictQuery', false);
+
 			const conn: Mongoose = await mongoose.connect(
 				`${process.env.DB_URL}`
 			);

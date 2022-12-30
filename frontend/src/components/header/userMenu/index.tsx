@@ -1,5 +1,7 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAppDispatch } from 'src/state/hooks';
+import { logoutUser } from 'src/state/user/slice';
 import classes from '../header.module.scss';
 import DisplayAccessibility from './DisplayAccessibility';
 import HelpSupport from './HelpSupport';
@@ -7,6 +9,16 @@ import SettingsPrivacy from './SettingsPrivacy';
 
 const UserMenu: React.FC<{ user: UserInfo | null }> = ({ user }) => {
 	const [visible, setVisible] = useState(0);
+	const dispatch = useAppDispatch();
+	const navigate = useNavigate();
+
+	const logout = () => {
+		dispatch(logoutUser());
+
+		setTimeout(() => {
+			navigate('/login');
+		}, 1000);
+	};
 
 	const {
 		user_menu,
@@ -85,7 +97,10 @@ const UserMenu: React.FC<{ user: UserInfo | null }> = ({ user }) => {
 							<i className='right_icon'></i>
 						</div>
 					</div>
-					<div className={`${user_menu_item} hover3`}>
+					<div
+						className={`${user_menu_item} hover3`}
+						onClick={() => logout()}
+					>
 						<div className='small_circle'>
 							<i className='logout_filled_icon'></i>
 						</div>

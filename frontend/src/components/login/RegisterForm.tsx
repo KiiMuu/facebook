@@ -250,6 +250,7 @@ const RegisterForm: React.FC<Props> = ({ setRegisterFormVisible }) => {
 								<button
 									type='submit'
 									className='blue_btn open_signup'
+									style={{ background: 'var(--green-color)' }}
 								>
 									Sign Up
 								</button>

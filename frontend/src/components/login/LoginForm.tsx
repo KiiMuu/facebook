@@ -104,7 +104,7 @@ const LoginForm: React.FC<Props> = ({ setRegisterFormVisible }) => {
 							</Form>
 						)}
 					</Formik>
-					<Link to='/forgot' className={classes.forgot_pass}>
+					<Link to='/reset' className={classes.forgot_pass}>
 						Forgotten password?
 					</Link>
 					{status === 'failed' && (
@@ -117,6 +117,7 @@ const LoginForm: React.FC<Props> = ({ setRegisterFormVisible }) => {
 					<div className={classes.sign_splitter}></div>
 					<button
 						className='blue_btn open_signup'
+						style={{ background: 'var(--green-color)' }}
 						onClick={() => setRegisterFormVisible(true)}
 					>
 						Create New Account
