@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import morgan from 'morgan';
 import helmet from 'helmet';
 import compression from 'compression';
+import fileUpload from 'express-fileupload';
 import fs from 'fs';
 import connectToDB from './config/mongoConnection';
 dotenv.config();
@@ -20,6 +21,11 @@ app.use(express.json());
 app.use(morgan('dev'));
 app.use(helmet());
 app.use(compression());
+app.use(
+	fileUpload({
+		useTempFiles: true,
+	})
+);
 
 // use routes in dynamic way!
 fs.readdirSync('app/routes').map((route: string) => {
