@@ -14,4 +14,23 @@ declare global {
 		param: string;
 		message: string;
 	}
+	interface IEmojiComponent {
+		firstName?: string;
+		text: string;
+		setText: React.Dispatch<React.SetStateAction<string>>;
+		type2?: boolean;
+		showPrev?: boolean;
+	}
+	interface IImagePreview {
+		firstName?: string;
+		text: string;
+		setText: React.Dispatch<React.SetStateAction<string>>;
+		type2?: boolean;
+		showPrev?: boolean;
+		images: (string | ArrayBuffer | null | undefined)[];
+		setImages: React.Dispatch<
+			React.SetStateAction<(string | ArrayBuffer | null | undefined)[]>
+		>;
+		setShowPrev: React.Dispatch<React.SetStateAction<boolean>>;
+	}
 }
