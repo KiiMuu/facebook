@@ -88,7 +88,7 @@
 		margin-left: 1px;
 		font-family: inherit;
 		font-size: 18px;
-		background-color: var(--bg-primary);
+		background-color: transparent;
 		color: var(--color-primary);
 	}
 	textarea {
@@ -96,6 +96,16 @@
 		background-color: transparent;
 		overflow-y: visible;
 		position: absolute;
+	}
+	.bgHandler {
+		height: 350px;
+		width: 100%;
+		background-size: cover;
+		textarea {
+			text-align: center;
+			height: 350px;
+			margin-top: 10px;
+		}
 	}
 	.post_emojis_wrap {
 		position: relative;
@@ -108,9 +118,9 @@
 			right: 0;
 			bottom: 3.5rem;
 		}
-		.rlmove {
-			right: -15rem;
-		}
+		// .rlmove {
+		// 	right: -15rem;
+		// }
 		img {
 			width: 34px;
 			cursor: pointer;
@@ -168,8 +178,9 @@
 			transform: translateX(-10px);
 		}
 		.movepicker2 {
-			right: 1rem;
-			top: 9.7rem;
+			position: absolute;
+			top: 23%;
+			right: 0;
 			z-index: 9999;
 		}
 		.add_pics_wrap {
@@ -361,6 +372,29 @@
 					}
 				}
 			}
+		}
+	}
+	.post_backgrounds {
+		display: flex;
+		align-items: center;
+		justify-content: left;
+		gap: 5px;
+		position: absolute;
+		left: 55px;
+		top: 11px;
+		img {
+			width: 30px;
+			height: 30px;
+			object-fit: cover;
+			border-radius: 4px;
+		}
+		.no_back {
+			background: var(--bg-secondary);
+			width: 30px;
+			height: 30px;
+			object-fit: cover;
+			border-radius: 4px;
+			cursor: pointer;
 		}
 	}
 }

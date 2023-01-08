@@ -7,7 +7,9 @@ import CreatePost from 'src/components/post/create';
 import { useAppSelector } from 'src/state/hooks';
 import classes from './home.module.scss';
 
-const Home: React.FC = () => {
+const Home: React.FC<{
+	setPostPopupVisibility: React.Dispatch<React.SetStateAction<boolean>>;
+}> = ({ setPostPopupVisibility }) => {
 	const { user } = useAppSelector(state => state.user);
 
 	const { home, home_middle } = classes;
@@ -19,7 +21,10 @@ const Home: React.FC = () => {
 			<div className={home_middle}>
 				<Stories />
 				{!user?.verified && <ResendVerificationCode />}
-				<CreatePost user={user} />
+				<CreatePost
+					user={user}
+					setPostPopupVisibility={setPostPopupVisibility}
+				/>
 			</div>
 			<RightHome user={user} />
 		</div>

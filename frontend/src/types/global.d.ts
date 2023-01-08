@@ -20,6 +20,8 @@ declare global {
 		setText: React.Dispatch<React.SetStateAction<string>>;
 		type2?: boolean;
 		showPrev?: boolean;
+		background?: string;
+		setBackground?: React.Dispatch<React.SetStateAction<string>>;
 	}
 	interface IImagePreview {
 		firstName?: string;

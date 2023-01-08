@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 // -> pages
 import Home from './pages/home';
@@ -14,20 +15,40 @@ import PostPopup from './components/post/popup';
 import { useAppSelector } from './state/hooks';
 
 function App() {
+	const [postPopupVisibility, setPostPopupVisibility] = useState(false);
 	const { user } = useAppSelector(state => state.user);
 
 	return (
 		<>
-			<PostPopup user={user} />
+			{postPopupVisibility && (
+				<PostPopup
+					user={user}
+					setPostPopupVisibility={setPostPopupVisibility}
+				/>
+			)}
 			<Routes>
 				<Route element={<NotLoggedInRoute />}>
 					<Route path='/login' element={<Login />} />
 					<Route path='/reset' element={<Reset />} />
 				</Route>
 				<Route element={<LoggedInRoute />}>
-					<Route path='/' element={<Home />} />
+					<Route
+						path='/'
+						element={
+							<Home
+								setPostPopupVisibility={setPostPopupVisibility}
+							/>
+						}
+					/>
 					<Route path='/profile' element={<Profile />} />
-					<Route path='/activate/:token' element={<Activate />} />
+					<Route
+						path='/activate/:token'
+						element={
+							<Activate
+								setPostPopupVisibility={setPostPopupVisibility}
+							/>
+						}
+					/>
 				</Route>
 			</Routes>
 		</>

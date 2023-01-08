@@ -2,7 +2,10 @@ import { useMediaQuery } from 'react-responsive';
 import { Feeling, LiveVideo, Photo } from 'src/svg';
 import classes from './create.module.scss';
 
-const CreatePost: React.FC<{ user: UserInfo | null }> = ({ user }) => {
+const CreatePost: React.FC<{
+	user: UserInfo | null;
+	setPostPopupVisibility: React.Dispatch<React.SetStateAction<boolean>>;
+}> = ({ user, setPostPopupVisibility }) => {
 	const query500px = useMediaQuery({
 		query: '(max-width: 500px)',
 	});
@@ -20,7 +23,10 @@ const CreatePost: React.FC<{ user: UserInfo | null }> = ({ user }) => {
 		<div className={create_post}>
 			<div className={create_post_header}>
 				<img src={user?.picture} alt={user?.username} />
-				<div className={`${open_post} hover2`}>
+				<div
+					className={`${open_post} hover2`}
+					onClick={() => setPostPopupVisibility(prev => !prev)}
+				>
 					What's on your mind, {user?.firstName}?
 				</div>
 			</div>

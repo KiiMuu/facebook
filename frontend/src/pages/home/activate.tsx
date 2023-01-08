@@ -10,7 +10,9 @@ import { useAppDispatch, useAppSelector } from 'src/state/hooks';
 import { verifyAccount } from 'src/state/user/api';
 import classes from './home.module.scss';
 
-const Activate: React.FC = () => {
+const Activate: React.FC<{
+	setPostPopupVisibility: React.Dispatch<React.SetStateAction<boolean>>;
+}> = ({ setPostPopupVisibility }) => {
 	const { user, status, errorMsg, successMsg } = useAppSelector(
 		state => state.user
 	);
@@ -45,7 +47,10 @@ const Activate: React.FC = () => {
 			<LeftHome user={user} />
 			<div className={home_middle}>
 				<Stories />
-				<CreatePost user={user} />
+				<CreatePost
+					user={user}
+					setPostPopupVisibility={setPostPopupVisibility}
+				/>
 			</div>
 			<RightHome user={user} />
 		</div>

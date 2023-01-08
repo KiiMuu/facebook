@@ -1,17 +1,25 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import EmojiPickerBackground from 'src/components/partials/EmojiPickerBackground';
 import ImagePreview from 'src/components/partials/ImagePreview';
+import useDetectOutsideClicks from 'src/hooks/useDetectOutsideClicks';
 import AddToYourPost from './AddToYourPost';
 import classes from './popup.module.scss';
 
-const PostPopup: React.FC<{ user: UserInfo | null }> = ({ user }) => {
+const PostPopup: React.FC<{
+	user: UserInfo | null;
+	setPostPopupVisibility: React.Dispatch<React.SetStateAction<boolean>>;
+}> = ({ user, setPostPopupVisibility }) => {
 	const [text, setText] = useState('');
 	const [showPrev, setShowPrev] = useState(false);
+	const [background, setBackground] = useState('');
 	const [images, setImages] = useState<
 		(string | ArrayBuffer | null | undefined)[]
 	>([]);
+	const popupRef = useRef<HTMLDivElement>(null);
 
-	console.log({ images });
+	useDetectOutsideClicks(popupRef, () => {
+		setPostPopupVisibility(prev => !prev);
+	});
 
 	const {
 		post_box,
@@ -27,9 +35,12 @@ const PostPopup: React.FC<{ user: UserInfo | null }> = ({ user }) => {
 
 	return (
 		<div className='blur'>
-			<div className={`${post_box} scrollbar`}>
+			<div className={`${post_box} scrollbar`} ref={popupRef}>
 				<div className={box_header}>
-					<div className={`small_circle ${small_circle1}`}>
+					<div
+						className={`small_circle ${small_circle1}`}
+						onClick={() => setPostPopupVisibility(prev => !prev)}
+					>
 						<i className='exit_icon'></i>
 					</div>
 					<span>Create Post</span>
@@ -57,6 +68,8 @@ const PostPopup: React.FC<{ user: UserInfo | null }> = ({ user }) => {
 						text={text}
 						setText={setText}
 						showPrev={showPrev}
+						background={background}
+						setBackground={setBackground}
 					/>
 				) : (
 					<ImagePreview
