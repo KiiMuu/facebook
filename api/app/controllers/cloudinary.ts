@@ -11,14 +11,14 @@ cloudinary.v2.config({
 
 const uploadToCloudinary = async (file: any, path: string) => {
 	return new Promise((resolve, reject) => {
-		cloudinary.v2.uploader.upload(
+		return cloudinary.v2.uploader.upload(
 			file.tempFilePath,
 			{ folder: path },
 			(error: any, res: any) => {
 				if (error) {
 					removeTmp(file.tempFilePath);
 
-					reject(error);
+					return reject(error);
 				}
 
 				return resolve({

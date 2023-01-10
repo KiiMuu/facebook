@@ -3,6 +3,7 @@ export {};
 declare global {
 	interface UserInfo {
 		_id: string;
+		id: string;
 		firstName: string;
 		lastName: string;
 		username: string;
@@ -34,5 +35,6 @@ declare global {
 			React.SetStateAction<(string | ArrayBuffer | null | undefined)[]>
 		>;
 		setShowPrev: React.Dispatch<React.SetStateAction<boolean>>;
+		setLocalError: React.Dispatch<React.SetStateAction<string>>;
 	}
 }

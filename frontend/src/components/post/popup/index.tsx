@@ -1,9 +1,14 @@
 import { useState, useRef } from 'react';
+import { PulseLoader } from 'react-spinners';
 import EmojiPickerBackground from 'src/components/partials/EmojiPickerBackground';
 import ImagePreview from 'src/components/partials/ImagePreview';
 import useDetectOutsideClicks from 'src/hooks/useDetectOutsideClicks';
+import { useAppDispatch, useAppSelector } from 'src/state/hooks';
+import { createPost, uploadImages } from 'src/state/post/api';
 import AddToYourPost from './AddToYourPost';
+import PostError from './PostError';
 import classes from './popup.module.scss';
+import dataURItoBlob from 'src/helpers/dataUrlToBlob';
 
 const PostPopup: React.FC<{
 	user: UserInfo | null;
@@ -12,14 +17,92 @@ const PostPopup: React.FC<{
 	const [text, setText] = useState('');
 	const [showPrev, setShowPrev] = useState(false);
 	const [background, setBackground] = useState('');
+	const [localError, setLocalError] = useState('');
 	const [images, setImages] = useState<
 		(string | ArrayBuffer | null | undefined)[]
 	>([]);
 	const popupRef = useRef<HTMLDivElement>(null);
+	const dispatch = useAppDispatch();
+	const { status } = useAppSelector(state => state.post);
 
 	useDetectOutsideClicks(popupRef, () => {
 		setPostPopupVisibility(prev => !prev);
 	});
+
+	const handlePostCreate = async () => {
+		try {
+			if (background) {
+				const res = await dispatch(
+					createPost({
+						background,
+						type: null,
+						text,
+						images: null,
+						user: user?.id,
+						token: user?.token,
+					})
+				).unwrap();
+
+				if (res) {
+					setBackground('');
+					setText('');
+					setPostPopupVisibility(false);
+				}
+			} else if (images.length) {
+				const postImages = images.map(img => {
+					return dataURItoBlob(img);
+				});
+
+				const path = `${user?.username}/post/images`;
+				const formData = new FormData();
+
+				formData.append('path', path);
+				postImages?.forEach(img => {
+					formData.append('file', img);
+				});
+
+				const res = await dispatch(
+					uploadImages({ formData, token: user?.token })
+				).unwrap();
+
+				const bgPost = await dispatch(
+					createPost({
+						background: null,
+						type: null,
+						text,
+						images: res,
+						user: user?.id,
+						token: user?.token,
+					})
+				).unwrap();
+
+				if (bgPost && res) {
+					setBackground('');
+					setText('');
+					setPostPopupVisibility(false);
+				}
+			} else if (text) {
+				const res = await dispatch(
+					createPost({
+						background: null,
+						type: null,
+						text,
+						images: null,
+						user: user?.id,
+						token: user?.token,
+					})
+				).unwrap();
+
+				if (res) {
+					setBackground('');
+					setText('');
+					setPostPopupVisibility(false);
+				}
+			}
+		} catch (error) {
+			setLocalError(error.message);
+		}
+	};
 
 	const {
 		post_box,
@@ -36,6 +119,12 @@ const PostPopup: React.FC<{
 	return (
 		<div className='blur'>
 			<div className={`${post_box} scrollbar`} ref={popupRef}>
+				{localError && (
+					<PostError
+						localError={localError}
+						setLocalError={setLocalError}
+					/>
+				)}
 				<div className={box_header}>
 					<div
 						className={`small_circle ${small_circle1}`}
@@ -80,11 +169,21 @@ const PostPopup: React.FC<{
 						images={images}
 						setImages={setImages}
 						setShowPrev={setShowPrev}
+						setLocalError={setLocalError}
 					/>
 				)}
 				<AddToYourPost setShowPrev={setShowPrev} />
-				<button type='submit' className={post_submit}>
-					Post
+				<button
+					type='submit'
+					className={post_submit}
+					onClick={handlePostCreate}
+					disabled={status === 'loading'}
+				>
+					{status === 'loading' ? (
+						<PulseLoader color='#fff' size={8} />
+					) : (
+						'Post'
+					)}
 				</button>
 			</div>
 		</div>

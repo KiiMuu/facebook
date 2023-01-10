@@ -23,11 +23,11 @@ const imageUpload = async (req: Request, res: Response, next: NextFunction) => {
 
 			// By default size is determined in bytes format
 			// Converting it into MBs format
-			// if size is larger than 5MB
-			if (file.size > 1024 * 1024 * 5) {
+			// if size is larger than 3MB
+			if (file.size > 1024 * 1024 * 3) {
 				return res.status(BAD_REQ).json({
 					message:
-						'File size is too large. Maximum file size is 5MB.',
+						'File size is too large. Maximum file size is 3MB.',
 				});
 			}
 		});

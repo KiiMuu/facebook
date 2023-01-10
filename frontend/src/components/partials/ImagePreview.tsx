@@ -9,8 +9,10 @@ const ImagePreview: React.FC<IImagePreview> = ({
 	images,
 	setImages,
 	setShowPrev,
+	setLocalError,
 }) => {
 	const imageInputRef = useRef<HTMLInputElement | null>(null);
+	const allowedFiles = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
 
 	const handleFileChanghe = (e: React.ChangeEvent<HTMLInputElement>) => {
 		if (e.target.files && e.target.files.length > 0) {
@@ -18,6 +20,13 @@ const ImagePreview: React.FC<IImagePreview> = ({
 
 			if (files) {
 				files.forEach(img => {
+					if (!allowedFiles.includes(img.type)) {
+						setLocalError(
+							`${img.name} format is not allowed. Only jpeg, png, gif or webp are allowed`
+						);
+						return;
+					}
+
 					const reader = new FileReader();
 
 					reader.readAsDataURL(img as Blob);
@@ -67,6 +76,7 @@ const ImagePreview: React.FC<IImagePreview> = ({
 					type='file'
 					multiple
 					hidden
+					accept='image/jpeg,image/png,image/webp,image/gif'
 					ref={imageInputRef}
 					onChange={handleFileChanghe}
 				/>

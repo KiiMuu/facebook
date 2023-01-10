@@ -22,6 +22,26 @@
 	border-radius: 5px;
 	overflow-y: auto;
 	overflow-x: hidden;
+	.post_error {
+		position: absolute;
+		inset: 0; // all sides set to zero;
+		background: var(--bg-primary);
+		opacity: 0.98;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-direction: column;
+		gap: 15px;
+		z-index: 999;
+		border-radius: 6px;
+		animation: animateMe 0.25s ease-in-out;
+		span {
+			color: #b94a40;
+			padding: 0 20px;
+			line-height: 1.5;
+			font-weight: 600;
+		}
+	}
 	.box_header {
 		position: relative;
 		display: flex;
@@ -45,6 +65,7 @@
 			height: 38px;
 			border-radius: 50%;
 			object-fit: cover;
+			border: 2px solid var(--bg-third);
 		}
 		.box_col {
 			transform: translateY(-7px);
@@ -396,5 +417,14 @@
 			border-radius: 4px;
 			cursor: pointer;
 		}
+	}
+}
+
+@keyframes animateMe {
+	0% {
+		transform: scale(0);
+	}
+	100% {
+		transform: scale(1);
 	}
 }
