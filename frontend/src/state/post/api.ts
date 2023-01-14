@@ -15,8 +15,32 @@ export const createPost = createAsyncThunk(
 					background,
 					text,
 					images,
-					user,
+					user: user?.id,
 				},
+				{
+					headers: {
+						Authorization: `Bearer ${token}`,
+					},
+				}
+			);
+
+			return data;
+		} catch (error: any) {
+			return rejectWithValue(
+				error.response ? error.response.data : error
+			);
+		}
+	}
+);
+
+export const getAllPosts = createAsyncThunk(
+	'post/getAllPosts',
+	async (postData: { token?: string }, { rejectWithValue }) => {
+		const { token } = postData;
+
+		try {
+			const { data } = await axios.get(
+				`${process.env.REACT_APP_API}/post/getAllPosts`,
 				{
 					headers: {
 						Authorization: `Bearer ${token}`,

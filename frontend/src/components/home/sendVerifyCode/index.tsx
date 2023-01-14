@@ -18,7 +18,7 @@ const ResendVerificationCode = () => {
 		<div className={send_verification}>
 			<span>
 				Your account is not verified. Verify your account before it gets
-				deleted aster a month from creating.
+				deleted after a month from creating.
 			</span>
 			<button onClick={() => sendVerifyCode()}>
 				Click here to re-send verification link.

@@ -14,7 +14,7 @@ const ImagePreview: React.FC<IImagePreview> = ({
 	const imageInputRef = useRef<HTMLInputElement | null>(null);
 	const allowedFiles = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
 
-	const handleFileChanghe = (e: React.ChangeEvent<HTMLInputElement>) => {
+	const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		if (e.target.files && e.target.files.length > 0) {
 			const files = Array.from(e.target.files);
 
@@ -78,7 +78,7 @@ const ImagePreview: React.FC<IImagePreview> = ({
 					hidden
 					accept='image/jpeg,image/png,image/webp,image/gif'
 					ref={imageInputRef}
-					onChange={handleFileChanghe}
+					onChange={handleFileChange}
 				/>
 				{images?.length ? (
 					<div className={`${add_pics_inside} ${p0}`}>

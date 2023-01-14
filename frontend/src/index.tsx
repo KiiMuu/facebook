@@ -2,6 +2,7 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom';
+import { Toaster } from 'react-hot-toast';
 import App from './App';
 import { store } from './state/store';
 import './styles/global.scss';
@@ -11,6 +12,7 @@ const root = createRoot(container);
 
 root.render(
 	<React.StrictMode>
+		<Toaster />
 		<Provider store={store}>
 			<Router>
 				<App />

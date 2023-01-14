@@ -9,6 +9,7 @@ declare global {
 		username: string;
 		picture: string;
 		verified: boolean;
+		gender: string;
 		token: string;
 	}
 	interface Error {

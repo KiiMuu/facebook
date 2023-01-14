@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { SliceState } from 'src/interfaces/post';
-import { createPost, uploadImages } from './api';
+import { createPost, getAllPosts, uploadImages } from './api';
 
 export const postSlice = createSlice({
 	name: 'post',
@@ -9,7 +9,17 @@ export const postSlice = createSlice({
 		error: '',
 		successMsg: '',
 		errorMsg: '',
-		createdPost: {},
+		createdPost: {
+			type: null,
+			background: null,
+			text: null,
+			images: null,
+			user: null,
+			token: undefined,
+			createdAt: undefined,
+			updatedAt: undefined,
+		},
+		posts: [],
 	} as SliceState,
 	reducers: {},
 	extraReducers(builder) {
@@ -34,6 +44,18 @@ export const postSlice = createSlice({
 				state.error = '';
 			})
 			.addCase(uploadImages.rejected, (state, action) => {
+				state.status = 'failed';
+				state.error = action.payload;
+			})
+			.addCase(getAllPosts.pending, (state, action) => {
+				state.status = 'loading';
+			})
+			.addCase(getAllPosts.fulfilled, (state, action) => {
+				state.status = 'succeeded';
+				state.error = '';
+				state.posts = action.payload;
+			})
+			.addCase(getAllPosts.rejected, (state, action) => {
 				state.status = 'failed';
 				state.error = action.payload;
 			});

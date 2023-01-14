@@ -38,7 +38,7 @@ const PostPopup: React.FC<{
 						type: null,
 						text,
 						images: null,
-						user: user?.id,
+						user,
 						token: user?.token,
 					})
 				).unwrap();
@@ -71,7 +71,7 @@ const PostPopup: React.FC<{
 						type: null,
 						text,
 						images: res,
-						user: user?.id,
+						user,
 						token: user?.token,
 					})
 				).unwrap();
@@ -88,7 +88,7 @@ const PostPopup: React.FC<{
 						type: null,
 						text,
 						images: null,
-						user: user?.id,
+						user,
 						token: user?.token,
 					})
 				).unwrap();

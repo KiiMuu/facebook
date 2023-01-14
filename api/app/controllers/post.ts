@@ -22,4 +22,19 @@ const createPost = async (req: Request, res: Response) => {
 	}
 };
 
-export { createPost };
+const getAllPosts = async (req: Request, res: Response) => {
+	try {
+		const posts = await Post.find({})
+			.populate('user', 'firstName lastName picture username gender _id')
+			.sort({ createdAt: 'desc' })
+			.exec();
+
+		return res.json(posts);
+	} catch (error: any) {
+		return res.status(SERVER_ERR).json({
+			message: error.message,
+		});
+	}
+};
+
+export { createPost, getAllPosts };
