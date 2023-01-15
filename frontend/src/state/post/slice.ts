@@ -31,6 +31,7 @@ export const postSlice = createSlice({
 				state.status = 'succeeded';
 				state.error = '';
 				state.createdPost = action.payload;
+				state.posts = [action.payload, ...state.posts];
 			})
 			.addCase(createPost.rejected, (state, action) => {
 				state.status = 'failed';

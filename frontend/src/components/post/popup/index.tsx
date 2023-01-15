@@ -9,6 +9,7 @@ import AddToYourPost from './AddToYourPost';
 import PostError from './PostError';
 import classes from './popup.module.scss';
 import dataURItoBlob from 'src/helpers/dataUrlToBlob';
+import { toast } from 'react-hot-toast';
 
 const PostPopup: React.FC<{
 	user: UserInfo | null;
@@ -30,6 +31,11 @@ const PostPopup: React.FC<{
 	});
 
 	const handlePostCreate = async () => {
+		const toastId = toast.loading(
+			'Please wait while your post is being created...',
+			{ position: 'bottom-left' }
+		);
+
 		try {
 			if (background) {
 				const res = await dispatch(
@@ -47,6 +53,7 @@ const PostPopup: React.FC<{
 					setBackground('');
 					setText('');
 					setPostPopupVisibility(false);
+					toast.dismiss(toastId);
 				}
 			} else if (images.length) {
 				const postImages = images.map(img => {
@@ -80,6 +87,7 @@ const PostPopup: React.FC<{
 					setBackground('');
 					setText('');
 					setPostPopupVisibility(false);
+					toast.dismiss(toastId);
 				}
 			} else if (text) {
 				const res = await dispatch(
@@ -97,9 +105,16 @@ const PostPopup: React.FC<{
 					setBackground('');
 					setText('');
 					setPostPopupVisibility(false);
+					toast.dismiss(toastId);
 				}
 			}
+
+			toast.success('Post created successfully.', {
+				duration: 4000,
+				position: 'bottom-left',
+			});
 		} catch (error) {
+			toast.dismiss(toastId);
 			setLocalError(error.message);
 		}
 	};

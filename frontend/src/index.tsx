@@ -12,7 +12,15 @@ const root = createRoot(container);
 
 root.render(
 	<React.StrictMode>
-		<Toaster />
+		<Toaster
+			toastOptions={{
+				style: {
+					background: '#262626',
+					color: '#f2f2f2',
+					zIndex: 9991,
+				},
+			}}
+		/>
 		<Provider store={store}>
 			<Router>
 				<App />

@@ -124,8 +124,8 @@ const Post: React.FC<{ post: IPost; user: UserInfo | null }> = ({
 							{post.images.length > 4 && (
 								<div className={more_pics_shadow}>
 									<img
-										src={post.images[5].url}
-										alt={post.images[5].url}
+										src={post.images[5]?.url}
+										alt={post.images[5]?.url}
 									/>
 									<span className={blur}></span>
 									<span className='small_circle'>

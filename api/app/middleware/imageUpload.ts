@@ -30,9 +30,9 @@ const imageUpload = async (req: Request, res: Response, next: NextFunction) => {
 						'File size is too large. Maximum file size is 3MB.',
 				});
 			}
-		});
 
-		next();
+			next();
+		});
 	} catch (error: any) {
 		return res.status(SERVER_ERR).json({
 			message: error.message,

@@ -19,11 +19,12 @@
 	background: var(--bg-primary);
 	box-shadow: 0 7px 15px 0 var(--shadow-1);
 	min-height: 228px;
-	max-height: 96%;
+	max-height: 95%;
 	width: 500px;
 	border-radius: 5px;
 	overflow-y: auto;
 	overflow-x: hidden;
+	animation: animateMe 0.2s ease-in-out;
 	.post_error {
 		position: absolute;
 		inset: 0; // all sides set to zero;
@@ -366,9 +367,9 @@
 
 @keyframes animateMe {
 	0% {
-		transform: scale(0);
+		transform: translate(-50%, -50%) scale(0);
 	}
 	100% {
-		transform: scale(1);
+		transform: translate(-50%, -50%) scale(1);
 	}
 }

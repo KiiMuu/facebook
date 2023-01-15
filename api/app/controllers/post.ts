@@ -12,7 +12,9 @@ const createPost = async (req: Request, res: Response) => {
 			});
 		}
 
-		const post = await Post.create(req.body);
+		const post = await (
+			await Post.create(req.body)
+		).populate('user', 'firstName lastName picture username gender _id');
 
 		return res.json(post);
 	} catch (error: any) {
