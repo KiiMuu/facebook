@@ -5,7 +5,7 @@ import {
 	hashPassword,
 	validateUsername,
 } from '../utils/user';
-import { BAD_REQ, OK, SERVER_ERR } from '../constants';
+import { BAD_REQ, NOT_FOUND, OK, SERVER_ERR } from '../constants';
 import { signToken, verifyToken } from '../utils/token';
 import {
 	resetPassowrdCodeVerificationEmail,
@@ -283,6 +283,29 @@ const changePassword = async (req: Request, res: Response) => {
 	}
 };
 
+const getProfile = async (req: Request, res: Response) => {
+	try {
+		const { username } = req.params;
+
+		const profile = await User.findOne({ username })
+			.select('-password')
+			.exec();
+
+		if (!profile) {
+			return res.status(NOT_FOUND).json({
+				message:
+					'It seems that the user does not exist or has been removed.',
+			});
+		}
+
+		return res.status(OK).json(profile);
+	} catch (error: any) {
+		return res.status(SERVER_ERR).json({
+			message: error.message,
+		});
+	}
+};
+
 export {
 	register,
 	verifyAccount,
@@ -292,4 +315,5 @@ export {
 	sendResetPasswordCode,
 	validateResetCode,
 	changePassword,
+	getProfile,
 };

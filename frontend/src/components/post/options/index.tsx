@@ -19,7 +19,7 @@ const PostOptions: React.FC<{
 	const { post_options_menu, line } = classes;
 
 	return (
-		<ul className={post_options_menu} ref={postOptionsRef}>
+		<ul className={`${post_options_menu} scrollbar`} ref={postOptionsRef}>
 			{isOptionAvailableToMe && (
 				<Option
 					icon='pin_icon'

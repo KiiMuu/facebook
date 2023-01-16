@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import cloudinary from 'cloudinary';
 import { removeTmp } from '../utils/cloudinary';
 import { SERVER_ERR } from '../constants';
+import { IimagesFilter } from '../interfaces/cloudinary';
 
 cloudinary.v2.config({
 	cloud_name: process.env.CLOUDINARY_NAME,
@@ -52,4 +53,22 @@ const uploadImages = async (req: Request, res: Response) => {
 	}
 };
 
-export { uploadImages };
+const getImages = async (req: Request, res: Response) => {
+	try {
+		const { path, sort, max }: IimagesFilter = req.body;
+
+		const images = await cloudinary.v2.search
+			.expression(`${path}`)
+			.sort_by('created_at', `${sort}`)
+			.max_results(max)
+			.execute();
+
+		return res.json(images);
+	} catch (error: any) {
+		return res.status(SERVER_ERR).json({
+			message: error,
+		});
+	}
+};
+
+export { uploadImages, getImages };
