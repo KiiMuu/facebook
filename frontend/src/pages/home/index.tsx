@@ -27,7 +27,7 @@ const Home: React.FC<{
 
 	return (
 		<div className={home} style={{ height: `${height + 100}px` }}>
-			<Header />
+			<Header page='home' />
 			<LeftHome user={user} />
 			<div className={home_middle} ref={middleRef}>
 				<Stories />

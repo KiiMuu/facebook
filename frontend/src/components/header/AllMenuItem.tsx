@@ -11,7 +11,7 @@ const AllMenuItem: React.FC<ItemProps> = ({ name, description, icon }) => {
 
 	return (
 		<div className={`${all_menu_item} hover1`}>
-			<img src={`menus/${icon}.png`} alt='Campus' />
+			<img src={`menus/${icon}.png`} alt={description} />
 			<div className={all_menu_col}>
 				<span>{name}</span>
 				<span>{description}</span>

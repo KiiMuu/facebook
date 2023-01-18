@@ -12,6 +12,7 @@
 	--dark-color-primary: #242526;
 	--dark-color-secondary: #b0b3b8;
 	--blue-color: #1876f2;
+	--light-blue-color: #5b98e766;
 	--green-color: #42b72a;
 	--light-blue-color: #e7f3ff;
 	--border-color: #ccced2;
@@ -119,6 +120,11 @@ body {
 	background-color: rgba(255, 255, 255, 0.7);
 	z-index: 999;
 	overflow: hidden;
+}
+.filter_blue {
+	filter: invert(39%) sepia(57%) saturate(200%) saturate(200%) saturate(200%)
+		saturate(200%) saturate(200%) saturate(147.75%) hue-rotate(202deg)
+		brightness(97%) contrast(96%);
 }
 
 @import './buttons.scss';

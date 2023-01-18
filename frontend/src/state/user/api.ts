@@ -206,3 +206,30 @@ export const changePassword = createAsyncThunk(
 		}
 	}
 );
+
+export const getUserProfile = createAsyncThunk(
+	'post/getUserProfile',
+	async (
+		userData: { token?: string; username?: string },
+		{ rejectWithValue }
+	) => {
+		const { token, username } = userData;
+
+		try {
+			const { data } = await axios.get(
+				`${process.env.REACT_APP_API}/user/profile/${username}`,
+				{
+					headers: {
+						Authorization: `Bearer ${token}`,
+					},
+				}
+			);
+
+			return data;
+		} catch (error: any) {
+			return rejectWithValue(
+				error.response ? error.response.data : error
+			);
+		}
+	}
+);

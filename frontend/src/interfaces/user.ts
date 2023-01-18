@@ -19,8 +19,10 @@ export interface SliceState {
 	errors: any;
 	successMsg?: string;
 	errorMsg?: string;
+	profileNotFoundMsg?: string;
 	user: UserInfo | null;
 	foundUser: FoundUser | null;
+	profile: IProfile | null;
 }
 
 export interface SearchedUser {

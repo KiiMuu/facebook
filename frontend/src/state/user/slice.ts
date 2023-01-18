@@ -10,6 +10,7 @@ import {
 	sendResetPasswordEmail,
 	validateResetCode,
 	changePassword,
+	getUserProfile,
 } from './api';
 
 let currentUser = Cookies.get('fb_user')
@@ -23,8 +24,10 @@ export const userSlice = createSlice({
 		errors: [],
 		successMsg: '',
 		errorMsg: '',
+		profileNotFoundMsg: '',
 		foundUser: null,
 		user: currentUser,
+		profile: null,
 	} as SliceState,
 	reducers: {
 		logoutUser: state => {
@@ -128,6 +131,17 @@ export const userSlice = createSlice({
 			.addCase(changePassword.rejected, (state, action: any) => {
 				state.status = 'failed';
 				state.errorMsg = action.payload.message;
+			})
+			.addCase(getUserProfile.pending, (state, action) => {
+				state.status = 'loading';
+			})
+			.addCase(getUserProfile.fulfilled, (state, action) => {
+				state.status = 'succeeded';
+				state.profile = action.payload;
+			})
+			.addCase(getUserProfile.rejected, (state, action: any) => {
+				state.status = 'failed';
+				state.profileNotFoundMsg = action.payload.message;
 			});
 	},
 });

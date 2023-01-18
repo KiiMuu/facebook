@@ -24,3 +24,16 @@
 	background-color: var(--bg-third);
 	color: #000;
 }
+
+.blue_btn,
+.gray_btn {
+	span {
+		transform: translateY(-1px);
+	}
+}
+
+.light_blue_btn {
+	@extend .shared_btn;
+	background-color: var(--light-blue-color);
+	color: var(--blue-color);
+}

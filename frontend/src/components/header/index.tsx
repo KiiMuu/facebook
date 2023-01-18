@@ -6,6 +6,7 @@ import {
 	ArrowDown,
 	Friends,
 	Gaming,
+	Home,
 	HomeActive,
 	Logo,
 	Market,
@@ -20,7 +21,7 @@ import AllMenu from './AllMenu';
 import useDetectOutsideClicks from 'src/hooks/useDetectOutsideClicks';
 import UserMenu from './userMenu';
 
-const Header: React.FC = () => {
+const Header: React.FC<{ page?: string }> = ({ page }) => {
 	const [showSearchMenu, setShowSearchMenu] = useState(false);
 	const [showAllMenu, setShowAllMenu] = useState(false);
 	const [showUserMenu, setShowUserMenu] = useState(false);
@@ -74,8 +75,13 @@ const Header: React.FC = () => {
 				<SearchMenu setShowSearchMenu={setShowSearchMenu} />
 			)}
 			<div className={header_middle}>
-				<Link to='/' className={`${middle_icon} active`}>
-					<HomeActive />
+				<Link
+					to='/'
+					className={`${middle_icon} ${
+						page === 'home' ? 'active' : 'hover1'
+					}`}
+				>
+					{page === 'home' ? <HomeActive /> : <Home color='' />}
 				</Link>
 				<Link to='/' className={`${middle_icon} hover1`}>
 					<Friends color='' />
@@ -92,7 +98,12 @@ const Header: React.FC = () => {
 				</Link>
 			</div>
 			<div className={header_right}>
-				<Link to='/profile' className={`${profile_link} hover1`}>
+				<Link
+					to={`/profile/${user?.username}`}
+					className={`${profile_link} hover1 ${
+						page === 'profile' ? active_header : ''
+					}`}
+				>
 					<img src={user?.picture} alt={user?.username} />
 					<span>{user?.firstName}</span>
 				</Link>

@@ -27,7 +27,10 @@ const LeftHome: React.FC<{ user: UserInfo | null }> = ({ user }) => {
 
 	return (
 		<div className={`${left_home} scrollbar`}>
-			<Link to='/profile' className={`${left_link} hover1`}>
+			<Link
+				to={`/profile/${user?.username}`}
+				className={`${left_link} hover1`}
+			>
 				<img src={user?.picture} alt={user?.username} />
 				<span>
 					{user?.firstName} {user?.lastName}

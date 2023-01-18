@@ -73,10 +73,7 @@ const RegisterForm: React.FC<Props> = ({ setRegisterFormVisible }) => {
 				})
 			).unwrap();
 
-			Cookies.set('fb_user', JSON.stringify(res), {
-				expires: 7,
-				sameSite: 'none',
-			});
+			Cookies.set('fb_user', JSON.stringify(res));
 		} catch (error) {
 			console.log({ error });
 		}

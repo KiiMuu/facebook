@@ -41,7 +41,8 @@ const UserSchema: Schema = new Schema(
 		},
 		cover: {
 			type: String,
-			default: 'some links here',
+			default:
+				'https://res.cloudinary.com/ndsnvf0/image/upload/v1673913655/facebook/Facebook-Group-Cover-size-2-1024x525_uef0sb.png',
 		},
 		gender: {
 			type: String,
