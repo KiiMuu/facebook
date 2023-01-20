@@ -6,6 +6,6 @@ import isAuth from '../middleware/isAuth';
 const router: Router = Router();
 
 router.post('/cloudinary/images', isAuth, imageUpload, uploadImages);
-router.get('/cloudinary/images', isAuth, getImages);
+router.post('/cloudinary/images/list', isAuth, getImages);
 
 export default router;

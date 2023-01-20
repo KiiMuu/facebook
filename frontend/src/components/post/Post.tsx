@@ -8,10 +8,11 @@ import classes from './posts.module.scss';
 import CreateComment from './comment';
 import PostOptions from './options';
 
-const Post: React.FC<{ post: IPost; user: UserInfo | null }> = ({
-	post,
-	user,
-}) => {
+const Post: React.FC<{
+	post: IPost;
+	user: UserInfo | null;
+	profile?: boolean;
+}> = ({ post, user, profile }) => {
 	const [areReactsVisible, setAreReactsVisible] = useState(false);
 	const [isPostOptionsVisible, setIsPostOptionsVisible] = useState(false);
 
@@ -50,7 +51,7 @@ const Post: React.FC<{ post: IPost; user: UserInfo | null }> = ({
 	} = classes;
 
 	return (
-		<div className={post_wrap}>
+		<div className={post_wrap} style={{ width: `${profile && '100%'}` }}>
 			<div className={post_header}>
 				<Link
 					to={`/profile/${post.user?.username}`}

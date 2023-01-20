@@ -126,6 +126,19 @@ body {
 		saturate(200%) saturate(200%) saturate(147.75%) hue-rotate(202deg)
 		brightness(97%) contrast(96%);
 }
+.fb_copyright {
+	position: relative;
+	width: 20vw;
+	margin-top: 2rem;
+	font-size: 12px;
+	padding: 5px 12px;
+	line-height: 1.6;
+	color: var(--color-secondary);
+	a {
+		color: var(--color-secondary);
+		text-decoration: none;
+	}
+}
 
 @import './buttons.scss';
 @import './hovers.scss';

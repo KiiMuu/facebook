@@ -1,6 +1,6 @@
 import { useEffect, useCallback, Dispatch, SetStateAction } from 'react';
 import { toast } from 'react-hot-toast';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import Header from 'src/components/header';
 import CreatePost from 'src/components/post/create';
 import { useAppDispatch, useAppSelector } from 'src/state/hooks';
@@ -12,6 +12,8 @@ import PeopleYouMayKnow from 'src/components/profile/PeopleYouMayKnow';
 import ProfilePictureInfos from 'src/components/profile/PPInfos';
 import classes from './profile.module.scss';
 import Post from 'src/components/post/Post';
+import Photos from 'src/components/profile/Photos';
+import Friends from 'src/components/profile/Friends';
 
 const Profile: React.FC<{
 	setPostPopupVisibility: Dispatch<SetStateAction<boolean>>;
@@ -42,8 +44,6 @@ const Profile: React.FC<{
 		fetchUserProfile();
 	}, [fetchUserProfile, isVisitor]);
 
-	console.log({ profile, isVisitor });
-
 	const {
 		profile_wrap,
 		profile_top,
@@ -53,6 +53,7 @@ const Profile: React.FC<{
 		profile_grid,
 		profile_left,
 		profile_right,
+		fb_copyright,
 	} = classes;
 
 	return (
@@ -77,7 +78,29 @@ const Profile: React.FC<{
 					<div className={bottom_container}>
 						<PeopleYouMayKnow />
 						<div className={profile_grid}>
-							<div className={profile_left}></div>
+							<div className={profile_left}>
+								<Photos username={urlUsername} />
+								<Friends friends={profile?.friends} />
+								<div className='fb_copyright'>
+									<Link to=''>Privacy</Link>
+									<span>, </span>
+									<Link to=''>Terms</Link>
+									<span>, </span>
+									<Link to=''>Advertising</Link>
+									<span>, </span>
+									<Link to=''>
+										Ad Choices{' '}
+										<i className='ad_choices_icon'></i>
+									</Link>
+									<span>, </span>
+									<Link to=''>Cookies</Link>
+									<span>, </span>
+									<Link to=''>More</Link>
+									<span>
+										, Meta &copy; {new Date().getFullYear()}
+									</span>
+								</div>
+							</div>
 							<div className={profile_right}>
 								{!isVisitor && (
 									<CreatePost
@@ -95,6 +118,7 @@ const Profile: React.FC<{
 											key={post._id}
 											post={post}
 											user={post.user}
+											profile
 										/>
 									))}
 								</div>

@@ -93,7 +93,7 @@ const LeftHome: React.FC<{ user: UserInfo | null }> = ({ user }) => {
 					name='My Instagram account'
 				/>
 			</div>
-			<div className={fb_copyright}>
+			<div className='fb_copyright'>
 				<Link to=''>Privacy</Link>
 				<span>, </span>
 				<Link to=''>Terms</Link>
