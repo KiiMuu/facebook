@@ -111,6 +111,11 @@
 				gap: 10px;
 				font-weight: 600;
 				font-size: 32px;
+				.other_name {
+					color: var(--color-secondary);
+					font-weight: normal;
+					font-size: 20px;
+				}
 			}
 		}
 	}
@@ -233,8 +238,19 @@
 					}
 				}
 			}
+			.profile_grid {
+				display: grid;
+				grid-template-columns: 1fr 1.4fr;
+				gap: 10px;
+			}
 		}
 	}
+}
+
+// GridPosts
+.left_header_grid {
+	font-size: 22px;
+	font-weight: 600;
 }
 
 // media
@@ -260,5 +276,15 @@
 	}
 	.profile_name {
 		padding-bottom: 10px;
+		flex-direction: column;
+	}
+	.profile_bottom {
+		.profile_container {
+			.bottom_container {
+				.profile_grid {
+					grid-template-columns: 1fr;
+				}
+			}
+		}
 	}
 }

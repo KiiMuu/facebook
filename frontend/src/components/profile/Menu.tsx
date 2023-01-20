@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Dots } from 'src/svg';
-import classes from './profile.module.scss';
+import classes from 'src/pages/profile/profile.module.scss';
 
 const Menu = () => {
 	const { profile_menu_wrap, profile_menu, profile_menu_active, p10_dots } =

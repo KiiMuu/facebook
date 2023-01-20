@@ -1,4 +1,4 @@
-import classes from './profile.module.scss';
+import classes from '../../pages/profile/profile.module.scss';
 
 const AddFriendCard: React.FC<{ person: IPersonCard }> = ({ person }) => {
 	const { add_friend_card, add_friend_img, add_friend_infos, name } = classes;

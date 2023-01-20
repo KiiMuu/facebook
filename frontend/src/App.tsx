@@ -40,7 +40,14 @@ function App() {
 							/>
 						}
 					/>
-					<Route path='/profile/:username' element={<Profile />} />
+					<Route
+						path='/profile/:username'
+						element={
+							<Profile
+								setPostPopupVisibility={setPostPopupVisibility}
+							/>
+						}
+					/>
 					<Route
 						path='/activate/:token'
 						element={

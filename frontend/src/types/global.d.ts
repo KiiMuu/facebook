@@ -1,3 +1,5 @@
+import { IPost } from 'src/interfaces/post';
+
 export {};
 
 declare global {
@@ -71,6 +73,7 @@ declare global {
 		followers: IPublicUser[];
 		requests: IPublicUser[];
 		search: object[];
+		posts: IPost[];
 		details: {
 			bio: string;
 			otherName: string;
@@ -85,7 +88,7 @@ declare global {
 		};
 		savedPosts: [
 			{
-				post: string;
+				post: IPost;
 				savedAt: Date;
 			}
 		];

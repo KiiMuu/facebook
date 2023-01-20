@@ -1,6 +1,6 @@
 import { Dots } from 'src/svg';
 import { homeStories } from 'src/data/home';
-import classes from './profile.module.scss';
+import classes from '../../pages/profile/profile.module.scss';
 import AddFriendCard from './AddFriendCard';
 
 const PeopleYouMayKnow = () => {

@@ -1,8 +1,9 @@
-import classes from './profile.module.scss';
+import classes from '../../pages/profile/profile.module.scss';
 
-const ProfilePictureInfos: React.FC<{ profile: IProfile | null }> = ({
-	profile,
-}) => {
+const ProfilePictureInfos: React.FC<{
+	profile: IProfile | null;
+	isVisitor: boolean;
+}> = ({ profile, isVisitor }) => {
 	const {
 		profile_img_wrap,
 		profile_w_left,
@@ -29,33 +30,37 @@ const ProfilePictureInfos: React.FC<{ profile: IProfile | null }> = ({
 							backgroundImage: `url(${profile?.picture})`,
 						}}
 					></div>
-					<div className={`${profile_circle} hover1`}>
-						<i className='camera_filled_icon'></i>
-					</div>
+					{!isVisitor && (
+						<div className={`${profile_circle} hover1`}>
+							<i className='camera_filled_icon'></i>
+						</div>
+					)}
 				</div>
 				<div className={profile_w_col}>
 					<div className={profile_name}>
 						{profile?.firstName} {profile?.lastName}
-						<div className={other_name}>Othename</div>
+						<div className={other_name}>(Othename)</div>
 					</div>
 					<div className={friends_count}></div>
 					<div className={friends_imgs}></div>
 				</div>
 			</div>
-			<div className={profile_w_right}>
-				<div className='blue_btn'>
-					<img
-						src='/icons/plus.png'
-						alt='Add to story'
-						className={invert}
-					/>
-					<span>Add to Story</span>
+			{!isVisitor && (
+				<div className={profile_w_right}>
+					<div className='blue_btn'>
+						<img
+							src='/icons/plus.png'
+							alt='Add to story'
+							className={invert}
+						/>
+						<span>Add to Story</span>
+					</div>
+					<div className='gray_btn'>
+						<i className='edit_icon'></i>
+						<span>Edit Profile</span>
+					</div>
 				</div>
-				<div className='gray_btn'>
-					<i className='edit_icon'></i>
-					<span>Edit Profile</span>
-				</div>
-			</div>
+			)}
 		</div>
 	);
 };

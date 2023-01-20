@@ -1,22 +1,28 @@
-import { useEffect, useCallback } from 'react';
+import { useEffect, useCallback, Dispatch, SetStateAction } from 'react';
 import { toast } from 'react-hot-toast';
 import { useNavigate, useParams } from 'react-router-dom';
 import Header from 'src/components/header';
+import CreatePost from 'src/components/post/create';
 import { useAppDispatch, useAppSelector } from 'src/state/hooks';
 import { getUserProfile } from 'src/state/user/api';
-import Cover from './Cover';
-import Menu from './Menu';
-import PeopleYouMayKnow from './PeopleYouMayKnow';
-import ProfilePictureInfos from './PPInfos';
+import Cover from 'src/components/profile/Cover';
+import GridPosts from 'src/components/profile/GridPosts';
+import Menu from 'src/components/profile/Menu';
+import PeopleYouMayKnow from 'src/components/profile/PeopleYouMayKnow';
+import ProfilePictureInfos from 'src/components/profile/PPInfos';
 import classes from './profile.module.scss';
+import Post from 'src/components/post/Post';
 
-const Profile: React.FC = () => {
+const Profile: React.FC<{
+	setPostPopupVisibility: Dispatch<SetStateAction<boolean>>;
+}> = ({ setPostPopupVisibility }) => {
 	const dispatch = useAppDispatch();
 	const { user, profile } = useAppSelector(state => state.user);
 	const { username } = useParams();
 	const navigate = useNavigate();
 
 	const urlUsername = !username ? user?.username : username;
+	const isVisitor = urlUsername !== user?.username;
 
 	const fetchUserProfile = useCallback(async () => {
 		try {
@@ -34,7 +40,9 @@ const Profile: React.FC = () => {
 
 	useEffect(() => {
 		fetchUserProfile();
-	}, [fetchUserProfile]);
+	}, [fetchUserProfile, isVisitor]);
+
+	console.log({ profile, isVisitor });
 
 	const {
 		profile_wrap,
@@ -42,6 +50,9 @@ const Profile: React.FC = () => {
 		profile_container,
 		profile_bottom,
 		bottom_container,
+		profile_grid,
+		profile_left,
+		profile_right,
 	} = classes;
 
 	return (
@@ -52,8 +63,12 @@ const Profile: React.FC = () => {
 					<Cover
 						cover={profile?.cover}
 						username={profile?.username}
+						isVisitor={isVisitor}
 					/>
-					<ProfilePictureInfos profile={profile} />
+					<ProfilePictureInfos
+						profile={profile}
+						isVisitor={isVisitor}
+					/>
 					<Menu />
 				</div>
 			</div>
@@ -61,6 +76,30 @@ const Profile: React.FC = () => {
 				<div className={profile_container}>
 					<div className={bottom_container}>
 						<PeopleYouMayKnow />
+						<div className={profile_grid}>
+							<div className={profile_left}></div>
+							<div className={profile_right}>
+								{!isVisitor && (
+									<CreatePost
+										user={user}
+										setPostPopupVisibility={
+											setPostPopupVisibility
+										}
+										profile
+									/>
+								)}
+								<GridPosts />
+								<div className='posts'>
+									{profile?.posts.map(post => (
+										<Post
+											key={post._id}
+											post={post}
+											user={post.user}
+										/>
+									))}
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>

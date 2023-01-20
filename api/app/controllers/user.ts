@@ -15,6 +15,7 @@ import { IUserModel } from '../interfaces/user';
 import { JwtPayload } from 'jsonwebtoken';
 import Code from '../models/Code';
 import generateCode from '../utils/generateCode';
+import Post from '../models/Post';
 
 const register = async (req: Request, res: Response) => {
 	try {
@@ -298,7 +299,11 @@ const getProfile = async (req: Request, res: Response) => {
 			});
 		}
 
-		return res.status(OK).json(profile);
+		const posts = await Post.find({ user: profile._id })
+			.populate('user', 'firstName lastName username email picture')
+			.exec();
+
+		return res.status(OK).json({ ...profile.toObject(), posts });
 	} catch (error: any) {
 		return res.status(SERVER_ERR).json({
 			message: error.message,

@@ -4,8 +4,9 @@ import classes from './create.module.scss';
 
 const CreatePost: React.FC<{
 	user: UserInfo | null;
-	setPostPopupVisibility: React.Dispatch<React.SetStateAction<boolean>>;
-}> = ({ user, setPostPopupVisibility }) => {
+	setPostPopupVisibility?: React.Dispatch<React.SetStateAction<boolean>>;
+	profile?: boolean;
+}> = ({ user, setPostPopupVisibility, profile }) => {
 	const query500px = useMediaQuery({
 		query: '(max-width: 500px)',
 	});
@@ -25,7 +26,7 @@ const CreatePost: React.FC<{
 				<img src={user?.picture} alt={user?.username} />
 				<div
 					className={`${open_post} hover2`}
-					onClick={() => setPostPopupVisibility(prev => !prev)}
+					onClick={() => setPostPopupVisibility!(prev => !prev)}
 				>
 					What's on your mind, {user?.firstName}?
 				</div>
@@ -40,10 +41,16 @@ const CreatePost: React.FC<{
 					<Photo color='#4bbf67' /> Photo{' '}
 					{query500px ? null : '/ Video'}
 				</div>
-				<div className={`${create_post_icon} hover1`}>
-					<Feeling color='#f2b920' /> Feeling{' '}
-					{query500px ? null : '/ Activity'}
-				</div>
+				{profile ? (
+					<div className={`${create_post_icon} hover1`}>
+						<i className='lifeEvent_icon'></i> Life Events
+					</div>
+				) : (
+					<div className={`${create_post_icon} hover1`}>
+						<Feeling color='#f2b920' /> Feeling{' '}
+						{query500px ? null : '/ Activity'}
+					</div>
+				)}
 			</div>
 		</div>
 	);
