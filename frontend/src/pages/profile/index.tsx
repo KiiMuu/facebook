@@ -53,7 +53,6 @@ const Profile: React.FC<{
 		profile_grid,
 		profile_left,
 		profile_right,
-		fb_copyright,
 	} = classes;
 
 	return (

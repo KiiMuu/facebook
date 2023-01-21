@@ -1,9 +1,13 @@
+import { useState } from 'react';
 import classes from '../../pages/profile/profile.module.scss';
+import ProfilePic from './pp/ProfilePic';
 
 const ProfilePictureInfos: React.FC<{
 	profile: IProfile | null;
 	isVisitor: boolean;
 }> = ({ profile, isVisitor }) => {
+	const [isVisiblePP, setIsVisiblePP] = useState(true);
+
 	const {
 		profile_img_wrap,
 		profile_w_left,
@@ -21,6 +25,7 @@ const ProfilePictureInfos: React.FC<{
 
 	return (
 		<div className={profile_img_wrap}>
+			{isVisiblePP && <ProfilePic />}
 			<div className={profile_w_left}>
 				<div className={profile_w_img}>
 					<div
