@@ -208,7 +208,7 @@ export const changePassword = createAsyncThunk(
 );
 
 export const getUserProfile = createAsyncThunk(
-	'post/getUserProfile',
+	'user/getUserProfile',
 	async (
 		userData: { token?: string; username?: string },
 		{ rejectWithValue }
@@ -218,6 +218,31 @@ export const getUserProfile = createAsyncThunk(
 		try {
 			const { data } = await axios.get(
 				`${process.env.REACT_APP_API}/user/profile/${username}`,
+				{
+					headers: {
+						Authorization: `Bearer ${token}`,
+					},
+				}
+			);
+
+			return data;
+		} catch (error: any) {
+			return rejectWithValue(
+				error.response ? error.response.data : error
+			);
+		}
+	}
+);
+
+export const updateProfilePic = createAsyncThunk(
+	'user/updateProfilePic',
+	async (userData: { token?: string; url?: string }, { rejectWithValue }) => {
+		const { token, url } = userData;
+
+		try {
+			const { data } = await axios.put(
+				`${process.env.REACT_APP_API}/user/profile/update_pic`,
+				{ url },
 				{
 					headers: {
 						Authorization: `Bearer ${token}`,

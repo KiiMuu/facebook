@@ -11,6 +11,7 @@ import {
 	validateResetCode,
 	changePassword,
 	getUserProfile,
+	updateProfilePic,
 } from './api';
 
 let currentUser = Cookies.get('fb_user')
@@ -142,6 +143,18 @@ export const userSlice = createSlice({
 			.addCase(getUserProfile.rejected, (state, action: any) => {
 				state.status = 'failed';
 				state.profileNotFoundMsg = action.payload.message;
+			})
+			.addCase(updateProfilePic.pending, (state, action) => {
+				state.status = 'loading';
+			})
+			.addCase(updateProfilePic.fulfilled, (state, action) => {
+				state.status = 'succeeded';
+				state.user!.picture = action.payload.picture;
+				state.profile!.picture = action.payload.picture;
+			})
+			.addCase(updateProfilePic.rejected, (state, action: any) => {
+				state.status = 'failed';
+				state.errorMsg = action.payload.message;
 			});
 	},
 });

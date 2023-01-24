@@ -9,6 +9,7 @@ import {
 	validateResetCode,
 	changePassword,
 	getProfile,
+	updateProfilePicture,
 } from '../controllers/user';
 import isAuth from '../middleware/isAuth';
 import {
@@ -28,5 +29,6 @@ router.post('/user/send_reset_password', sendResetPasswordCode);
 router.post('/user/validate_reset_code', validateResetCode);
 router.post('/user/change_password', validateChangePassword, changePassword);
 router.get('/user/profile/:username', isAuth, getProfile);
+router.put('/user/profile/update_pic', isAuth, updateProfilePicture);
 
 export default router;

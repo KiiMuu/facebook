@@ -300,10 +300,31 @@ const getProfile = async (req: Request, res: Response) => {
 		}
 
 		const posts = await Post.find({ user: profile._id })
-			.populate('user', 'firstName lastName username email picture')
+			.sort({ createdAt: -1 })
+			.populate('user')
 			.exec();
 
 		return res.status(OK).json({ ...profile.toObject(), posts });
+	} catch (error: any) {
+		return res.status(SERVER_ERR).json({
+			message: error.message,
+		});
+	}
+};
+
+const updateProfilePicture = async (req: Request, res: Response) => {
+	try {
+		const { url } = req.body;
+
+		const updatedProfilePic = await User.findByIdAndUpdate(
+			req.user.id,
+			{
+				picture: url,
+			},
+			{ new: true }
+		).select('picture');
+
+		return res.status(OK).json(updatedProfilePic);
 	} catch (error: any) {
 		return res.status(SERVER_ERR).json({
 			message: error.message,
@@ -321,4 +342,5 @@ export {
 	validateResetCode,
 	changePassword,
 	getProfile,
+	updateProfilePicture,
 };

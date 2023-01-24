@@ -3,13 +3,19 @@ import Cropper from 'react-easy-crop';
 import { Area, Point } from 'react-easy-crop/types';
 import { toast } from 'react-hot-toast';
 import getCroppedImg from 'src/helpers/croppedImage';
+import { ICloudImage } from 'src/interfaces/post';
+import { useAppDispatch, useAppSelector } from 'src/state/hooks';
+import { uploadImages, createPost } from 'src/state/post/api';
+import { updateProfilePic } from 'src/state/user/api';
 import classes from './pp.module.scss';
 
 const UpdatePP: React.FC<{
 	image: string | ArrayBuffer | null | undefined;
 	setImage: (state: string | ArrayBuffer | null | undefined) => void;
-}> = ({ image, setImage }) => {
+	setIsVisiblePP: (state: boolean) => void;
+}> = ({ image, setImage, setIsVisiblePP }) => {
 	const [description, setDescription] = useState('');
+	const [isLoading, setIsLoading] = useState(false);
 	const [crop, setCrop] = useState<Point>({ x: 0, y: 0 });
 	const [zoom, setZoom] = useState(1);
 	const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area>({
@@ -19,6 +25,8 @@ const UpdatePP: React.FC<{
 		height: 0,
 	});
 	const sliderRef = useRef<HTMLInputElement | null>(null);
+	const dispatch = useAppDispatch();
+	const { user } = useAppSelector(state => state.user);
 
 	const onCropComplete = useCallback(
 		(croppedArea: Area, croppedAreaPixels: Area) => {
@@ -57,6 +65,61 @@ const UpdatePP: React.FC<{
 		},
 		[croppedAreaPixels, image, setImage]
 	);
+
+	const handleUpdatePP = async () => {
+		const toastId = toast.loading(
+			'Please wait while your profile picture is being updated...',
+			{ position: 'bottom-left' }
+		);
+		setIsLoading(true);
+
+		try {
+			const img = await getCroppedArea();
+			const blob = await fetch(img).then(b => b.blob());
+			const path = `${user?.username}/profile_pictures`;
+			const formData = new FormData();
+
+			formData.append('file', blob);
+			formData.append('path', path);
+
+			const uploadedPic: ICloudImage[] = await dispatch(
+				uploadImages({ formData, token: user?.token })
+			).unwrap();
+
+			const updatedPicRes = await dispatch(
+				updateProfilePic({
+					token: user?.token,
+					url: uploadedPic[0]?.url,
+				})
+			);
+
+			if (updatedPicRes.meta.requestStatus === 'fulfilled') {
+				dispatch(
+					createPost({
+						background: null,
+						type: 'profilePicture',
+						text: description,
+						images: uploadedPic,
+						user,
+						token: user?.token,
+					})
+				).then(() => {
+					setImage(null);
+					setIsVisiblePP(false);
+					setIsLoading(false);
+				});
+
+				toast.dismiss(toastId);
+				toast.success('Profile picture updated successfully.', {
+					duration: 5000,
+				});
+			}
+		} catch (error) {
+			toast.dismiss(toastId);
+			setIsLoading(false);
+			toast.error(error.message);
+		}
+	};
 
 	const {
 		post_box,
@@ -137,11 +200,21 @@ const UpdatePP: React.FC<{
 					<div
 						className='gray_btn'
 						onClick={() => getCroppedArea('show')}
+						style={{
+							cursor: isLoading ? 'wait' : 'auto',
+							opacity: isLoading ? 0.5 : 1,
+						}}
 					>
 						<i className='crop_icon'></i>
 						<span>Crop Photo</span>
 					</div>
-					<div className='gray_btn'>
+					<div
+						className='gray_btn'
+						style={{
+							cursor: isLoading ? 'wait' : 'auto',
+							opacity: isLoading ? 0.5 : 1,
+						}}
+					>
 						<i className='temp_icon'></i>
 						<span>Make Temporary</span>
 					</div>
@@ -152,12 +225,26 @@ const UpdatePP: React.FC<{
 						<span>You profile picture set to public.</span>
 					</div>
 					<div className={actions}>
-						<div className={blue_link}>Cancel</div>
+						<div
+							className={blue_link}
+							onClick={() => setImage(null)}
+							style={{
+								cursor: isLoading ? 'wait' : 'auto',
+								opacity: isLoading ? 0.5 : 1,
+							}}
+						>
+							Cancel
+						</div>
 						<button
 							className='blue_btn'
-							onClick={() => getCroppedArea()}
+							disabled={isLoading}
+							style={{
+								cursor: isLoading ? 'wait' : 'auto',
+								opacity: isLoading ? 0.5 : 1,
+							}}
+							onClick={() => handleUpdatePP()}
 						>
-							Save
+							{isLoading ? 'Saving...' : 'Save'}
 						</button>
 					</div>
 				</div>

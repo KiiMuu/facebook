@@ -6,7 +6,7 @@ const ProfilePictureInfos: React.FC<{
 	profile: IProfile | null;
 	isVisitor: boolean;
 }> = ({ profile, isVisitor }) => {
-	const [isVisiblePP, setIsVisiblePP] = useState(true);
+	const [isVisiblePP, setIsVisiblePP] = useState(false);
 
 	const {
 		profile_img_wrap,
@@ -25,7 +25,7 @@ const ProfilePictureInfos: React.FC<{
 
 	return (
 		<div className={profile_img_wrap}>
-			{isVisiblePP && <ProfilePic />}
+			{isVisiblePP && <ProfilePic setIsVisiblePP={setIsVisiblePP} />}
 			<div className={profile_w_left}>
 				<div className={profile_w_img}>
 					<div
@@ -36,7 +36,10 @@ const ProfilePictureInfos: React.FC<{
 						}}
 					></div>
 					{!isVisitor && (
-						<div className={`${profile_circle} hover1`}>
+						<div
+							className={`${profile_circle} hover1`}
+							onClick={() => setIsVisiblePP(prev => !prev)}
+						>
 							<i className='camera_filled_icon'></i>
 						</div>
 					)}

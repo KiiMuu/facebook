@@ -31,12 +31,12 @@ export function rotateSize(width: number, height: number, rotation: number) {
  * This function was adapted from the one in the ReadMe of https://github.com/DominicTobias/react-image-crop
  */
 export default async function getCroppedImg(
-	imageSrc: string | ArrayBuffer | null | undefined,
-	pixelCrop: { x: number; y: number; width: number; height: number },
+	imageSrc: any,
+	pixelCrop: any,
 	rotation = 0,
 	flip = { horizontal: false, vertical: false }
 ) {
-	const image: any = await createImage(imageSrc as string);
+	const image: any = await createImage(imageSrc);
 	const canvas = document.createElement('canvas');
 	const ctx = canvas.getContext('2d');
 

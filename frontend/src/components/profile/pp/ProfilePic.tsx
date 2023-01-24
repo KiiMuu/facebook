@@ -1,13 +1,17 @@
 import { useRef, useState } from 'react';
 import { toast } from 'react-hot-toast';
+import useDetectOutsideClicks from 'src/hooks/useDetectOutsideClicks';
 import classes from './pp.module.scss';
 import UpdatePP from './UpdatePP';
 
-const ProfilePic = () => {
+const ProfilePic: React.FC<{ setIsVisiblePP: (state: boolean) => void }> = ({
+	setIsVisiblePP,
+}) => {
 	const [image, setImage] = useState<
 		string | ArrayBuffer | null | undefined
 	>();
 	const inputFileRef = useRef<HTMLInputElement | null>(null);
+	const popupRef = useRef(null);
 	const allowedFiles = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
 
 	const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -35,6 +39,8 @@ const ProfilePic = () => {
 		}
 	};
 
+	useDetectOutsideClicks(popupRef, () => setIsVisiblePP(false));
+
 	const {
 		post_box,
 		box_header,
@@ -53,9 +59,12 @@ const ProfilePic = () => {
 				accept='image/*'
 				onChange={handleFileChange}
 			/>
-			<div className={`${post_box} ${picBox}`}>
+			<div className={`${post_box} ${picBox}`} ref={popupRef}>
 				<div className={box_header}>
-					<div className={`small_circle ${small_circle1}`}>
+					<div
+						className={`small_circle ${small_circle1}`}
+						onClick={() => setIsVisiblePP(false)}
+					>
 						<i className='exit_icon'></i>
 					</div>
 					<span>Update Profile Picture</span>
@@ -77,7 +86,13 @@ const ProfilePic = () => {
 				</div>
 				<div className='old_pictures_wrap'></div>
 			</div>
-			{image && <UpdatePP setImage={setImage} image={image} />}
+			{image && (
+				<UpdatePP
+					setIsVisiblePP={setIsVisiblePP}
+					setImage={setImage}
+					image={image}
+				/>
+			)}
 		</div>
 	);
 };
