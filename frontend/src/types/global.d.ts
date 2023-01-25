@@ -10,6 +10,7 @@ declare global {
 		lastName: string;
 		username: string;
 		picture: string;
+		cover: string;
 		verified: boolean;
 		gender: string;
 		token: string;

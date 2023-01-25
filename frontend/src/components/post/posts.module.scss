@@ -78,6 +78,32 @@
 	.post_text {
 		padding: 0 15px 10px 15px;
 	}
+	.post_profile_wrap {
+		position: relative;
+		height: 500px;
+		display: grid;
+		place-items: center;
+		.post_updated_bg {
+			position: absolute;
+			top: 0;
+			left: 0;
+			height: 300px;
+			background-color: var(--bg-third);
+			img {
+				height: 300px;
+				width: 100%;
+				filter: blur(4px);
+			}
+		}
+		.post_updated_pic {
+			width: 420px;
+			height: 420px;
+			border-radius: 50%;
+			z-index: 1;
+			object-fit: cover;
+			border: 3px solid #fff;
+		}
+	}
 	@include postImagesGrid;
 	.more_pics_shadow {
 		position: relative;

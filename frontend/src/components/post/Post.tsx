@@ -48,6 +48,9 @@ const Post: React.FC<{
 		post_action,
 		comments_wrap,
 		comments_order,
+		post_profile_wrap,
+		post_updated_bg,
+		post_updated_pic,
 	} = classes;
 
 	return (
@@ -98,7 +101,7 @@ const Post: React.FC<{
 				>
 					<div className={post_bg_text}>{post.text}</div>
 				</div>
-			) : (
+			) : post.type === null ? (
 				<>
 					<div className={post_text}>{post.text}</div>
 					{post.images?.length ? (
@@ -142,6 +145,24 @@ const Post: React.FC<{
 						</div>
 					) : null}
 				</>
+			) : post.type === 'profilePicture' ? (
+				<div className={post_profile_wrap}>
+					<div className={post_updated_bg}>
+						<img
+							src={post.user?.cover}
+							alt={post.user?.username}
+							loading='lazy'
+						/>
+					</div>
+					<img
+						src={post?.images![0]?.url}
+						alt={post?.user?.username}
+						loading='lazy'
+						className={post_updated_pic}
+					/>
+				</div>
+			) : (
+				<div className='post_cover_wrap'>cov</div>
 			)}
 			<div className={post_infos}>
 				<div className={reacts_count}>
