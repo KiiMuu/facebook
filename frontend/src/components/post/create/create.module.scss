@@ -90,6 +90,9 @@
 	.create_post {
 		width: 84%;
 	}
+	.create_post_profile {
+		width: 100%;
+	}
 }
 @media (max-width: 1030px) {
 	.create_post {
@@ -99,6 +102,9 @@
 @media (max-width: 960px) {
 	.create_post {
 		width: 83%;
+	}
+	.create_post_profile {
+		width: 100%;
 	}
 }
 @media (max-width: 885px) {

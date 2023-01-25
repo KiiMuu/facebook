@@ -10,10 +10,11 @@ const GridPosts = () => {
 		grid_2,
 		view_type,
 		flex,
+		create_post_profile,
 	} = postStyles;
 
 	return (
-		<div className={create_post}>
+		<div className={`${create_post} ${create_post_profile}`}>
 			<div
 				className={create_post_header}
 				style={{ justifyContent: 'space-between' }}

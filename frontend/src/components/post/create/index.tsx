@@ -18,10 +18,15 @@ const CreatePost: React.FC<{
 		create_splitter,
 		create_post_body,
 		create_post_icon,
+		create_post_profile,
 	} = classes;
 
 	return (
-		<div className={create_post}>
+		<div
+			className={
+				profile ? `${create_post} ${create_post_profile}` : create_post
+			}
+		>
 			<div className={create_post_header}>
 				<img src={user?.picture} alt={user?.username} />
 				<div
