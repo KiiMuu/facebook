@@ -5,7 +5,7 @@ import { getPhotos } from './api';
 export const photosSlice = createSlice({
 	name: 'post',
 	initialState: {
-		status: 'idle',
+		fetchPhotosStatus: 'idle',
 		error: '',
 		successMsg: '',
 		errorMsg: '',
@@ -18,15 +18,15 @@ export const photosSlice = createSlice({
 	extraReducers(builder) {
 		builder
 			.addCase(getPhotos.pending, (state, action) => {
-				state.status = 'loading';
+				state.fetchPhotosStatus = 'loading';
 			})
 			.addCase(getPhotos.fulfilled, (state, action) => {
-				state.status = 'succeeded';
+				state.fetchPhotosStatus = 'succeeded';
 				state.error = '';
 				state.photos = action.payload;
 			})
 			.addCase(getPhotos.rejected, (state, action) => {
-				state.status = 'failed';
+				state.fetchPhotosStatus = 'failed';
 				state.error = action.payload;
 			});
 	},

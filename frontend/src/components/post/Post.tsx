@@ -120,7 +120,12 @@ const Post: React.FC<{
 							}
 						>
 							{post.images.slice(0, 4).map((img, i) => (
-								<img key={i} src={img.url} alt={img.url} />
+								<img
+									key={i}
+									src={img.url}
+									alt={img.url}
+									loading='lazy'
+								/>
 							))}
 							{post.images.length > 4 && (
 								<div className={more_pics_shadow}>

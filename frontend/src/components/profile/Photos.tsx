@@ -1,19 +1,8 @@
-import { useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from 'src/state/hooks';
+import { useAppSelector } from 'src/state/hooks';
 import classes from 'src/pages/profile/profile.module.scss';
-import { getPhotos } from 'src/state/photos/api';
 
 const Photos: React.FC<{ username?: string }> = ({ username }) => {
-	const dispatch = useAppDispatch();
 	const { photos } = useAppSelector(state => state.photos);
-	const token = useAppSelector(state => state.user.user?.token);
-	const path = `${username}/*`;
-	const max = 30;
-	const sort = 'desc';
-
-	useEffect(() => {
-		dispatch(getPhotos({ token, path, max, sort }));
-	}, [dispatch, token, path, max, sort]);
 
 	const {
 		profile_card,
@@ -40,7 +29,11 @@ const Photos: React.FC<{ username?: string }> = ({ username }) => {
 			<div className={profile_card_grid}>
 				{photos.resources.slice(0, 9).map(photo => (
 					<div className={profile_photo_card} key={photo.public_id}>
-						<img src={photo.secure_url} alt={photo.public_id} />
+						<img
+							src={photo.secure_url}
+							alt={photo.public_id}
+							loading='lazy'
+						/>
 					</div>
 				))}
 			</div>

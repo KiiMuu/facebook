@@ -14,6 +14,7 @@ import classes from './profile.module.scss';
 import Post from 'src/components/post/Post';
 import Photos from 'src/components/profile/Photos';
 import Friends from 'src/components/profile/Friends';
+import { getPhotos } from 'src/state/photos/api';
 
 const Profile: React.FC<{
 	setPostPopupVisibility: Dispatch<SetStateAction<boolean>>;
@@ -25,6 +26,9 @@ const Profile: React.FC<{
 
 	const urlUsername = !username ? user?.username : username;
 	const isVisitor = urlUsername !== user?.username;
+	const path = `${urlUsername}/*`;
+	const max = 30;
+	const sort = 'desc';
 
 	const fetchUserProfile = useCallback(async () => {
 		try {
@@ -32,13 +36,17 @@ const Profile: React.FC<{
 				getUserProfile({ token: user?.token, username: urlUsername })
 			);
 
+			if (res.meta.requestStatus === 'fulfilled') {
+				dispatch(getPhotos({ token: user?.token, path, max, sort }));
+			}
+
 			if (res.meta.requestStatus === 'rejected') {
 				navigate('/');
 			}
 		} catch (error) {
 			toast.error(error.message);
 		}
-	}, [dispatch, navigate, urlUsername, user?.token]);
+	}, [dispatch, navigate, urlUsername, user?.token, path]);
 
 	useEffect(() => {
 		fetchUserProfile();

@@ -12,6 +12,7 @@ export interface IPhoto {
 	public_id?: string;
 	resource_type?: string;
 	uploaded_at?: string;
+	folder?: string;
 }
 
 export interface IPhotos {
@@ -20,7 +21,7 @@ export interface IPhotos {
 }
 
 export interface SliceState {
-	status: 'idle' | 'loading' | 'succeeded' | 'failed';
+	fetchPhotosStatus: 'idle' | 'loading' | 'succeeded' | 'failed';
 	error: any;
 	successMsg?: string;
 	errorMsg?: string;

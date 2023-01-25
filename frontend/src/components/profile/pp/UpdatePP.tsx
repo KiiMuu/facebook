@@ -229,7 +229,7 @@ const UpdatePP: React.FC<{
 							className={blue_link}
 							onClick={() => setImage(null)}
 							style={{
-								cursor: isLoading ? 'wait' : 'auto',
+								cursor: isLoading ? 'wait' : 'pointer',
 								opacity: isLoading ? 0.5 : 1,
 							}}
 						>
@@ -239,7 +239,7 @@ const UpdatePP: React.FC<{
 							className='blue_btn'
 							disabled={isLoading}
 							style={{
-								cursor: isLoading ? 'wait' : 'auto',
+								cursor: isLoading ? 'wait' : 'pointer',
 								opacity: isLoading ? 0.5 : 1,
 							}}
 							onClick={() => handleUpdatePP()}
