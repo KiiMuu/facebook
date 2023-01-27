@@ -332,6 +332,26 @@ const updateProfilePicture = async (req: Request, res: Response) => {
 	}
 };
 
+const updateCoverPhoto = async (req: Request, res: Response) => {
+	try {
+		const { url } = req.body;
+
+		const updatedCoverPhoto = await User.findByIdAndUpdate(
+			req.user.id,
+			{
+				cover: url,
+			},
+			{ new: true }
+		).select('cover');
+
+		return res.status(OK).json(updatedCoverPhoto);
+	} catch (error: any) {
+		return res.status(SERVER_ERR).json({
+			message: error.message,
+		});
+	}
+};
+
 export {
 	register,
 	verifyAccount,
@@ -343,4 +363,5 @@ export {
 	changePassword,
 	getProfile,
 	updateProfilePicture,
+	updateCoverPhoto,
 };

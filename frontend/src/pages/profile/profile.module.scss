@@ -12,16 +12,50 @@
 		.profile_container {
 			.profile_cover {
 				position: relative;
-				height: 350px;
 				width: 100%;
 				border-bottom-left-radius: 4px;
 				border-bottom-right-radius: 4px;
 				background: var(--bg-secondary);
 				img {
-					height: 350px;
 					width: 100%;
 					object-fit: cover;
 					border-radius: 3px;
+				}
+				.save_changes_cover {
+					z-index: 9999999;
+					position: absolute;
+					display: flex;
+					align-items: center;
+					justify-content: space-between;
+					width: 100%;
+					padding: 10px 15px;
+					background-color: rgba(255, 255, 255, 0.7);
+					.left {
+						display: flex;
+						align-items: center;
+						gap: 10px;
+						span {
+							color: #000;
+						}
+					}
+					.right {
+						display: flex;
+						align-items: center;
+						gap: 10px;
+						button {
+							&:first-child {
+								opacity: 0.8;
+								background-color: aliceblue;
+								color: #000;
+							}
+						}
+					}
+				}
+				.cover_cropper {
+					img {
+						width: 100%;
+						object-fit: cover;
+					}
 				}
 				.update_cover_wrapper {
 					position: absolute;
@@ -47,12 +81,13 @@
 						background-color: var(--bg-primary);
 						position: absolute;
 						right: 0;
+						top: 48px;
 						padding: 10px;
 						width: 300px;
 						border-radius: 4px;
-						box-shadow: 0 12px 20px 0 var(--shadow-1),
-							0 2px 4px 0 var(--shadow-2),
-							inset 0 0 0 1px var(--shadow-inset);
+						box-shadow: 0 12px 20px 0 var(--shadow-1);
+						z-index: 99;
+						animation: animateMe 0.15s ease-in-out;
 						.open_cover_menu_item {
 							display: flex;
 							align-items: center;
@@ -160,12 +195,12 @@
 			color: var(--color-secondary);
 		}
 		.profile_menu_active {
-			height: 60px !important;
-			width: 65px !important;
-			margin: 0 !important;
-			color: var(--blue-color) !important;
+			height: 60px;
+			width: 65px;
+			margin: 0;
+			color: var(--blue-color);
 			border-bottom: 3px solid var(--blue-color);
-			border-radius: 0 !important;
+			border-radius: 0;
 		}
 		.p10_dots {
 			background: var(--bg-third);
@@ -307,6 +342,17 @@
 .left_header_grid {
 	font-size: 22px;
 	font-weight: 600;
+}
+
+@keyframes animateMe {
+	0% {
+		transform: scale(0);
+		transform-origin: top right;
+	}
+	100% {
+		transform: scale(1);
+		transform-origin: top right;
+	}
 }
 
 // media
