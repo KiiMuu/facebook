@@ -104,6 +104,15 @@
 			border: 3px solid #fff;
 		}
 	}
+	.post_cover_wrap {
+		width: 100%;
+		height: 250px;
+		img {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+		}
+	}
 	@include postImagesGrid;
 	.more_pics_shadow {
 		position: relative;

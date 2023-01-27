@@ -51,6 +51,7 @@ const Post: React.FC<{
 		post_profile_wrap,
 		post_updated_bg,
 		post_updated_pic,
+		post_cover_wrap,
 	} = classes;
 
 	return (
@@ -60,7 +61,7 @@ const Post: React.FC<{
 					to={`/profile/${post.user?.username}`}
 					className={header_left}
 				>
-					<img src={post.user?.picture} alt='' />
+					<img src={post.user?.picture} alt={post.user?.username} />
 					<div className={header_col}>
 						<div className={post_profile_name}>
 							{post.user?.firstName} {post.user?.lastName}
@@ -162,7 +163,13 @@ const Post: React.FC<{
 					/>
 				</div>
 			) : (
-				<div className='post_cover_wrap'>cov</div>
+				<div className={post_cover_wrap}>
+					<img
+						src={post?.images![0]?.url}
+						alt={post?.user?.username}
+						loading='lazy'
+					/>
+				</div>
 			)}
 			<div className={post_infos}>
 				<div className={reacts_count}>

@@ -86,7 +86,7 @@ const Profile: React.FC<{
 						<PeopleYouMayKnow />
 						<div className={profile_grid}>
 							<div className={profile_left}>
-								<Photos username={urlUsername} />
+								<Photos />
 								<Friends friends={profile?.friends} />
 								<div className='fb_copyright'>
 									<Link to=''>Privacy</Link>

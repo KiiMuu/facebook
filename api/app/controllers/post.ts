@@ -27,7 +27,10 @@ const createPost = async (req: Request, res: Response) => {
 const getAllPosts = async (req: Request, res: Response) => {
 	try {
 		const posts = await Post.find({})
-			.populate('user', 'firstName lastName picture username gender _id')
+			.populate(
+				'user',
+				'firstName lastName picture cover username gender _id'
+			)
 			.sort({ createdAt: 'desc' })
 			.exec();
 

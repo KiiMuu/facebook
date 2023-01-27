@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import Cookies from 'js-cookie';
 import { SliceState } from 'src/interfaces/user';
+import { createPost } from '../post/api';
 import {
 	register,
 	login,
@@ -12,6 +13,7 @@ import {
 	changePassword,
 	getUserProfile,
 	updateProfilePic,
+	updateCoverPhoto,
 } from './api';
 
 let currentUser = Cookies.get('fb_user')
@@ -155,6 +157,24 @@ export const userSlice = createSlice({
 			.addCase(updateProfilePic.rejected, (state, action: any) => {
 				state.status = 'failed';
 				state.errorMsg = action.payload.message;
+			})
+			.addCase(updateCoverPhoto.pending, (state, action) => {
+				state.status = 'loading';
+			})
+			.addCase(updateCoverPhoto.fulfilled, (state, action) => {
+				state.status = 'succeeded';
+				state.user!.cover = action.payload.cover;
+				state.profile!.cover = action.payload.cover;
+			})
+			.addCase(updateCoverPhoto.rejected, (state, action: any) => {
+				state.status = 'failed';
+				state.errorMsg = action.payload.message;
+			})
+			.addCase(createPost.fulfilled, (state, action) => {
+				state.profile!.posts = [
+					action.payload,
+					...state.profile!.posts,
+				];
 			});
 	},
 });

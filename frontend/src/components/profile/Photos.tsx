@@ -1,7 +1,7 @@
 import { useAppSelector } from 'src/state/hooks';
 import classes from 'src/pages/profile/profile.module.scss';
 
-const Photos: React.FC<{ username?: string }> = ({ username }) => {
+const Photos = () => {
 	const { photos } = useAppSelector(state => state.photos);
 
 	const {
