@@ -9,6 +9,7 @@ import { createPost, uploadImages } from 'src/state/post/api';
 import { updateCoverPhoto } from 'src/state/user/api';
 import { Public } from 'src/svg';
 import classes from '../../pages/profile/profile.module.scss';
+import OldCoverPhotos from './OldCoverPhotos';
 
 const Cover: React.FC<{
 	cover?: string;
@@ -16,6 +17,7 @@ const Cover: React.FC<{
 	isVisitor: boolean;
 }> = ({ cover, username, isVisitor }) => {
 	const [showCoverMenu, setShowCoverMenu] = useState(false);
+	const [oldCoverPhotos, setOldCoverPhotos] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
 	const [coverPhotoWidth, setCoverPhotoWidth] = useState<number>(0);
 	const [coverPhoto, setCoverPhoto] = useState<
@@ -239,7 +241,10 @@ const Cover: React.FC<{
 						<div className={open_cover_menu} ref={menuRef}>
 							<div
 								className={`${open_cover_menu_item} hover1`}
-								onClick={() => setShowCoverMenu(prev => !prev)}
+								onClick={() => {
+									setOldCoverPhotos(prev => !prev);
+									setShowCoverMenu(prev => !prev);
+								}}
 							>
 								<i className='photo_icon'></i>
 								<span>Select Photo</span>
@@ -257,6 +262,12 @@ const Cover: React.FC<{
 						</div>
 					)}
 				</div>
+			)}
+			{oldCoverPhotos && (
+				<OldCoverPhotos
+					setOldCoverPhotos={setOldCoverPhotos}
+					setCoverPhoto={setCoverPhoto}
+				/>
 			)}
 		</div>
 	);
