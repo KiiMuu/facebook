@@ -11,6 +11,7 @@ import {
 	getProfile,
 	updateProfilePicture,
 	updateCoverPhoto,
+	updateProfileDetails,
 } from '../controllers/user';
 import isAuth from '../middleware/isAuth';
 import {
@@ -32,5 +33,6 @@ router.post('/user/change_password', validateChangePassword, changePassword);
 router.get('/user/profile/:username', isAuth, getProfile);
 router.put('/user/profile/update_pic', isAuth, updateProfilePicture);
 router.put('/user/profile/update_cover', isAuth, updateCoverPhoto);
+router.put('/user/profile/update_details', isAuth, updateProfileDetails);
 
 export default router;

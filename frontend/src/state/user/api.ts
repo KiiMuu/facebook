@@ -283,3 +283,31 @@ export const updateCoverPhoto = createAsyncThunk(
 		}
 	}
 );
+
+export const updateUserInfos = createAsyncThunk(
+	'user/updateUserInfos',
+	async (
+		userData: { token?: string; details: IProfile['details'] },
+		{ rejectWithValue }
+	) => {
+		const { token, details } = userData;
+
+		try {
+			const { data } = await axios.put(
+				`${process.env.REACT_APP_API}/user/profile/update_details`,
+				{ details },
+				{
+					headers: {
+						Authorization: `Bearer ${token}`,
+					},
+				}
+			);
+
+			return data;
+		} catch (error: any) {
+			return rejectWithValue(
+				error.response ? error.response.data : error
+			);
+		}
+	}
+);

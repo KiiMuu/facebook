@@ -112,10 +112,11 @@ header {
 				height: 20.7px;
 				border-radius: 50%;
 				border: 1px solid #b0b3b0;
-				transform: translateY(-1px);
 			}
+		}
+		.active_header {
 			span {
-				margin-bottom: 3px;
+				color: var(--blue-color);
 			}
 		}
 		.circle_icon {

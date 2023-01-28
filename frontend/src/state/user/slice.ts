@@ -14,6 +14,7 @@ import {
 	getUserProfile,
 	updateProfilePic,
 	updateCoverPhoto,
+	updateUserInfos,
 } from './api';
 
 let currentUser = Cookies.get('fb_user')
@@ -167,6 +168,17 @@ export const userSlice = createSlice({
 				state.profile!.cover = action.payload.cover;
 			})
 			.addCase(updateCoverPhoto.rejected, (state, action: any) => {
+				state.status = 'failed';
+				state.errorMsg = action.payload.message;
+			})
+			.addCase(updateUserInfos.pending, (state, action) => {
+				state.status = 'loading';
+			})
+			.addCase(updateUserInfos.fulfilled, (state, action) => {
+				state.status = 'succeeded';
+				state.profile!.details = action.payload;
+			})
+			.addCase(updateUserInfos.rejected, (state, action: any) => {
 				state.status = 'failed';
 				state.errorMsg = action.payload.message;
 			})

@@ -15,6 +15,7 @@ import Post from 'src/components/post/Post';
 import Photos from 'src/components/profile/Photos';
 import Friends from 'src/components/profile/Friends';
 import { getPhotos } from 'src/state/photos/api';
+import ProfileIntro from 'src/components/profile/intro';
 
 const Profile: React.FC<{
 	setPostPopupVisibility: Dispatch<SetStateAction<boolean>>;
@@ -86,6 +87,7 @@ const Profile: React.FC<{
 						<PeopleYouMayKnow />
 						<div className={profile_grid}>
 							<div className={profile_left}>
+								<ProfileIntro isVisitor={isVisitor} />
 								<Photos />
 								<Friends friends={profile?.friends} />
 								<div className='fb_copyright'>
