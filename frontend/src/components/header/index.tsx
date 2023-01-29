@@ -49,6 +49,7 @@ const Header: React.FC<{ page?: string }> = ({ page }) => {
 		circle_icon,
 		right_notitfication,
 		active_header,
+        username_profile
 	} = classes;
 
 	return (
@@ -105,7 +106,7 @@ const Header: React.FC<{ page?: string }> = ({ page }) => {
 					}`}
 				>
 					<img src={user?.picture} alt={user?.username} />
-					<span>{user?.firstName}</span>
+					<span className={username_profile}>{user?.firstName}</span>
 				</Link>
 				<div
 					className={`${circle_icon} ${

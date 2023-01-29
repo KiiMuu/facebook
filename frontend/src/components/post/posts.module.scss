@@ -229,3 +229,42 @@
 		}
 	}
 }
+@media (max-width: 500px) {
+	.post_wrap {
+		.post_profile_wrap {
+			height: 320px;
+			.post_updated_bg {
+				height: 200px;
+				img {
+					height: 200px;
+				}
+			}
+			.post_updated_pic {
+				width: 230px;
+				height: 230px;
+			}
+		}
+	}
+}
+@media (max-width: 405px) {
+	.post_wrap {
+		width: 98% !important;
+		margin: 1rem auto;
+		input {
+			width: 30vw;
+		}
+		.post_header {
+			.header_left {
+				img {
+					height: 35px;
+					width: 35px;
+				}
+				.header_col {
+					.post_profile_name {
+						font-size: 12px;
+					}
+				}
+			}
+		}
+	}
+}

@@ -48,7 +48,8 @@ const CreatePost: React.FC<{
 				</div>
 				{profile ? (
 					<div className={`${create_post_icon} hover1`}>
-						<i className='lifeEvent_icon'></i> Life Events
+						<i className='lifeEvent_icon'></i> Life{' '}
+						{query500px ? null : '/ Events'}
 					</div>
 				) : (
 					<div className={`${create_post_icon} hover1`}>

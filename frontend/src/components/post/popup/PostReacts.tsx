@@ -3,27 +3,27 @@ import classes from './popup.module.scss';
 const reacts = [
 	{
 		name: 'like',
-		image: 'reacts/like.gif',
+		image: '../../reacts/like.gif',
 	},
 	{
 		name: 'love',
-		image: 'reacts/love.gif',
+		image: '../../reacts/love.gif',
 	},
 	{
 		name: 'haha',
-		image: 'reacts/haha.gif',
+		image: '../../reacts/haha.gif',
 	},
 	{
 		name: 'wow',
-		image: 'reacts/wow.gif',
+		image: '../../reacts/wow.gif',
 	},
 	{
 		name: 'sad',
-		image: 'reacts/sad.gif',
+		image: '../../reacts/sad.gif',
 	},
 	{
 		name: 'angry',
-		image: 'reacts/angry.gif',
+		image: '../../reacts/angry.gif',
 	},
 ];
 
@@ -47,7 +47,11 @@ const PostReacts: React.FC<{
 				>
 					{reacts.map((reactItem, i) => (
 						<div key={i} className={react}>
-							<img src={reactItem.image} alt={reactItem.name} />
+							<img
+								src={reactItem.image}
+								alt={reactItem.name}
+								loading='lazy'
+							/>
 						</div>
 					))}
 				</div>

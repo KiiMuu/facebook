@@ -49,7 +49,9 @@ const ProfileIntro: React.FC<{ isVisitor: boolean }> = ({ isVisitor }) => {
 			);
 
 			if (res.meta.requestStatus === 'fulfilled') {
-				toast.success('Edited successfully.');
+				toast.success('Your details edited successfully.', {
+					duration: 5000,
+				});
 				setShowBio(false);
 				setShowEditDetails(false);
 			}

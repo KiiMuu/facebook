@@ -45,3 +45,9 @@
 		width: 100%;
 	}
 }
+@media (max-width: 405px) {
+	.send_verification {
+		width: 98%;
+		margin: 1rem auto;
+	}
+}

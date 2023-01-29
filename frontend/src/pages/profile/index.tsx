@@ -1,4 +1,11 @@
-import { useEffect, useCallback, Dispatch, SetStateAction } from 'react';
+import {
+	useEffect,
+	useCallback,
+	Dispatch,
+	SetStateAction,
+	useRef,
+	useState,
+} from 'react';
 import { toast } from 'react-hot-toast';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import Header from 'src/components/header';
@@ -16,14 +23,23 @@ import Photos from 'src/components/profile/Photos';
 import Friends from 'src/components/profile/Friends';
 import { getPhotos } from 'src/state/photos/api';
 import ProfileIntro from 'src/components/profile/intro';
+import { useMediaQuery } from 'react-responsive';
 
 const Profile: React.FC<{
 	setPostPopupVisibility: Dispatch<SetStateAction<boolean>>;
 }> = ({ setPostPopupVisibility }) => {
 	const dispatch = useAppDispatch();
-	const { user, profile } = useAppSelector(state => state.user);
+	const [height, setHeight] = useState(0);
+	const [leftHeight, setLeftHeight] = useState(0);
+	const [scrollHeight, setScrollHeight] = useState(0);
+	const { user, profile, status } = useAppSelector(state => state.user);
 	const { username } = useParams();
 	const navigate = useNavigate();
+	const profileTopRef = useRef<HTMLDivElement | null>(null);
+	const profileLeftSideRef = useRef<HTMLDivElement | null>(null);
+	const check = useMediaQuery({
+		query: 'min-width: 901px',
+	});
 
 	const urlUsername = !username ? user?.username : username;
 	const isVisitor = urlUsername !== user?.username;
@@ -49,9 +65,29 @@ const Profile: React.FC<{
 		}
 	}, [dispatch, navigate, urlUsername, user?.token, path]);
 
+	const getScroll = () => {
+		setScrollHeight(window.scrollY);
+	};
+
 	useEffect(() => {
 		fetchUserProfile();
 	}, [fetchUserProfile, isVisitor]);
+
+	useEffect(() => {
+		setHeight(profileTopRef.current!.clientHeight + 300);
+		setLeftHeight(profileLeftSideRef.current!.clientHeight);
+
+		window.addEventListener('scroll', getScroll, {
+			passive: true,
+		});
+
+		return () =>
+			window.addEventListener('scroll', getScroll, {
+				passive: true,
+			});
+	}, [status, scrollHeight]);
+
+	console.log({ height, leftHeight, check, scrollHeight });
 
 	const {
 		profile_wrap,
@@ -62,12 +98,15 @@ const Profile: React.FC<{
 		profile_grid,
 		profile_left,
 		profile_right,
+		scrollFixed,
+		showLess,
+		showMore,
 	} = classes;
 
 	return (
 		<div className={profile_wrap}>
 			<Header page='profile' />
-			<div className={profile_top}>
+			<div className={profile_top} ref={profileTopRef}>
 				<div className={profile_container}>
 					<Cover
 						cover={profile?.cover}
@@ -85,8 +124,22 @@ const Profile: React.FC<{
 				<div className={profile_container}>
 					<div className={bottom_container}>
 						<PeopleYouMayKnow />
-						<div className={profile_grid}>
-							<div className={profile_left}>
+						<div
+							className={`${profile_grid} ${
+								check &&
+								scrollHeight >= height &&
+								leftHeight > 1000
+									? `${scrollFixed} ${showLess}`
+									: check &&
+									  scrollHeight >= height &&
+									  leftHeight < 1000 &&
+									  `${scrollFixed} ${showMore}`
+							}`}
+						>
+							<div
+								className={profile_left}
+								ref={profileLeftSideRef}
+							>
 								<ProfileIntro isVisitor={isVisitor} />
 								<Photos />
 								<Friends friends={profile?.friends} />

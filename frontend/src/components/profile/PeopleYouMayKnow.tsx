@@ -20,7 +20,7 @@ const PeopleYouMayKnow = () => {
 					<Dots color='' />
 				</div>
 			</div>
-			<div className={pplyoumayknow_list}>
+			<div className={`${pplyoumayknow_list}`}>
 				{homeStories.map((person, i) => (
 					<AddFriendCard key={i} person={person} />
 				))}

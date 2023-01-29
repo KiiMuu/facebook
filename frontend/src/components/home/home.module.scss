@@ -398,6 +398,11 @@
 		}
 	}
 }
+@media (max-width: 405px) {
+	.stories {
+		width: 98%;
+	}
+}
 
 // ActivateForm.tsx
 .popup {

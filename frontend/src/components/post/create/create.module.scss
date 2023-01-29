@@ -132,3 +132,10 @@
 		}
 	}
 }
+
+@media (max-width: 405px) {
+	.create_post {
+		width: 98%;
+		margin: 1rem auto;
+	}
+}

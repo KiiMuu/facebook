@@ -1,3 +1,4 @@
+import { useAppSelector } from 'src/state/hooks';
 import classes from './intro.module.scss';
 
 const EditDetails: React.FC<{
@@ -17,9 +18,8 @@ const EditDetails: React.FC<{
 	handleChange,
 	handleUpdateDetails,
 }) => {
-	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-		e.preventDefault();
-	};
+	const { status } = useAppSelector(state => state.user);
+
 	const {
 		infos_box,
 		box_header,
@@ -44,7 +44,7 @@ const EditDetails: React.FC<{
 					</div>
 					<span>Update Your Details</span>
 				</div>
-				<form onSubmit={handleSubmit} className={details_col}>
+				<div className={details_col}>
 					<div className={action_control}>
 						<label htmlFor='bio'>Bio</label>
 						<textarea
@@ -178,18 +178,29 @@ const EditDetails: React.FC<{
 						<button
 							className='gray_btn'
 							onClick={() => setShowEditDetails(false)}
+							disabled={status === 'loading'}
+							style={{
+								cursor:
+									status === 'loading' ? 'wait' : 'pointer',
+								opacity: status === 'loading' ? 0.5 : 1,
+							}}
 						>
 							Cancel
 						</button>
 						<button
 							type='submit'
 							className='blue_btn'
+							style={{
+								cursor:
+									status === 'loading' ? 'wait' : 'pointer',
+								opacity: status === 'loading' ? 0.5 : 1,
+							}}
 							onClick={() => handleUpdateDetails()}
 						>
-							Save
+							{status === 'loading' ? 'Saving...' : 'Save'}
 						</button>
 					</div>
-				</form>
+				</div>
 			</div>
 		</div>
 	);
