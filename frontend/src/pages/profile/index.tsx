@@ -38,7 +38,7 @@ const Profile: React.FC<{
 	const profileTopRef = useRef<HTMLDivElement | null>(null);
 	const profileLeftSideRef = useRef<HTMLDivElement | null>(null);
 	const check = useMediaQuery({
-		query: 'min-width: 901px',
+		query: '(min-width: 901px)',
 	});
 
 	const urlUsername = !username ? user?.username : username;
@@ -81,10 +81,7 @@ const Profile: React.FC<{
 			passive: true,
 		});
 
-		return () =>
-			window.addEventListener('scroll', getScroll, {
-				passive: true,
-			});
+		return () => window.removeEventListener('scroll', getScroll);
 	}, [status, scrollHeight]);
 
 	console.log({ height, leftHeight, check, scrollHeight });
@@ -137,7 +134,7 @@ const Profile: React.FC<{
 							}`}
 						>
 							<div
-								className={profile_left}
+								className={`${profile_left}`}
 								ref={profileLeftSideRef}
 							>
 								<ProfileIntro isVisitor={isVisitor} />

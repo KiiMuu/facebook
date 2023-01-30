@@ -47,9 +47,11 @@ const ProfilePictureInfos: React.FC<{
 				<div className={profile_w_col}>
 					<div className={profile_name}>
 						{profile?.firstName} {profile?.lastName}
-						<div className={other_name}>
-							({profile?.details.otherName})
-						</div>
+						{profile?.details?.otherName && (
+							<div className={other_name}>
+								({profile?.details?.otherName})
+							</div>
+						)}
 					</div>
 					<div className={friends_count}></div>
 					<div className={friends_imgs}></div>
