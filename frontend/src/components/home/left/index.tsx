@@ -22,7 +22,6 @@ const LeftHome: React.FC<{ user: UserInfo | null }> = ({ user }) => {
 		heading,
 		edit_shortcut,
 		shortcut_list,
-		fb_copyright,
 	} = classes;
 
 	return (

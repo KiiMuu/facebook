@@ -108,7 +108,7 @@ const LoginForm: React.FC<Props> = ({ setRegisterFormVisible }) => {
 					</Link>
 					{status === 'failed' && (
 						<ul className={classes.errors_list}>
-							{errors?.map((i: number, error: Error) => (
+							{errors?.map((error: Error, i: number) => (
 								<li key={i}>{error.message}</li>
 							))}
 						</ul>
