@@ -183,10 +183,12 @@ export const userSlice = createSlice({
 				state.errorMsg = action.payload.message;
 			})
 			.addCase(createPost.fulfilled, (state, action) => {
-				state.profile!.posts = [
-					action.payload,
-					...state.profile!.posts,
-				];
+				if (window.location.pathname.includes('/profile')) {
+					state.profile!.posts = [
+						action.payload,
+						...state.profile!.posts,
+					];
+				}
 			});
 	},
 });

@@ -6,6 +6,7 @@ export const postSlice = createSlice({
 	name: 'post',
 	initialState: {
 		status: 'idle',
+		postStatus: 'idle',
 		error: '',
 		successMsg: '',
 		errorMsg: '',
@@ -25,16 +26,16 @@ export const postSlice = createSlice({
 	extraReducers(builder) {
 		builder
 			.addCase(createPost.pending, (state, action) => {
-				state.status = 'loading';
+				state.postStatus = 'loading';
 			})
 			.addCase(createPost.fulfilled, (state, action) => {
-				state.status = 'succeeded';
+				state.postStatus = 'succeeded';
 				state.error = '';
 				state.createdPost = action.payload;
 				state.posts = [action.payload, ...state.posts];
 			})
 			.addCase(createPost.rejected, (state, action) => {
-				state.status = 'failed';
+				state.postStatus = 'failed';
 				state.error = action.payload;
 			})
 			.addCase(uploadImages.pending, (state, action) => {

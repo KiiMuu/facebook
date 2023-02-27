@@ -1,5 +1,6 @@
 export interface SliceState {
 	status: 'idle' | 'loading' | 'succeeded' | 'failed';
+	postStatus: 'idle' | 'loading' | 'succeeded' | 'failed';
 	error: any;
 	successMsg?: string;
 	errorMsg?: string;

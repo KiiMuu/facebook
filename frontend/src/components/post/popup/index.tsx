@@ -24,7 +24,7 @@ const PostPopup: React.FC<{
 	>([]);
 	const popupRef = useRef<HTMLDivElement>(null);
 	const dispatch = useAppDispatch();
-	const { status } = useAppSelector(state => state.post);
+	const { postStatus } = useAppSelector(state => state.post);
 
 	useDetectOutsideClicks(popupRef, () => {
 		setPostPopupVisibility(prev => !prev);
@@ -192,9 +192,9 @@ const PostPopup: React.FC<{
 					type='submit'
 					className={post_submit}
 					onClick={handlePostCreate}
-					disabled={status === 'loading'}
+					disabled={postStatus === 'loading'}
 				>
-					{status === 'loading' ? (
+					{postStatus === 'loading' ? (
 						<PulseLoader color='#fff' size={8} />
 					) : (
 						'Post'
