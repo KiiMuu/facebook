@@ -1,5 +1,21 @@
 import { Document } from 'mongoose';
 
+type User = {
+	_id: string;
+	firstName: string;
+	lastName: string;
+	username: string;
+	email: string;
+	password: string;
+	picture: string;
+	cover: string;
+	gender: string;
+	bYear: number;
+	bMonth: number;
+	bDay: number;
+	verified: boolean;
+};
+
 export interface IUserModel extends Document {
 	_id: string;
 	firstName: string;
@@ -14,10 +30,10 @@ export interface IUserModel extends Document {
 	bMonth: number;
 	bDay: number;
 	verified: boolean;
-	friends: object[];
-	following: object[];
-	followers: object[];
-	requests: object[];
+	friends: User[];
+	following: User[];
+	followers: User[];
+	requests: User[];
 	search: object[];
 	details: {
 		bio: string;

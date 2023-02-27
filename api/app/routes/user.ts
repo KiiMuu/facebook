@@ -12,6 +12,13 @@ import {
 	updateProfilePicture,
 	updateCoverPhoto,
 	updateProfileDetails,
+	addFriend,
+	cancelFriend,
+	follow,
+	unfollow,
+	acceptFriend,
+	unfriend,
+	deleteRequest,
 } from '../controllers/user';
 import isAuth from '../middleware/isAuth';
 import {
@@ -34,5 +41,12 @@ router.get('/user/profile/:username', isAuth, getProfile);
 router.put('/user/profile/update_pic', isAuth, updateProfilePicture);
 router.put('/user/profile/update_cover', isAuth, updateCoverPhoto);
 router.put('/user/profile/update_details', isAuth, updateProfileDetails);
+router.put('/user/profile/add_friend/:userId', isAuth, addFriend);
+router.put('/user/profile/cancel_friend/:userId', isAuth, cancelFriend);
+router.put('/user/profile/follow/:userId', isAuth, follow);
+router.put('/user/profile/unfollow/:userId', isAuth, unfollow);
+router.put('/user/profile/accept_friend/:userId', isAuth, acceptFriend);
+router.put('/user/profile/unfriend/:userId', isAuth, unfriend);
+router.put('/user/profile/delete_request/:userId', isAuth, deleteRequest);
 
 export default router;
