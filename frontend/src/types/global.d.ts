@@ -54,6 +54,12 @@ declare global {
 		profile_name: string;
 		image: string;
 	}
+	interface IFriendship {
+		areFriends: boolean;
+		isFollowing: boolean;
+		isRequestSent: boolean;
+		isRequestRecieved: boolean;
+	}
 	interface IProfile {
 		_id: string;
 		id: string;
@@ -75,6 +81,7 @@ declare global {
 		requests: IPublicUser[];
 		search: object[];
 		posts: IPost[];
+		friendship: IFriendship;
 		details: {
 			bio: string;
 			otherName: string;

@@ -293,7 +293,7 @@ const getProfile = async (req: Request, res: Response) => {
 			.select('-password')
 			.exec();
 
-		const friendShip = {
+		const friendship = {
 			areFriends: false,
 			isFollowing: false,
 			isRequestSent: false,
@@ -311,19 +311,19 @@ const getProfile = async (req: Request, res: Response) => {
 			user?.friends.includes(profile.id) &&
 			profile.friends.includes(user.id)
 		) {
-			friendShip.areFriends = true;
+			friendship.areFriends = true;
 		}
 
 		if (user?.following.includes(profile.id)) {
-			friendShip.isFollowing = true;
+			friendship.isFollowing = true;
 		}
 
 		if (user?.requests.includes(profile.id)) {
-			friendShip.isRequestRecieved = true;
+			friendship.isRequestRecieved = true;
 		}
 
 		if (profile?.requests.includes(user?.id)) {
-			friendShip.isRequestSent = true;
+			friendship.isRequestSent = true;
 		}
 
 		const posts = await Post.find({ user: profile._id })
@@ -333,7 +333,7 @@ const getProfile = async (req: Request, res: Response) => {
 
 		return res
 			.status(OK)
-			.json({ ...profile.toObject(), posts, friendShip });
+			.json({ ...profile.toObject(), posts, friendship });
 	} catch (error: any) {
 		return res.status(SERVER_ERR).json({
 			message: error.message,

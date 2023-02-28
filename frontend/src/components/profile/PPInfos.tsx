@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import classes from '../../pages/profile/profile.module.scss';
+import Friendship from './Friendship';
 import ProfilePic from './pp/ProfilePic';
 
 const ProfilePictureInfos: React.FC<{
@@ -57,7 +58,9 @@ const ProfilePictureInfos: React.FC<{
 					<div className={friends_imgs}></div>
 				</div>
 			</div>
-			{!isVisitor && (
+			{isVisitor ? (
+				<Friendship />
+			) : (
 				<div className={profile_w_right}>
 					<div className='blue_btn'>
 						<img

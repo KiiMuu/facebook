@@ -1,8 +1,8 @@
 .shared_btn {
 	border: none;
 	outline: none;
-	padding: 8.5px 12px;
-	border-radius: 3px;
+	padding: 8px 14px;
+	border-radius: 5px;
 	font-family: inherit;
 	font-size: 14px;
 	display: flex;
@@ -23,12 +23,13 @@
 	@extend .shared_btn;
 	background-color: var(--bg-third);
 	color: #000;
+	font-weight: 600;
 }
 
 .blue_btn,
 .gray_btn {
 	span {
-		transform: translateY(-1px);
+		transform: translateY(0px);
 	}
 }
 
