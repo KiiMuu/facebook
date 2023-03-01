@@ -118,6 +118,27 @@
 					font-size: 20px;
 				}
 			}
+			.friends_count {
+				color: #000;
+				margin-top: 6px;
+			}
+			.friends_imgs {
+				display: flex;
+				align-items: center;
+				gap: 5px;
+				margin-top: 6px;
+				a {
+					&:not(:first-child) {
+						margin-left: -15px;
+					}
+				}
+				img {
+					width: 32px;
+					height: 32px;
+					border-radius: 50%;
+					border: 2px solid var(--border-color);
+				}
+			}
 		}
 	}
 	.profile_w_right {
@@ -313,12 +334,18 @@
 							.profile_photo_card {
 								width: 100%;
 								height: 100%;
+								color: inherit;
 								cursor: pointer;
+								text-decoration: none;
 								img {
 									width: 100%;
 									height: 100px;
 									object-fit: cover;
 									border-radius: 3px;
+								}
+								span {
+									font-weight: 600;
+									font-size: 14px;
 								}
 							}
 						}
@@ -340,6 +367,7 @@
 	transform: translateY(-1.5rem);
 	z-index: 9999;
 	display: flex;
+	flex-wrap: wrap;
 	gap: 10px;
 	@include menuPopover;
 	.update_cover_wrapper {
@@ -386,6 +414,13 @@
 		padding-bottom: 10px;
 		flex-direction: column;
 	}
+	.friends_count {
+		text-align: center;
+	}
+	.friends_imgs {
+		justify-content: center;
+		margin-bottom: 20px;
+	}
 	.profile_bottom {
 		.profile_container {
 			.bottom_container {
@@ -398,6 +433,9 @@
 }
 
 @media (max-width: 500px) {
+	.friendship_wrapper {
+		justify-content: center;
+	}
 	.profile_menu_wrap {
 		.profile_menu {
 			.p10_dots {

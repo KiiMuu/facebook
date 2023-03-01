@@ -19,6 +19,7 @@ root.render(
 					color: '#f2f2f2',
 					zIndex: 9991,
 				},
+				duration: 2000,
 			}}
 		/>
 		<Provider store={store}>

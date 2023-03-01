@@ -15,6 +15,13 @@ import {
 	updateProfilePic,
 	updateCoverPhoto,
 	updateUserInfos,
+	addFriendRequest,
+	cancelFriendRequest,
+	followRequest,
+	unfollowRequest,
+	acceptFriendRequest,
+	unFriendRequest,
+	deleteFriendRequest,
 } from './api';
 
 let currentUser = Cookies.get('fb_user')
@@ -189,6 +196,87 @@ export const userSlice = createSlice({
 						...state.profile!.posts,
 					];
 				}
+			})
+			.addCase(addFriendRequest.pending, (state, action) => {
+				state.status = 'loading';
+			})
+			.addCase(addFriendRequest.fulfilled, (state, action) => {
+				state.status = 'succeeded';
+				state.profile!.friendship.isRequestSent = true;
+				state.profile!.friendship.isFollowing = true;
+			})
+			.addCase(addFriendRequest.rejected, (state, action: any) => {
+				state.status = 'failed';
+			})
+			.addCase(cancelFriendRequest.pending, (state, action) => {
+				state.status = 'loading';
+			})
+			.addCase(cancelFriendRequest.fulfilled, (state, action) => {
+				state.status = 'succeeded';
+				state.profile!.friendship.isRequestSent = false;
+				state.profile!.friendship.isFollowing = false;
+			})
+			.addCase(cancelFriendRequest.rejected, (state, action: any) => {
+				state.status = 'failed';
+			})
+			.addCase(followRequest.pending, (state, action) => {
+				state.status = 'loading';
+			})
+			.addCase(followRequest.fulfilled, (state, action) => {
+				state.status = 'succeeded';
+				state.profile!.friendship.isFollowing = true;
+			})
+			.addCase(followRequest.rejected, (state, action: any) => {
+				state.status = 'failed';
+			})
+			.addCase(unfollowRequest.pending, (state, action) => {
+				state.status = 'loading';
+			})
+			.addCase(unfollowRequest.fulfilled, (state, action) => {
+				state.status = 'succeeded';
+				state.profile!.friendship.isFollowing = false;
+			})
+			.addCase(unfollowRequest.rejected, (state, action: any) => {
+				state.status = 'failed';
+			})
+			.addCase(acceptFriendRequest.pending, (state, action) => {
+				state.status = 'loading';
+			})
+			.addCase(acceptFriendRequest.fulfilled, (state, action) => {
+				state.status = 'succeeded';
+				state.profile!.friendship.areFriends = true;
+				state.profile!.friendship.isFollowing = true;
+				state.profile!.friendship.isRequestSent = false;
+				state.profile!.friendship.isRequestRecieved = false;
+			})
+			.addCase(acceptFriendRequest.rejected, (state, action: any) => {
+				state.status = 'failed';
+			})
+			.addCase(unFriendRequest.pending, (state, action) => {
+				state.status = 'loading';
+			})
+			.addCase(unFriendRequest.fulfilled, (state, action) => {
+				state.status = 'succeeded';
+				state.profile!.friendship.areFriends = false;
+				state.profile!.friendship.isFollowing = false;
+				state.profile!.friendship.isRequestSent = false;
+				state.profile!.friendship.isRequestRecieved = false;
+			})
+			.addCase(unFriendRequest.rejected, (state, action: any) => {
+				state.status = 'failed';
+			})
+			.addCase(deleteFriendRequest.pending, (state, action) => {
+				state.status = 'loading';
+			})
+			.addCase(deleteFriendRequest.fulfilled, (state, action) => {
+				state.status = 'succeeded';
+				state.profile!.friendship.areFriends = false;
+				state.profile!.friendship.isFollowing = false;
+				state.profile!.friendship.isRequestSent = false;
+				state.profile!.friendship.isRequestRecieved = false;
+			})
+			.addCase(deleteFriendRequest.rejected, (state, action: any) => {
+				state.status = 'failed';
 			});
 	},
 });

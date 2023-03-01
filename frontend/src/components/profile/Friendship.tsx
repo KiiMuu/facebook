@@ -1,18 +1,131 @@
 import { useState, useRef } from 'react';
+import { toast } from 'react-hot-toast';
 import useDetectOutsideClicks from 'src/hooks/useDetectOutsideClicks';
-import { useAppSelector } from 'src/state/hooks';
+import { useAppDispatch, useAppSelector } from 'src/state/hooks';
+import {
+	acceptFriendRequest,
+	addFriendRequest,
+	cancelFriendRequest,
+	deleteFriendRequest,
+	followRequest,
+	unfollowRequest,
+	unFriendRequest,
+} from 'src/state/user/api';
 import classes from '../../pages/profile/profile.module.scss';
 
 const Friendship = () => {
 	const [isFriendsMenuVisible, setIsFriendsMenuVisible] = useState(false);
 	const [isRespondMenuVisible, setIsRespondMenuVisible] = useState(false);
 	const friendsMenuRef = useRef(null);
-	const { profile } = useAppSelector(state => state.user);
+	const dispatch = useAppDispatch();
+	const { profile, user } = useAppSelector(state => state.user);
 
 	useDetectOutsideClicks(friendsMenuRef, () => {
 		setIsFriendsMenuVisible(false);
 		setIsRespondMenuVisible(false);
 	});
+
+	const handleAddFriend = async () => {
+		try {
+			let res = await dispatch(
+				addFriendRequest({ token: user?.token, userId: profile?._id })
+			).unwrap();
+
+			toast.success(res.message);
+		} catch (error) {
+			toast.success(error.message);
+		}
+	};
+
+	const handleCancelFriend = async () => {
+		try {
+			let res = await dispatch(
+				cancelFriendRequest({
+					token: user?.token,
+					userId: profile?._id,
+				})
+			).unwrap();
+
+			toast.success(res.message);
+		} catch (error) {
+			toast.success(error.message);
+		}
+	};
+
+	const handleFollow = async () => {
+		try {
+			let res = await dispatch(
+				followRequest({
+					token: user?.token,
+					userId: profile?._id,
+				})
+			).unwrap();
+
+			toast.success(res.message);
+		} catch (error) {
+			toast.success(error.message);
+		}
+	};
+
+	const handleUnfollow = async () => {
+		try {
+			let res = await dispatch(
+				unfollowRequest({
+					token: user?.token,
+					userId: profile?._id,
+				})
+			).unwrap();
+
+			toast.success(res.message);
+		} catch (error) {
+			toast.success(error.message);
+		}
+	};
+
+	const handleAcceptFriend = async () => {
+		try {
+			let res = await dispatch(
+				acceptFriendRequest({
+					token: user?.token,
+					userId: profile?._id,
+				})
+			).unwrap();
+
+			toast.success(res.message);
+		} catch (error) {
+			toast.success(error.message);
+		}
+	};
+
+	const handleUnFriend = async () => {
+		try {
+			let res = await dispatch(
+				unFriendRequest({
+					token: user?.token,
+					userId: profile?._id,
+				})
+			).unwrap();
+
+			toast.success(res.message);
+		} catch (error) {
+			toast.success(error.message);
+		}
+	};
+
+	const handleDeleteFriendRequest = async () => {
+		try {
+			let res = await dispatch(
+				deleteFriendRequest({
+					token: user?.token,
+					userId: profile?._id,
+				})
+			).unwrap();
+
+			toast.success(res.message);
+		} catch (error) {
+			toast.success(error.message);
+		}
+	};
 
 	const {
 		friendship_wrapper,
@@ -51,6 +164,7 @@ const Friendship = () => {
 							{profile?.friendship.isFollowing ? (
 								<div
 									className={`${open_cover_menu_item} hover1`}
+									onClick={() => handleUnfollow()}
 								>
 									<img
 										src='/icons/unfollowOutlined.png'
@@ -61,6 +175,7 @@ const Friendship = () => {
 							) : (
 								<div
 									className={`${open_cover_menu_item} hover1`}
+									onClick={() => handleFollow()}
 								>
 									<img
 										src='/icons/unfollowOutlined.png'
@@ -69,7 +184,10 @@ const Friendship = () => {
 									<span>Follow</span>
 								</div>
 							)}
-							<div className={`${open_cover_menu_item} hover1`}>
+							<div
+								className={`${open_cover_menu_item} hover1`}
+								onClick={() => handleUnFriend()}
+							>
 								<i className='unfriend_outlined_icon' />
 								<span>Unfriend</span>
 							</div>
@@ -81,7 +199,7 @@ const Friendship = () => {
 				!profile?.friendship.isRequestRecieved && (
 					<button
 						className='blue_btn'
-						onClick={() => setIsFriendsMenuVisible(prev => !prev)}
+						onClick={() => handleAddFriend()}
 					>
 						<img
 							src='/icons/addFriend.png'
@@ -95,7 +213,7 @@ const Friendship = () => {
 			{profile?.friendship.isRequestSent ? (
 				<button
 					className='blue_btn'
-					onClick={() => setIsFriendsMenuVisible(prev => !prev)}
+					onClick={() => handleCancelFriend()}
 				>
 					<img
 						src='/icons/cancelRequest.png'
@@ -123,6 +241,7 @@ const Friendship = () => {
 							>
 								<div
 									className={`${open_cover_menu_item} hover1`}
+									onClick={() => handleAcceptFriend()}
 								>
 									<img
 										src='/icons/addFriend.png'
@@ -132,6 +251,7 @@ const Friendship = () => {
 								</div>
 								<div
 									className={`${open_cover_menu_item} hover1`}
+									onClick={() => handleDeleteFriendRequest()}
 								>
 									<img
 										src='/icons/cancelRequest.png'
@@ -145,12 +265,12 @@ const Friendship = () => {
 				)
 			)}
 			{profile?.friendship.isFollowing ? (
-				<button className='gray_btn'>
+				<button className='gray_btn' onClick={() => handleUnfollow()}>
 					<img src='/icons/follow.png' alt='follow' />
 					<span>Following</span>
 				</button>
 			) : (
-				<button className='blue_btn'>
+				<button className='blue_btn' onClick={() => handleFollow()}>
 					<img
 						src='/icons/follow.png'
 						alt='follow'

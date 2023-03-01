@@ -331,6 +331,11 @@ const getProfile = async (req: Request, res: Response) => {
 			.populate('user', '-details -password')
 			.exec();
 
+		await profile.populate(
+			'friends',
+			'username firstName lastName picture'
+		);
+
 		return res
 			.status(OK)
 			.json({ ...profile.toObject(), posts, friendship });
@@ -427,7 +432,7 @@ const addFriend = async (req: Request, res: Response) => {
 
 				await sender?.updateOne({
 					$push: {
-						following: sender?._id,
+						following: reciever?._id,
 					},
 				});
 
@@ -569,9 +574,7 @@ const unfollow = async (req: Request, res: Response) => {
 					},
 				});
 
-				return res
-					.status(OK)
-					.json({ message: 'Unfollowed successfully.' });
+				return res.status(OK).json({ message: 'Unfollowed.' });
 			} else {
 				return res.status(BAD_REQ).json({
 					message: 'Already not following.',
@@ -666,9 +669,7 @@ const unfriend = async (req: Request, res: Response) => {
 					},
 				});
 
-				return res
-					.status(OK)
-					.json({ message: 'Unfriend request accepted.' });
+				return res.status(OK).json({ message: 'Unfriended.' });
 			} else {
 				return res.status(BAD_REQ).json({
 					message: 'Already not friends.',

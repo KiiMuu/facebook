@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import classes from '../../pages/profile/profile.module.scss';
 import Friendship from './Friendship';
 import ProfilePic from './pp/ProfilePic';
@@ -54,8 +55,28 @@ const ProfilePictureInfos: React.FC<{
 							</div>
 						)}
 					</div>
-					<div className={friends_count}></div>
-					<div className={friends_imgs}></div>
+					{profile?.friends?.length ? (
+						<div className={friends_count}>
+							has{' '}
+							{profile?.friends?.length === 1
+								? '(1) Friend'
+								: `(${profile?.friends?.length}) of Friends`}
+						</div>
+					) : null}
+					<div className={friends_imgs}>
+						{profile?.friends?.slice(0, 9).map(friend => (
+							<Link
+								to={`/profile/${friend.username}`}
+								key={friend._id}
+							>
+								<img
+									src={friend.picture}
+									alt={friend.username}
+									title={friend.username}
+								/>
+							</Link>
+						))}
+					</div>
 				</div>
 			</div>
 			{isVisitor ? (

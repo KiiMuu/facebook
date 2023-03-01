@@ -139,7 +139,7 @@ const Profile: React.FC<{
 							>
 								<ProfileIntro isVisitor={isVisitor} />
 								<Photos />
-								<Friends friends={profile?.friends} />
+								<Friends />
 								<div className='fb_copyright'>
 									<Link to=''>Privacy</Link>
 									<span>, </span>

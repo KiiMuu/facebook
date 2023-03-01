@@ -311,3 +311,199 @@ export const updateUserInfos = createAsyncThunk(
 		}
 	}
 );
+
+export const addFriendRequest = createAsyncThunk(
+	'user/addFriendRequest',
+	async (
+		userData: { token?: string; userId?: string },
+		{ rejectWithValue }
+	) => {
+		const { token, userId } = userData;
+
+		try {
+			const { data } = await axios.put(
+				`${process.env.REACT_APP_API}/user/profile/add_friend/${userId}`,
+				{},
+				{
+					headers: {
+						Authorization: `Bearer ${token}`,
+					},
+				}
+			);
+
+			return data;
+		} catch (error: any) {
+			return rejectWithValue(
+				error.response ? error.response.data : error
+			);
+		}
+	}
+);
+
+export const cancelFriendRequest = createAsyncThunk(
+	'user/cancelFriendRequest',
+	async (
+		userData: { token?: string; userId?: string },
+		{ rejectWithValue }
+	) => {
+		const { token, userId } = userData;
+
+		try {
+			const { data } = await axios.put(
+				`${process.env.REACT_APP_API}/user/profile/cancel_friend/${userId}`,
+				{},
+				{
+					headers: {
+						Authorization: `Bearer ${token}`,
+					},
+				}
+			);
+
+			return data;
+		} catch (error: any) {
+			return rejectWithValue(
+				error.response ? error.response.data : error
+			);
+		}
+	}
+);
+
+export const followRequest = createAsyncThunk(
+	'user/followRequest',
+	async (
+		userData: { token?: string; userId?: string },
+		{ rejectWithValue }
+	) => {
+		const { token, userId } = userData;
+
+		try {
+			const { data } = await axios.put(
+				`${process.env.REACT_APP_API}/user/profile/follow/${userId}`,
+				{},
+				{
+					headers: {
+						Authorization: `Bearer ${token}`,
+					},
+				}
+			);
+
+			return data;
+		} catch (error: any) {
+			return rejectWithValue(
+				error.response ? error.response.data : error
+			);
+		}
+	}
+);
+
+export const unfollowRequest = createAsyncThunk(
+	'user/unfollowRequest',
+	async (
+		userData: { token?: string; userId?: string },
+		{ rejectWithValue }
+	) => {
+		const { token, userId } = userData;
+
+		try {
+			const { data } = await axios.put(
+				`${process.env.REACT_APP_API}/user/profile/unfollow/${userId}`,
+				{},
+				{
+					headers: {
+						Authorization: `Bearer ${token}`,
+					},
+				}
+			);
+
+			return data;
+		} catch (error: any) {
+			return rejectWithValue(
+				error.response ? error.response.data : error
+			);
+		}
+	}
+);
+
+export const acceptFriendRequest = createAsyncThunk(
+	'user/acceptFriendRequest',
+	async (
+		userData: { token?: string; userId?: string },
+		{ rejectWithValue }
+	) => {
+		const { token, userId } = userData;
+
+		try {
+			const { data } = await axios.put(
+				`${process.env.REACT_APP_API}/user/profile/accept_friend/${userId}`,
+				{},
+				{
+					headers: {
+						Authorization: `Bearer ${token}`,
+					},
+				}
+			);
+
+			return data;
+		} catch (error: any) {
+			return rejectWithValue(
+				error.response ? error.response.data : error
+			);
+		}
+	}
+);
+
+export const unFriendRequest = createAsyncThunk(
+	'user/unFriendRequest',
+	async (
+		userData: { token?: string; userId?: string },
+		{ rejectWithValue }
+	) => {
+		const { token, userId } = userData;
+
+		try {
+			const { data } = await axios.put(
+				`${process.env.REACT_APP_API}/user/profile/unfriend/${userId}`,
+				{},
+				{
+					headers: {
+						Authorization: `Bearer ${token}`,
+					},
+				}
+			);
+
+			return data;
+		} catch (error: any) {
+			return rejectWithValue(
+				error.response ? error.response.data : error
+			);
+		}
+	}
+);
+
+export const deleteFriendRequest = createAsyncThunk(
+	'user/deleteFriendRequest',
+	async (
+		userData: { token?: string; userId?: string },
+		{ rejectWithValue }
+	) => {
+		const { token, userId } = userData;
+
+		try {
+			const { data } = await axios.put(
+				`${process.env.REACT_APP_API}/user/profile/delete_request/${userId}`,
+				{},
+				{
+					headers: {
+						Authorization: `Bearer ${token}`,
+					},
+				}
+			);
+
+			return data;
+		} catch (error: any) {
+			return rejectWithValue(
+				error.response ? error.response.data : error
+			);
+		}
+	}
+);
