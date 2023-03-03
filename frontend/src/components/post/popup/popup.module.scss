@@ -351,9 +351,9 @@
 	padding: 5px 15px;
 	border-radius: 50px;
 	box-shadow: 0 1px 2px var(--shadow-1);
+	animation: animateMe 0.12s ease-in-out;
 	.react {
 		cursor: pointer;
-		animation: animateMe 0.1s ease-in-out;
 		img {
 			width: 40px;
 			height: 40px;
@@ -380,10 +380,10 @@
 
 @keyframes animateMe {
 	0% {
-		transform: translate(-50%, -50%) scale(0);
+		transform: scale(0);
 	}
 	100% {
-		transform: translate(-50%, -50%) scale(1);
+		transform: scale(1);
 	}
 }
 

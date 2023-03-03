@@ -1,3 +1,4 @@
+import { LegacyRef } from 'react';
 import classes from './popup.module.scss';
 
 const reacts = [
@@ -29,24 +30,25 @@ const reacts = [
 
 const PostReacts: React.FC<{
 	areReactsVisible: boolean;
-	setAreReactsVisible: (state: boolean) => void;
-}> = ({ areReactsVisible, setAreReactsVisible }) => {
+	handleReactOnPost: (reactName: string) => Promise<void>;
+	reactedByMeType: string;
+	setReactedByMeType: (state: string) => void;
+	reactActionRef: LegacyRef<HTMLDivElement> | undefined;
+}> = ({ areReactsVisible, handleReactOnPost, reactActionRef }) => {
 	const { reacts_popup, react } = classes;
+
+	console.log({ areReactsVisible });
 
 	return (
 		<>
 			{areReactsVisible && (
-				<div
-					className={reacts_popup}
-					onMouseOver={() =>
-						setTimeout(() => setAreReactsVisible(true), 500)
-					}
-					onMouseLeave={() =>
-						setTimeout(() => setAreReactsVisible(false), 500)
-					}
-				>
+				<div ref={reactActionRef} className={reacts_popup}>
 					{reacts.map((reactItem, i) => (
-						<div key={i} className={react}>
+						<div
+							key={i}
+							className={react}
+							onClick={() => handleReactOnPost(reactItem.name)}
+						>
 							<img
 								src={reactItem.image}
 								alt={reactItem.name}

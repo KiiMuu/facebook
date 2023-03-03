@@ -1,5 +1,5 @@
 import Moment from 'react-moment';
-import { useState } from 'react';
+import { useCallback, useEffect, useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { IPost } from 'src/interfaces/post';
 import { Dots, Public } from 'src/svg';
@@ -7,6 +7,11 @@ import PostReacts from './popup/PostReacts';
 import classes from './posts.module.scss';
 import CreateComment from './comment';
 import PostOptions from './options';
+import axios from 'axios';
+import { useAppDispatch } from 'src/state/hooks';
+import { reactOnPost } from 'src/state/react/api';
+import { toast } from 'react-hot-toast';
+import useDetectOutsideClicks from 'src/hooks/useDetectOutsideClicks';
 
 const Post: React.FC<{
 	post: IPost;
@@ -15,6 +20,124 @@ const Post: React.FC<{
 }> = ({ post, user, profile }) => {
 	const [areReactsVisible, setAreReactsVisible] = useState(false);
 	const [isPostOptionsVisible, setIsPostOptionsVisible] = useState(false);
+	const [totalReacts, setTotalReacts] = useState(0);
+	const [reactedByMeType, setReactedByMeType] = useState('');
+	const [postReacts, setPostReacts] = useState<any[]>([]);
+	const reactActionRef = useRef(null);
+
+	const dispatch = useAppDispatch();
+
+	useDetectOutsideClicks(reactActionRef, () => setAreReactsVisible(false));
+
+	const handleReactOnPost = useCallback(
+		async (reactName: string) => {
+			try {
+				await dispatch(
+					reactOnPost({
+						postId: post?._id,
+						react: reactName,
+						token: user?.token,
+					})
+				);
+
+				if (reactedByMeType === reactName) {
+					setReactedByMeType('');
+
+					let index = postReacts.findIndex(
+						x => x.react === reactedByMeType
+					);
+
+					if (index !== -1) {
+						setPostReacts([
+							...postReacts,
+							(postReacts[index].count = --postReacts[index]
+								.count),
+						]);
+						setTotalReacts(prev => --prev);
+					}
+				} else {
+					setReactedByMeType(reactName);
+
+					let index = postReacts.findIndex(
+						x => x.react === reactName
+					);
+					let index1 = postReacts.findIndex(
+						x => x.react === reactedByMeType
+					);
+					if (index !== -1) {
+						setPostReacts([
+							...postReacts,
+							(postReacts[index].count = ++postReacts[index]
+								.count),
+						]);
+						setTotalReacts(prev => ++prev);
+					}
+					if (index1 !== -1) {
+						setPostReacts([
+							...postReacts,
+							(postReacts[index1].count = --postReacts[index1]
+								.count),
+						]);
+						setTotalReacts(prev => --prev);
+					}
+				}
+
+				setAreReactsVisible(false);
+			} catch (error) {
+				toast.error(error.message);
+			}
+		},
+		[dispatch, post?._id, reactedByMeType, user?.token, postReacts]
+	);
+
+	const fetchPostReacts = useCallback(async () => {
+		try {
+			const { data } = await axios.get(
+				`${process.env.REACT_APP_API}/reacts/${post?._id}`,
+				{
+					headers: {
+						Authorization: `Bearer ${user?.token}`,
+					},
+				}
+			);
+
+			setReactedByMeType(data.reactedByMeType);
+			setPostReacts(data.reacts);
+			setTotalReacts(data.total);
+		} catch (error) {
+			console.log(error.message);
+		}
+	}, [post?._id, user?.token]);
+
+	useEffect(() => {
+		fetchPostReacts();
+	}, [fetchPostReacts]);
+
+	const getReactTextColor = (isBg: boolean) => {
+		switch (reactedByMeType) {
+			case 'like':
+				return isBg ? 'rgba(66, 103, 178, .05)' : '#4267b2';
+			case 'love':
+				return isBg ? 'rgba(246, 52, 89, .05)' : '#f63459';
+			case 'haha':
+				return isBg ? 'rgba(247, 177, 37, .05)' : '#f7b125';
+			case 'sad':
+				return isBg ? 'rgba(247, 177, 37, .05)' : '#f7b125';
+			case 'wow':
+				return isBg ? 'rgba(247, 177, 37, .05)' : '#f7b125';
+			case 'angry':
+				return isBg ? 'rgba(246, 52, 89, .05)' : '#f63459';
+			default:
+				return isBg ? '' : 'var(--color-secondary)';
+		}
+	};
+
+	const reactTextColor = {
+		color: getReactTextColor(false),
+	};
+	const reactBgColor = {
+		backgroundColor: getReactTextColor(true),
+	};
 
 	const {
 		post_wrap,
@@ -173,8 +296,27 @@ const Post: React.FC<{
 			)}
 			<div className={post_infos}>
 				<div className={reacts_count}>
-					<div className={reacts_counts_images}></div>
-					<div className={reacts_counts_num}></div>
+					<div className={reacts_counts_images}>
+						{postReacts
+							.sort((a, b) => {
+								return b.count - a.count;
+							})
+							?.slice(0, 3)
+							?.map(
+								react =>
+									react.count > 0 && (
+										<img
+											src={`../../reacts/${react.react}.svg`}
+											alt={react.react}
+											key={react.react}
+											title={`${react.count}`}
+										/>
+									)
+							)}
+					</div>
+					<div className={reacts_counts_num}>
+						{totalReacts ? totalReacts : null}
+					</div>
 				</div>
 				<div className={to_right}>
 					<div className={comments_count}>4 comments</div>
@@ -184,19 +326,37 @@ const Post: React.FC<{
 			<div className={post_actions}>
 				<PostReacts
 					areReactsVisible={areReactsVisible}
-					setAreReactsVisible={setAreReactsVisible}
+					handleReactOnPost={handleReactOnPost}
+					reactedByMeType={reactedByMeType}
+					setReactedByMeType={setReactedByMeType}
+					reactActionRef={reactActionRef}
 				/>
 				<div
+					ref={reactActionRef}
 					className={`${post_action} hover1`}
+					style={reactBgColor}
 					onMouseOver={() =>
 						setTimeout(() => setAreReactsVisible(true), 500)
 					}
-					onMouseLeave={() =>
-						setTimeout(() => setAreReactsVisible(false), 500)
+					onClick={() =>
+						handleReactOnPost(
+							reactedByMeType ? reactedByMeType : 'like'
+						)
 					}
 				>
-					<i className='like_icon'></i>
-					<span>Like</span>
+					{reactedByMeType ? (
+						<img
+							src={`../../reacts/${reactedByMeType}.svg`}
+							alt={reactedByMeType}
+							loading='lazy'
+							width={'20px'}
+						/>
+					) : (
+						<i className='like_icon'></i>
+					)}
+					<span style={reactTextColor}>
+						{reactedByMeType ? reactedByMeType : 'Like'}
+					</span>
 				</div>
 				<div className={`${post_action} hover1`}>
 					<i className='comment_icon'></i>
