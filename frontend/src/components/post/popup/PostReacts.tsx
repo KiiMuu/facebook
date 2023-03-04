@@ -37,8 +37,6 @@ const PostReacts: React.FC<{
 }> = ({ areReactsVisible, handleReactOnPost, reactActionRef }) => {
 	const { reacts_popup, react } = classes;
 
-	console.log({ areReactsVisible });
-
 	return (
 		<>
 			{areReactsVisible && (

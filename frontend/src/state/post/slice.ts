@@ -1,12 +1,18 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { SliceState } from 'src/interfaces/post';
-import { createPost, getAllPosts, uploadImages } from './api';
+import {
+	createPost,
+	createPostComment,
+	getAllPosts,
+	uploadImages,
+} from './api';
 
 export const postSlice = createSlice({
 	name: 'post',
 	initialState: {
 		status: 'idle',
 		postStatus: 'idle',
+		commentStatus: 'idle',
 		error: '',
 		successMsg: '',
 		errorMsg: '',
@@ -21,6 +27,7 @@ export const postSlice = createSlice({
 			updatedAt: undefined,
 		},
 		posts: [],
+		postComments: [],
 	} as SliceState,
 	reducers: {},
 	extraReducers(builder) {
@@ -59,6 +66,17 @@ export const postSlice = createSlice({
 			})
 			.addCase(getAllPosts.rejected, (state, action) => {
 				state.status = 'failed';
+				state.error = action.payload;
+			})
+			.addCase(createPostComment.pending, (state, action) => {
+				state.commentStatus = 'loading';
+			})
+			.addCase(createPostComment.fulfilled, (state, action) => {
+				state.commentStatus = 'succeeded';
+				state.postComments = action.payload;
+			})
+			.addCase(createPostComment.rejected, (state, action) => {
+				state.commentStatus = 'failed';
 				state.error = action.payload;
 			});
 	},

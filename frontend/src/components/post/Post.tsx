@@ -1,17 +1,18 @@
 import Moment from 'react-moment';
 import { useCallback, useEffect, useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { IPost } from 'src/interfaces/post';
+import { IComment, IPost } from 'src/interfaces/post';
 import { Dots, Public } from 'src/svg';
 import PostReacts from './popup/PostReacts';
 import classes from './posts.module.scss';
 import CreateComment from './comment';
 import PostOptions from './options';
 import axios from 'axios';
-import { useAppDispatch } from 'src/state/hooks';
+import { useAppDispatch, useAppSelector } from 'src/state/hooks';
 import { reactOnPost } from 'src/state/react/api';
 import { toast } from 'react-hot-toast';
 import useDetectOutsideClicks from 'src/hooks/useDetectOutsideClicks';
+import Comment from './comment/Comment';
 
 const Post: React.FC<{
 	post: IPost;
@@ -21,8 +22,12 @@ const Post: React.FC<{
 	const [areReactsVisible, setAreReactsVisible] = useState(false);
 	const [isPostOptionsVisible, setIsPostOptionsVisible] = useState(false);
 	const [totalReacts, setTotalReacts] = useState(0);
+	const [commentsCount, setCommentsCount] = useState(1);
 	const [reactedByMeType, setReactedByMeType] = useState('');
 	const [postReacts, setPostReacts] = useState<any[]>([]);
+	const [postComments, setPostComments] = useState<IComment[] | undefined>(
+		[]
+	);
 	const reactActionRef = useRef(null);
 
 	const dispatch = useAppDispatch();
@@ -113,20 +118,24 @@ const Post: React.FC<{
 		fetchPostReacts();
 	}, [fetchPostReacts]);
 
+	useEffect(() => {
+		setPostComments(post.comments);
+	}, [post]);
+
 	const getReactTextColor = (isBg: boolean) => {
 		switch (reactedByMeType) {
 			case 'like':
-				return isBg ? 'rgba(66, 103, 178, .05)' : '#4267b2';
+				return isBg ? 'rgba(66, 103, 178, .03)' : '#4267b2';
 			case 'love':
-				return isBg ? 'rgba(246, 52, 89, .05)' : '#f63459';
+				return isBg ? 'rgba(246, 52, 89, .03)' : '#f63459';
 			case 'haha':
-				return isBg ? 'rgba(247, 177, 37, .05)' : '#f7b125';
+				return isBg ? 'rgba(247, 177, 37, .03)' : '#f7b125';
 			case 'sad':
-				return isBg ? 'rgba(247, 177, 37, .05)' : '#f7b125';
+				return isBg ? 'rgba(247, 177, 37, .03)' : '#f7b125';
 			case 'wow':
-				return isBg ? 'rgba(247, 177, 37, .05)' : '#f7b125';
+				return isBg ? 'rgba(247, 177, 37, .03)' : '#f7b125';
 			case 'angry':
-				return isBg ? 'rgba(246, 52, 89, .05)' : '#f63459';
+				return isBg ? 'rgba(246, 52, 89, .03)' : '#f63459';
 			default:
 				return isBg ? '' : 'var(--color-secondary)';
 		}
@@ -137,6 +146,10 @@ const Post: React.FC<{
 	};
 	const reactBgColor = {
 		backgroundColor: getReactTextColor(true),
+	};
+
+	const showMoreComments = () => {
+		setCommentsCount(prev => prev + 3);
 	};
 
 	const {
@@ -175,6 +188,7 @@ const Post: React.FC<{
 		post_updated_bg,
 		post_updated_pic,
 		post_cover_wrap,
+		load_more_comments,
 	} = classes;
 
 	return (
@@ -319,7 +333,11 @@ const Post: React.FC<{
 					</div>
 				</div>
 				<div className={to_right}>
-					<div className={comments_count}>4 comments</div>
+					{postComments?.length ? (
+						<div className={comments_count}>
+							{postComments?.length} comments
+						</div>
+					) : null}
 					<div className={shares_count}>12 share</div>
 				</div>
 			</div>
@@ -369,7 +387,30 @@ const Post: React.FC<{
 			</div>
 			<div className={comments_wrap}>
 				<div className={comments_order}></div>
-				<CreateComment user={user} />
+				<CreateComment
+					user={user}
+					postId={post._id}
+					setCommentsCount={setCommentsCount}
+					setPostComments={setPostComments}
+				/>
+				{postComments?.length
+					? postComments
+							.slice()
+							.reverse()
+							.slice(0, commentsCount)
+							.map(comment => (
+								<Comment comment={comment} key={comment._id} />
+							))
+					: null}
+				{/* @ts-ignore */}
+				{commentsCount < postComments?.length ? (
+					<button
+						className={load_more_comments}
+						onClick={() => showMoreComments()}
+					>
+						Load more comments
+					</button>
+				) : null}
 			</div>
 			{isPostOptionsVisible && (
 				<PostOptions

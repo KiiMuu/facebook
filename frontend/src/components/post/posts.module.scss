@@ -207,6 +207,15 @@
 	}
 	.comments_wrap {
 		padding: 10px 15px;
+		.load_more_comments {
+			all: unset;
+			text-decoration: underline;
+			font-weight: 600;
+			font-size: 14px;
+			margin-left: 15px;
+			cursor: pointer;
+			color: var(--color-secondary);
+		}
 	}
 }
 

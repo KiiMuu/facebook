@@ -1,11 +1,13 @@
 export interface SliceState {
 	status: 'idle' | 'loading' | 'succeeded' | 'failed';
 	postStatus: 'idle' | 'loading' | 'succeeded' | 'failed';
+	commentStatus: 'idle' | 'loading' | 'succeeded' | 'failed';
 	error: any;
 	successMsg?: string;
 	errorMsg?: string;
 	createdPost: CreatePostProps;
 	posts: IPost[];
+	postComments: IComment[];
 }
 
 export interface CreatePostProps {
@@ -15,8 +17,19 @@ export interface CreatePostProps {
 	images: ICloudImage[] | null;
 	user: UserInfo | null;
 	token?: string;
+	comments?: IComment[];
 	createdAt?: Date;
 	updatedAt?: Date;
+}
+
+export interface IComment {
+	_id?: string;
+	postId?: string;
+	comment?: string;
+	image?: string | ArrayBuffer | null;
+	token?: string;
+	commentedBy?: IPublicUser;
+	commentedAt?: Date;
 }
 
 export interface IPost extends CreatePostProps {

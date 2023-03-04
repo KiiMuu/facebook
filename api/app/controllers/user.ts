@@ -329,6 +329,10 @@ const getProfile = async (req: Request, res: Response) => {
 		const posts = await Post.find({ user: profile._id })
 			.sort({ createdAt: -1 })
 			.populate('user', '-details -password')
+			.populate(
+				'comments.commentedBy',
+				'username firstName lastName picture'
+			)
 			.exec();
 
 		await profile.populate(

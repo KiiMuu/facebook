@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { CreatePostProps } from 'src/interfaces/post';
+import { CreatePostProps, IComment } from 'src/interfaces/post';
 
 export const createPost = createAsyncThunk(
 	'post/create',
@@ -72,6 +72,35 @@ export const uploadImages = createAsyncThunk(
 				{
 					headers: {
 						'Content-Type': 'multipart/form-data',
+						Authorization: `Bearer ${token}`,
+					},
+				}
+			);
+
+			return data;
+		} catch (error: any) {
+			return rejectWithValue(
+				error.response ? error.response.data : error
+			);
+		}
+	}
+);
+
+export const createPostComment = createAsyncThunk(
+	'post/createPostComment',
+	async (postData: IComment, { rejectWithValue }) => {
+		const { postId, comment, image, token } = postData;
+
+		try {
+			const { data } = await axios.put(
+				`${process.env.REACT_APP_API}/post/comment/create`,
+				{
+					postId,
+					comment,
+					image,
+				},
+				{
+					headers: {
 						Authorization: `Bearer ${token}`,
 					},
 				}

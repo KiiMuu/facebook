@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import Post from '../models/Post';
-import { SERVER_ERR } from '../constants';
+import { BAD_REQ, SERVER_ERR } from '../constants';
 
 const createPost = async (req: Request, res: Response) => {
 	try {
@@ -31,6 +31,10 @@ const getAllPosts = async (req: Request, res: Response) => {
 				'user',
 				'firstName lastName picture cover username gender _id'
 			)
+			.populate(
+				'comments.commentedBy',
+				'username firstName lastName picture'
+			)
 			.sort({ createdAt: 'desc' })
 			.exec();
 
@@ -42,4 +46,41 @@ const getAllPosts = async (req: Request, res: Response) => {
 	}
 };
 
-export { createPost, getAllPosts };
+const createComment = async (req: Request, res: Response) => {
+	try {
+		const { postId, comment, image } = req.body;
+
+		if (!postId) {
+			return res.status(BAD_REQ).json({
+				message: "Something went wrong. Couldn't create a comment.",
+			});
+		}
+
+		const newPostComment = await Post.findByIdAndUpdate(
+			postId,
+			{
+				$push: {
+					comments: {
+						comment,
+						image,
+						commentedBy: req.user.id,
+					},
+				},
+			},
+			{ new: true }
+		);
+
+		await newPostComment?.populate(
+			'comments.commentedBy',
+			'username firstName lastName picture'
+		);
+
+		return res.json(newPostComment?.comments);
+	} catch (error: any) {
+		return res.status(SERVER_ERR).json({
+			message: error.message,
+		});
+	}
+};
+
+export { createPost, getAllPosts, createComment };

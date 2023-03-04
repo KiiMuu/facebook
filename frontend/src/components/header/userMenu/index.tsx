@@ -37,7 +37,7 @@ const UserMenu: React.FC<{ user: UserInfo | null }> = ({ user }) => {
 			{visible === 0 && (
 				<div>
 					<Link
-						to='/profile'
+						to={`/profile/${user?.username}`}
 						className={`${user_menu_header} hover3`}
 					>
 						<img src={user?.picture} alt={user?.username} />

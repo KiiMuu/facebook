@@ -1,4 +1,5 @@
 .create_comment_wrap {
+	margin-bottom: 20px;
 	.create_comment {
 		display: flex;
 		align-items: center;
@@ -18,6 +19,7 @@
 			background-color: var(--bg-forth);
 			border-radius: 50px;
 			padding-right: 10px;
+			z-index: 9999;
 			.comment_emoji_picker {
 				position: absolute;
 				right: 0;
@@ -68,6 +70,60 @@
 			cursor: pointer;
 			i {
 				transform: scale(0.68);
+			}
+		}
+	}
+}
+
+.comment_wrapper {
+	display: flex;
+	gap: 10px;
+	font-size: 14px;
+	margin-bottom: 5px;
+	background: rgba(0, 0, 0, 0.03);
+	border-radius: 10px;
+	padding: 10px;
+	.creator_img {
+		width: 35px;
+		height: 35px;
+		border-radius: 50%;
+		object-fit: cover;
+	}
+	.comment_col {
+		.comment_wrap {
+			.name_and_date {
+				display: flex;
+				gap: 5px;
+				align-items: center;
+				flex-wrap: wrap;
+				.comment_name {
+					font-weight: 600;
+				}
+				.created_at {
+					color: var(--color-secondary);
+					font-size: 12px;
+				}
+			}
+			.comment_text {
+				margin-top: 5px;
+				margin-bottom: 5px;
+			}
+			.comment_img {
+				width: 100%;
+				object-fit: cover;
+				border-radius: 4px;
+			}
+			.like_reply {
+				display: flex;
+				gap: 15px;
+				margin-top: 20px;
+				span {
+					color: var(--color-secondary);
+					&:hover {
+						text-decoration: underline;
+						cursor: pointer;
+					}
+				}
 			}
 		}
 	}
