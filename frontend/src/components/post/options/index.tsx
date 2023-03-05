@@ -1,5 +1,8 @@
 import { useState, useRef } from 'react';
+import { toast } from 'react-hot-toast';
 import useDetectOutsideClicks from 'src/hooks/useDetectOutsideClicks';
+import { useAppDispatch, useAppSelector } from 'src/state/hooks';
+import { savePost } from 'src/state/post/api';
 import Option from './Option';
 import classes from './options.module.scss';
 
@@ -7,14 +10,30 @@ const PostOptions: React.FC<{
 	userId?: string;
 	postUserId?: string;
 	imagesLen?: number;
+	postId?: string;
 	setIsPostOptionsVisible: (state: boolean) => void;
-}> = ({ userId, postUserId, imagesLen, setIsPostOptionsVisible }) => {
+}> = ({ userId, postUserId, imagesLen, setIsPostOptionsVisible, postId }) => {
 	const [isOptionAvailableToMe] = useState(userId === postUserId);
 	const postOptionsRef = useRef(null);
+	const dispatch = useAppDispatch();
+	const { user } = useAppSelector(state => state.user);
+	const { isSavedPost } = useAppSelector(state => state.post);
 
 	useDetectOutsideClicks(postOptionsRef, () =>
 		setIsPostOptionsVisible(false)
 	);
+
+	const handleSavePost = async () => {
+		try {
+			const res = await dispatch(
+				savePost({ postId, token: user?.token })
+			).unwrap();
+
+			toast.success(res.message, { duration: 5000 });
+		} catch (error) {
+			toast.error(error.message);
+		}
+	};
 
 	const { post_options_menu, line } = classes;
 
@@ -27,11 +46,17 @@ const PostOptions: React.FC<{
 					subTitle='Pin this post at the top of your feed.'
 				/>
 			)}
-			<Option
-				icon='save_icon'
-				title='Save Post'
-				subTitle='Add this post to your saved items.'
-			/>
+			<div onClick={() => handleSavePost()}>
+				<Option
+					icon='save_icon'
+					title={isSavedPost ? 'Unsave post' : 'Save post'}
+					subTitle={
+						isSavedPost
+							? 'Remove this post from your saved items.'
+							: 'Add this post to your saved items.'
+					}
+				/>
+			</div>
 			<div className={line}></div>
 			{isOptionAvailableToMe && (
 				<Option icon='edit_icon' title='Edit Post' />

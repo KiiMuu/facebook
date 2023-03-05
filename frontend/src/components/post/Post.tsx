@@ -8,7 +8,7 @@ import classes from './posts.module.scss';
 import CreateComment from './comment';
 import PostOptions from './options';
 import axios from 'axios';
-import { useAppDispatch, useAppSelector } from 'src/state/hooks';
+import { useAppDispatch } from 'src/state/hooks';
 import { reactOnPost } from 'src/state/react/api';
 import { toast } from 'react-hot-toast';
 import useDetectOutsideClicks from 'src/hooks/useDetectOutsideClicks';
@@ -415,6 +415,7 @@ const Post: React.FC<{
 			{isPostOptionsVisible && (
 				<PostOptions
 					userId={user?.id}
+					postId={post?._id}
 					postUserId={post.user?._id}
 					imagesLen={post.images?.length}
 					setIsPostOptionsVisible={setIsPostOptionsVisible}

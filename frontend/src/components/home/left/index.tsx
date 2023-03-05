@@ -40,6 +40,7 @@ const LeftHome: React.FC<{ user: UserInfo | null }> = ({ user }) => {
 					key={i}
 					img={link.img}
 					text={link.text}
+					url={link.url}
 					notification={link.notification}
 				/>
 			))}

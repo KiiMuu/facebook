@@ -24,6 +24,7 @@ export const left = [
 	{
 		text: 'Saved',
 		img: 'saved',
+		url: '/posts/saved',
 	},
 	{
 		text: 'Pages',

@@ -141,7 +141,7 @@ const UserSchema: Schema = new Schema(
 				},
 				savedAt: {
 					type: Date,
-					default: new Date(),
+					default: Date.now,
 				},
 			},
 		],

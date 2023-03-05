@@ -114,3 +114,55 @@ export const createPostComment = createAsyncThunk(
 		}
 	}
 );
+
+export const savePost = createAsyncThunk(
+	'post/savePost',
+	async (
+		postData: { postId?: string; token?: string },
+		{ rejectWithValue }
+	) => {
+		const { postId, token } = postData;
+
+		try {
+			const { data } = await axios.put(
+				`${process.env.REACT_APP_API}/post/save/${postId}`,
+				{},
+				{
+					headers: {
+						Authorization: `Bearer ${token}`,
+					},
+				}
+			);
+
+			return data;
+		} catch (error: any) {
+			return rejectWithValue(
+				error.response ? error.response.data : error
+			);
+		}
+	}
+);
+
+export const getSavedPosts = createAsyncThunk(
+	'post/getSavedPosts',
+	async (postData: { token?: string }, { rejectWithValue }) => {
+		const { token } = postData;
+
+		try {
+			const { data } = await axios.get(
+				`${process.env.REACT_APP_API}/post/saved`,
+				{
+					headers: {
+						Authorization: `Bearer ${token}`,
+					},
+				}
+			);
+
+			return data;
+		} catch (error: any) {
+			return rejectWithValue(
+				error.response ? error.response.data : error
+			);
+		}
+	}
+);

@@ -14,5 +14,6 @@ export interface IPostModel extends Document {
 	images: string[];
 	user: string;
 	background: string;
+	savedBy: string;
 	comments: IPostComment[];
 }

@@ -2,6 +2,7 @@ export interface LeftLinkProps {
 	img: string;
 	text: string;
 	notification?: string;
+	url?: string;
 }
 
 export interface ShortcutProps {

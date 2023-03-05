@@ -24,6 +24,10 @@ const PostSchema = new Schema(
 		background: {
 			type: String,
 		},
+		savedBy: {
+			type: ObjectId,
+			ref: 'User',
+		},
 		comments: [
 			{
 				comment: {

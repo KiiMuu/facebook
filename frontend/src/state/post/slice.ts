@@ -4,6 +4,8 @@ import {
 	createPost,
 	createPostComment,
 	getAllPosts,
+	getSavedPosts,
+	savePost,
 	uploadImages,
 } from './api';
 
@@ -16,6 +18,10 @@ export const postSlice = createSlice({
 		error: '',
 		successMsg: '',
 		errorMsg: '',
+		isSavedPost: false,
+		savePostStatus: 'idle',
+		savedPostStatus: 'idle',
+		savedPosts: [],
 		createdPost: {
 			type: null,
 			background: null,
@@ -77,6 +83,28 @@ export const postSlice = createSlice({
 			})
 			.addCase(createPostComment.rejected, (state, action) => {
 				state.commentStatus = 'failed';
+				state.error = action.payload;
+			})
+			.addCase(savePost.pending, (state, action) => {
+				state.savePostStatus = 'loading';
+			})
+			.addCase(savePost.fulfilled, (state, action) => {
+				state.savePostStatus = 'succeeded';
+				state.isSavedPost = action.payload.isSavedPost;
+			})
+			.addCase(savePost.rejected, (state, action) => {
+				state.savePostStatus = 'failed';
+				state.error = action.payload;
+			})
+			.addCase(getSavedPosts.pending, (state, action) => {
+				state.savedPostStatus = 'loading';
+			})
+			.addCase(getSavedPosts.fulfilled, (state, action) => {
+				state.savedPostStatus = 'succeeded';
+				state.savedPosts = action.payload;
+			})
+			.addCase(getSavedPosts.rejected, (state, action) => {
+				state.savedPostStatus = 'failed';
 				state.error = action.payload;
 			});
 	},

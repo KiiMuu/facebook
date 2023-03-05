@@ -13,6 +13,7 @@ import NotLoggedInRoute from './routes/NotLoggedInRoute';
 import PostPopup from './components/post/popup';
 // -> states
 import { useAppSelector } from './state/hooks';
+import SavedPosts from './pages/saved_posts';
 
 function App() {
 	const [postPopupVisibility, setPostPopupVisibility] = useState(false);
@@ -56,6 +57,7 @@ function App() {
 							/>
 						}
 					/>
+					<Route path='/posts/saved' element={<SavedPosts />} />
 				</Route>
 			</Routes>
 		</>

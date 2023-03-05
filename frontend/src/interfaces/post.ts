@@ -2,11 +2,15 @@ export interface SliceState {
 	status: 'idle' | 'loading' | 'succeeded' | 'failed';
 	postStatus: 'idle' | 'loading' | 'succeeded' | 'failed';
 	commentStatus: 'idle' | 'loading' | 'succeeded' | 'failed';
+	savePostStatus: 'idle' | 'loading' | 'succeeded' | 'failed';
+	savedPostStatus: 'idle' | 'loading' | 'succeeded' | 'failed';
+	isSavedPost: boolean;
 	error: any;
 	successMsg?: string;
 	errorMsg?: string;
 	createdPost: CreatePostProps;
 	posts: IPost[];
+	savedPosts: IPost[];
 	postComments: IComment[];
 }
 
