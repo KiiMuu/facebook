@@ -33,8 +33,10 @@ const getAllPosts = async (req: Request, res: Response) => {
 
 		const following = followingTemp?.following;
 
-		// show all posts from the following users only
-		const posts = await Post.find({ user: { $in: following } })
+		// show all posts from the following users & me only
+		const posts = await Post.find({
+			$or: [{ user: req.user.id }, { user: { $in: following } }],
+		})
 			.populate(
 				'user',
 				'firstName lastName picture cover username gender _id'
@@ -44,7 +46,6 @@ const getAllPosts = async (req: Request, res: Response) => {
 				'username firstName lastName picture'
 			)
 			.sort({ createdAt: 'desc' })
-			.limit(10)
 			.exec();
 
 		return res.json(posts);
@@ -176,4 +177,31 @@ const getSavedPosts = async (req: Request, res: Response) => {
 	}
 };
 
-export { createPost, getAllPosts, createComment, savePost, getSavedPosts };
+const deletePost = async (req: Request, res: Response) => {
+	try {
+		const { postId } = req.params;
+
+		if (!postId) {
+			return res.status(BAD_REQ).json({
+				message: "Something went wrong. Couldn't delete a post.",
+			});
+		}
+
+		const deletedPost = await Post.findByIdAndRemove(postId);
+
+		return res.status(OK).json({ postId: deletedPost?._id });
+	} catch (error: any) {
+		return res.status(SERVER_ERR).json({
+			message: error.message,
+		});
+	}
+};
+
+export {
+	createPost,
+	getAllPosts,
+	createComment,
+	savePost,
+	getSavedPosts,
+	deletePost,
+};

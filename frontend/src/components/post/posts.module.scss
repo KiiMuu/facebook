@@ -16,6 +16,7 @@
 	user-select: none;
 	color: var(--color-primary);
 	margin-bottom: 2rem;
+	animation: animateMe 0.2s ease-in;
 	.post_header {
 		display: flex;
 		align-items: center;

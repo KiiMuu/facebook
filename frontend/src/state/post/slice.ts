@@ -3,6 +3,7 @@ import { SliceState } from 'src/interfaces/post';
 import {
 	createPost,
 	createPostComment,
+	deletePost,
 	getAllPosts,
 	getSavedPosts,
 	savePost,
@@ -105,6 +106,19 @@ export const postSlice = createSlice({
 			})
 			.addCase(getSavedPosts.rejected, (state, action) => {
 				state.savedPostStatus = 'failed';
+				state.error = action.payload;
+			})
+			.addCase(deletePost.pending, (state, action) => {
+				state.status = 'loading';
+			})
+			.addCase(deletePost.fulfilled, (state, action) => {
+				state.status = 'succeeded';
+				state.posts = state.posts.filter(
+					post => post._id !== action.payload.postId
+				);
+			})
+			.addCase(deletePost.rejected, (state, action) => {
+				state.status = 'failed';
 				state.error = action.payload;
 			});
 	},

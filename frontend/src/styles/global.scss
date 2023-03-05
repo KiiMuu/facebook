@@ -50,11 +50,11 @@ body {
 	padding: 0;
 	margin: 0;
 	&::-webkit-scrollbar {
-		width: 8px;
+		width: 4px;
 	}
 	&::-webkit-scrollbar-thumb {
 		background: #aeaeafa1;
-		border-radius: 5px;
+		border-radius: 6px;
 	}
 }
 
@@ -71,7 +71,7 @@ body {
 	}
 }
 .scrollbar::-webkit-scrollbar {
-	width: 8px;
+	width: 2px;
 }
 .scrollbar::-webkit-scrollbar-thumb {
 	background: #aeaeafa1;

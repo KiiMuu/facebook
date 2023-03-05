@@ -419,6 +419,7 @@ const Post: React.FC<{
 					postUserId={post.user?._id}
 					imagesLen={post.images?.length}
 					setIsPostOptionsVisible={setIsPostOptionsVisible}
+					images={post.images}
 				/>
 			)}
 		</div>

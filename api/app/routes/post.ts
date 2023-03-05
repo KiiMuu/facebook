@@ -5,6 +5,7 @@ import {
 	createComment,
 	savePost,
 	getSavedPosts,
+	deletePost,
 } from '../controllers/post';
 import isAuth from '../middleware/isAuth';
 
@@ -15,5 +16,6 @@ router.get('/post/getAllPosts', isAuth, getAllPosts);
 router.put('/post/comment/create', isAuth, createComment);
 router.put('/post/save/:postId', isAuth, savePost);
 router.get('/post/saved', isAuth, getSavedPosts);
+router.delete('/post/delete/:postId', isAuth, deletePost);
 
 export default router;

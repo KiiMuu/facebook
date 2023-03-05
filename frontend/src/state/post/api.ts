@@ -166,3 +166,30 @@ export const getSavedPosts = createAsyncThunk(
 		}
 	}
 );
+
+export const deletePost = createAsyncThunk(
+	'post/deletePost',
+	async (
+		postData: { postId?: string; token?: string },
+		{ rejectWithValue }
+	) => {
+		const { postId, token } = postData;
+
+		try {
+			const { data } = await axios.delete(
+				`${process.env.REACT_APP_API}/post/delete/${postId}`,
+				{
+					headers: {
+						Authorization: `Bearer ${token}`,
+					},
+				}
+			);
+
+			return data;
+		} catch (error: any) {
+			return rejectWithValue(
+				error.response ? error.response.data : error
+			);
+		}
+	}
+);

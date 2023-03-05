@@ -1,18 +1,28 @@
 import { useState, useRef } from 'react';
 import { toast } from 'react-hot-toast';
 import useDetectOutsideClicks from 'src/hooks/useDetectOutsideClicks';
+import { ICloudImage } from 'src/interfaces/post';
 import { useAppDispatch, useAppSelector } from 'src/state/hooks';
-import { savePost } from 'src/state/post/api';
+import { deletePost, savePost } from 'src/state/post/api';
 import Option from './Option';
 import classes from './options.module.scss';
+import { saveAs } from 'file-saver';
 
 const PostOptions: React.FC<{
 	userId?: string;
 	postUserId?: string;
 	imagesLen?: number;
 	postId?: string;
+	images?: ICloudImage[] | null;
 	setIsPostOptionsVisible: (state: boolean) => void;
-}> = ({ userId, postUserId, imagesLen, setIsPostOptionsVisible, postId }) => {
+}> = ({
+	userId,
+	postUserId,
+	imagesLen,
+	setIsPostOptionsVisible,
+	postId,
+	images,
+}) => {
 	const [isOptionAvailableToMe] = useState(userId === postUserId);
 	const postOptionsRef = useRef(null);
 	const dispatch = useAppDispatch();
@@ -30,6 +40,25 @@ const PostOptions: React.FC<{
 			).unwrap();
 
 			toast.success(res.message, { duration: 5000 });
+		} catch (error) {
+			toast.error(error.message);
+		}
+	};
+
+	const downloadPostPhotos = async () => {
+		console.log({ images });
+		images?.map(img => {
+			return saveAs(img.url, 'image.jpeg');
+		});
+	};
+
+	const handlePostDelete = async () => {
+		try {
+			await dispatch(deletePost({ postId: postId, token: user?.token }));
+
+			toast.success('Post deleted successfully', {
+				position: 'bottom-left',
+			});
 		} catch (error) {
 			toast.error(error.message);
 		}
@@ -68,7 +97,11 @@ const PostOptions: React.FC<{
 					subTitle='Get notifications for this post activities.'
 				/>
 			)}
-			{imagesLen && <Option icon='download_icon' title='Download' />}
+			{imagesLen && (
+				<div onClick={() => downloadPostPhotos()}>
+					<Option icon='download_icon' title='Download' />
+				</div>
+			)}
 			{imagesLen && (
 				<Option icon='fullscreen_icon' title='Enter Fullscreen' />
 			)}
@@ -96,11 +129,13 @@ const PostOptions: React.FC<{
 				<Option icon='archive_icon' title='Move to Archive' />
 			)}
 			{isOptionAvailableToMe && (
-				<Option
-					icon='trash_icon'
-					title='Move to Trash'
-					subTitle='Items in your trash are deleted after 30 day.'
-				/>
+				<div onClick={() => handlePostDelete()}>
+					<Option
+						icon='trash_icon'
+						title='Move to Trash'
+						subTitle='Items in your trash are deleted after 30 day.'
+					/>
+				</div>
 			)}
 			{!isOptionAvailableToMe && <div className={line}></div>}
 			{!isOptionAvailableToMe && (

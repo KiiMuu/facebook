@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import Cookies from 'js-cookie';
 import { SliceState } from 'src/interfaces/user';
-import { createPost } from '../post/api';
+import { createPost, deletePost } from '../post/api';
 import {
 	register,
 	login,
@@ -195,6 +195,13 @@ export const userSlice = createSlice({
 						action.payload,
 						...state.profile!.posts,
 					];
+				}
+			})
+			.addCase(deletePost.fulfilled, (state, action) => {
+				if (window.location.pathname.includes('/profile')) {
+					state.profile!.posts = state.profile!.posts.filter(
+						post => post._id !== action.payload.postId
+					);
 				}
 			})
 			.addCase(addFriendRequest.pending, (state, action) => {
