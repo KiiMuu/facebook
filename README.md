@@ -6,4 +6,4 @@
 
 #### Reacts
 
-![Reacts](demo/reacts_and_comments.mp4)
+![Reacts](demo/reacts_and_comments.gif)
