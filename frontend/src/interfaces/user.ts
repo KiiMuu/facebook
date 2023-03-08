@@ -14,8 +14,15 @@ interface FoundUser {
 	picture: string;
 }
 
+export type searchHistory = {
+	user: UserInfo | null;
+	createdAt?: string;
+	_id?: string;
+};
+
 export interface SliceState {
 	status: 'idle' | 'loading' | 'succeeded' | 'failed';
+	searchStatus: 'idle' | 'loading' | 'succeeded' | 'failed';
 	errors: any;
 	successMsg?: string;
 	errorMsg?: string;
@@ -23,6 +30,11 @@ export interface SliceState {
 	user: UserInfo | null;
 	foundUser: FoundUser | null;
 	profile: IProfile | null;
+	searchResults: IProfile[];
+	searchHistory: {
+		search: searchHistory[];
+	};
+	searchHistoryFetchStatus: 'idle' | 'loading' | 'succeeded' | 'failed';
 }
 
 export interface SearchedUser {

@@ -34,7 +34,11 @@ export interface IUserModel extends Document {
 	following: User[];
 	followers: User[];
 	requests: User[];
-	search: object[];
+	search: {
+		_id: string;
+		user: string;
+		createdAt: Date;
+	}[];
 	details: {
 		bio: string;
 		otherName: string;

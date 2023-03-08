@@ -507,3 +507,110 @@ export const deleteFriendRequest = createAsyncThunk(
 		}
 	}
 );
+
+export const searchFB = createAsyncThunk(
+	'user/searchFB',
+	async (
+		userData: { token?: string; searchTerm?: string },
+		{ rejectWithValue }
+	) => {
+		const { token, searchTerm } = userData;
+
+		try {
+			const { data } = await axios.post(
+				`${process.env.REACT_APP_API}/user/${searchTerm}`,
+				{},
+				{
+					headers: {
+						Authorization: `Bearer ${token}`,
+					},
+				}
+			);
+
+			return data;
+		} catch (error: any) {
+			return rejectWithValue(
+				error.response ? error.response.data : error
+			);
+		}
+	}
+);
+export const addToSearchHistory = createAsyncThunk(
+	'user/addToSearchHistory',
+	async (
+		userData: { token?: string; searchUser?: string },
+		{ rejectWithValue }
+	) => {
+		const { token, searchUser } = userData;
+
+		try {
+			const { data } = await axios.put(
+				`${process.env.REACT_APP_API}/user/add_to_search_history`,
+				{ searchUser },
+				{
+					headers: {
+						Authorization: `Bearer ${token}`,
+					},
+				}
+			);
+
+			return data;
+		} catch (error: any) {
+			return rejectWithValue(
+				error.response ? error.response.data : error
+			);
+		}
+	}
+);
+
+export const deleteFromSearchHistory = createAsyncThunk(
+	'user/deleteFromSearchHistory',
+	async (userData: { token?: string; id?: string }, { rejectWithValue }) => {
+		const { token, id } = userData;
+
+		try {
+			const { data } = await axios.put(
+				`${process.env.REACT_APP_API}/user/delete_search_history/${id}`,
+				{ id },
+				{
+					headers: {
+						Authorization: `Bearer ${token}`,
+					},
+				}
+			);
+
+			return data;
+		} catch (error: any) {
+			return rejectWithValue(
+				error.response ? error.response.data : error
+			);
+		}
+	}
+);
+
+export const getSearchHistories = createAsyncThunk(
+	'user/getSearchHistories',
+	async (
+		userData: { token?: string; searchUser?: string },
+		{ rejectWithValue }
+	) => {
+		const { token } = userData;
+
+		try {
+			const { data } = await axios.get(
+				`${process.env.REACT_APP_API}/user/get_search_history`,
+				{
+					headers: {
+						Authorization: `Bearer ${token}`,
+					},
+				}
+			);
+
+			return data;
+		} catch (error: any) {
+			return rejectWithValue(
+				error.response ? error.response.data : error
+			);
+		}
+	}
+);

@@ -19,6 +19,10 @@ import {
 	acceptFriend,
 	unfriend,
 	deleteRequest,
+	searchFB,
+	addToSearchHistory,
+	getSearchHistory,
+	deleteSearchHistory,
 } from '../controllers/user';
 import isAuth from '../middleware/isAuth';
 import {
@@ -48,5 +52,9 @@ router.put('/user/profile/unfollow/:userId', isAuth, unfollow);
 router.put('/user/profile/accept_friend/:userId', isAuth, acceptFriend);
 router.put('/user/profile/unfriend/:userId', isAuth, unfriend);
 router.put('/user/profile/delete_request/:userId', isAuth, deleteRequest);
+router.post('/user/:searchTerm', isAuth, searchFB);
+router.put('/user/add_to_search_history', isAuth, addToSearchHistory);
+router.get('/user/get_search_history', isAuth, getSearchHistory);
+router.put('/user/delete_search_history/:id', isAuth, deleteSearchHistory);
 
 export default router;

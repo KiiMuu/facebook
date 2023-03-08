@@ -22,6 +22,9 @@ import {
 	acceptFriendRequest,
 	unFriendRequest,
 	deleteFriendRequest,
+	searchFB,
+	getSearchHistories,
+	deleteFromSearchHistory,
 } from './api';
 
 let currentUser = Cookies.get('fb_user')
@@ -39,6 +42,16 @@ export const userSlice = createSlice({
 		foundUser: null,
 		user: currentUser,
 		profile: null,
+		searchResults: [],
+		searchStatus: 'idle',
+		searchHistory: {
+			search: [
+				{
+					user: null,
+				},
+			],
+		},
+		searchHistoryFetchStatus: 'idle',
 	} as SliceState,
 	reducers: {
 		logoutUser: state => {
@@ -284,6 +297,33 @@ export const userSlice = createSlice({
 			})
 			.addCase(deleteFriendRequest.rejected, (state, action: any) => {
 				state.status = 'failed';
+			})
+			.addCase(searchFB.pending, (state, action) => {
+				state.searchStatus = 'loading';
+			})
+			.addCase(searchFB.fulfilled, (state, action) => {
+				state.searchStatus = 'succeeded';
+				state.searchResults = action.payload;
+			})
+			.addCase(searchFB.rejected, (state, action: any) => {
+				state.searchStatus = 'failed';
+			})
+			.addCase(getSearchHistories.pending, (state, action) => {
+				state.searchHistoryFetchStatus = 'loading';
+			})
+			.addCase(getSearchHistories.fulfilled, (state, action) => {
+				state.searchHistoryFetchStatus = 'succeeded';
+				state.searchHistory = action.payload;
+			})
+			.addCase(getSearchHistories.rejected, (state, action: any) => {
+				state.searchHistoryFetchStatus = 'failed';
+			})
+			.addCase(deleteFromSearchHistory.fulfilled, (state, action) => {
+				state.searchHistoryFetchStatus = 'succeeded';
+				state.searchHistory.search = state.searchHistory.search.filter(
+					searchHistory =>
+						searchHistory._id !== action.payload.deletedHistoryId
+				);
 			});
 	},
 });

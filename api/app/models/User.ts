@@ -29,6 +29,7 @@ const UserSchema: Schema = new Schema(
 			required: [true, 'Email is required.'],
 			trim: true,
 			unique: true,
+			text: true,
 		},
 		password: {
 			type: String,
@@ -97,6 +98,10 @@ const UserSchema: Schema = new Schema(
 				user: {
 					type: ObjectId,
 					ref: 'User',
+				},
+				createdAt: {
+					type: Date,
+					default: Date.now,
 				},
 			},
 		],

@@ -733,6 +733,107 @@ const deleteRequest = async (req: Request, res: Response) => {
 	}
 };
 
+const searchFB = async (req: Request, res: Response) => {
+	try {
+		const { searchTerm } = req.params;
+
+		if (!searchTerm) {
+			return res.status(BAD_REQ).json({
+				message: 'No search term provided.',
+			});
+		}
+
+		const results = await User.find({
+			$text: { $search: searchTerm },
+		}).select('firstName lastName email picture username');
+
+		return res.status(OK).json(results);
+	} catch (error: any) {
+		return res.status(SERVER_ERR).json({
+			message: error.message,
+		});
+	}
+};
+
+const addToSearchHistory = async (req: Request, res: Response) => {
+	try {
+		const { searchUser } = req.body;
+		const search = {
+			user: searchUser,
+			updatedAt: new Date(),
+		};
+
+		const user = await User.findById(req.user.id);
+
+		const isUserExistInMySearchHistory = user?.search.find(
+			search => search?.user?.toString() === searchUser
+		);
+
+		if (isUserExistInMySearchHistory) {
+			await User.updateOne(
+				{
+					_id: req.user.id,
+					'search._id': isUserExistInMySearchHistory?._id,
+				},
+				{
+					$set: {
+						'search.$.createdAt': new Date(),
+					},
+				}
+			);
+		} else {
+			await User.findByIdAndUpdate(req.user.id, {
+				$push: {
+					search,
+				},
+			});
+		}
+
+		return res.status(OK).json({ ok: true });
+	} catch (error: any) {
+		return res.status(SERVER_ERR).json({
+			message: error.message,
+		});
+	}
+};
+
+const getSearchHistory = async (req: Request, res: Response) => {
+	try {
+		const searchHistories = await User.findById(req.user.id)
+			.select('search')
+			.populate(
+				'search.user',
+				'firstName lastName email picture username'
+			);
+
+		return res.status(OK).json(searchHistories);
+	} catch (error: any) {
+		return res.status(SERVER_ERR).json({
+			message: error.message,
+		});
+	}
+};
+
+const deleteSearchHistory = async (req: Request, res: Response) => {
+	try {
+		const { id } = req.params;
+
+		await User.findByIdAndUpdate(req.user.id, {
+			$pull: {
+				search: {
+					_id: id,
+				},
+			},
+		});
+
+		return res.status(OK).json({ ok: true });
+	} catch (error: any) {
+		return res.status(SERVER_ERR).json({
+			message: error.message,
+		});
+	}
+};
+
 export {
 	register,
 	verifyAccount,
@@ -753,4 +854,8 @@ export {
 	acceptFriend,
 	unfriend,
 	deleteRequest,
+	searchFB,
+	addToSearchHistory,
+	getSearchHistory,
+	deleteSearchHistory,
 };

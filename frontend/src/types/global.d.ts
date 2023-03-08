@@ -9,6 +9,7 @@ declare global {
 		firstName: string;
 		lastName: string;
 		username: string;
+		email: string;
 		picture: string;
 		cover: string;
 		verified: boolean;
