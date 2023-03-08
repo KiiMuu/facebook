@@ -8,7 +8,7 @@ import classes from './posts.module.scss';
 import CreateComment from './comment';
 import PostOptions from './options';
 import axios from 'axios';
-import { useAppDispatch } from 'src/state/hooks';
+import { useAppDispatch, useAppSelector } from 'src/state/hooks';
 import { reactOnPost } from 'src/state/react/api';
 import { toast } from 'react-hot-toast';
 import useDetectOutsideClicks from 'src/hooks/useDetectOutsideClicks';
@@ -31,6 +31,7 @@ const Post: React.FC<{
 	const reactActionRef = useRef(null);
 
 	const dispatch = useAppDispatch();
+	const { user: me } = useAppSelector(state => state.user);
 
 	useDetectOutsideClicks(reactActionRef, () => setAreReactsVisible(false));
 
@@ -101,7 +102,7 @@ const Post: React.FC<{
 				`${process.env.REACT_APP_API}/reacts/${post?._id}`,
 				{
 					headers: {
-						Authorization: `Bearer ${user?.token}`,
+						Authorization: `Bearer ${me?.token}`,
 					},
 				}
 			);
